@@ -31,7 +31,7 @@ const KATEGORI = [
   { id:'aplikasi', ikon:'🛠️', nama:'Aplikasi / Tools',  deskripsi:'Aplikasi web, kalkulator, dan dasbor data' },
   { id:'materi',   ikon:'📚', nama:'Materi Ajar & Soal',deskripsi:'Modul ajar / RPP, LKPD, bank soal, slide presentasi' },
   { id:'tulisan',  ikon:'✍️', nama:'Tulisan & Konten',  deskripsi:'Artikel, esai, cerita, dan konten media sosial' },
-  { id:'gambar',   ikon:'🎨', nama:'Gambar & Desain',   deskripsi:'Prompt gambar AI, logo, dan infografis' },
+  { id:'gambar',   ikon:'🎨', nama:'Gambar & Desain',   deskripsi:'Gambar AI, logo, dan infografis' },
   { id:'bebas',    ikon:'🧩', nama:'Prompt Bebas',      deskripsi:'Kerangka universal untuk kebutuhan apa pun' }
 ];
 
@@ -538,59 +538,60 @@ const TEMPLATE = [
 
 /* ---------- Kategori 7: Gambar & Desain ---------- */
 {
-  id:'prompt-gambar', kategori:'gambar', ikon:'🖼️', nama:'Prompt Gambar AI',
-  deskripsi:'Prompt siap tempel untuk alat gambar AI (Midjourney, DALL·E, dsb.). Bahasa hasil bisa dipilih — bawaannya Inggris.',
-  peran:'Anda adalah ahli penulisan prompt gambar (image prompt engineer) berpengalaman untuk berbagai alat gambar AI.',
-  tugas:'Susunlah prompt gambar yang siap ditempel langsung ke alat gambar AI berdasarkan spesifikasi berikut. Hasil utama harus berupa prompt bersih yang dapat disalin, bukan uraian panjang tentang teori prompt.',
+  id:'prompt-gambar', kategori:'gambar', ikon:'🖼️', nama:'Gambar AI',
+  deskripsi:'Gambar AI yang siap digunakan berdasarkan subjek, suasana, gaya, dan komposisi yang dipilih.',
+  peran:'Anda adalah pembuat gambar AI yang menerjemahkan spesifikasi pengguna menjadi satu gambar yang jelas, menarik, dan sesuai tujuan.',
+  tugas:'Buat satu gambar berdasarkan spesifikasi berikut. Hasil akhir harus berupa satu gambar yang siap digunakan, bukan prompt, brief, konsep, terjemahan, atau penjelasan.',
   fields:[
     { i:'subjek', l:'Subjek utama gambar', j:'teks', m:'C', w:true, ph:'mis. guru muda Indonesia tersenyum di depan kelas', c:'guru muda Indonesia tersenyum di depan kelas' },
     { i:'aksi', l:'Aksi / suasana', j:'teks', m:'C', w:true, ph:'mis. sedang menjelaskan pecahan di papan tulis', c:'sedang menjelaskan pecahan di papan tulis' },
     { i:'latarGambar', l:'Latar tempat', j:'teks', m:'C', w:true, ph:'mis. ruang kelas SMP yang terang', c:'ruang kelas SMP yang terang' },
     { i:'gayaGambar', l:'Gaya gambar', j:'pilih', m:'C', w:true, o:['Fotografi realistis','Ilustrasi datar','Kartun','Lukisan cat air','3D','Piksel','Anime'], c:'Ilustrasi datar' },
     { i:'rasio', l:'Rasio gambar', j:'pilih', m:'C', o:['16:9','1:1','9:16','4:3'], c:'16:9' },
-    { i:'bahasaGambar', l:'Bahasa prompt gambar', j:'pilih', m:'C', w:true, o:['Inggris','Indonesia'], c:'Inggris', h:'Bawaan: Inggris — alat gambar umumnya paling paham istilah gaya berbahasa Inggris. Bila Inggris dipilih, sertakan juga terjemahan Indonesianya di bawah prompt utama.' },
+    { i:'bahasaGambar', l:'Bahasa teks dalam gambar', j:'pilih', m:'C', w:true, o:['Indonesia','Inggris'], c:'Indonesia', h:'Pilih bahasa untuk teks yang terlihat di dalam gambar bila ada.' },
     { i:'cahaya', l:'Pencahayaan & suasana warna', j:'teks', m:'D', ph:'mis. cahaya pagi lembut, warna hangat', c:'cahaya pagi lembut, warna hangat' },
     { i:'hindariGambar', l:'Detail yang harus dihindari (negative prompt)', j:'teks', m:'D', ph:'mis. teks acak, jari berlebih, buram', c:'teks acak, buram, proporsi wajah aneh' },
     { i:'alatGambar', l:'Target alat gambar', j:'pilih', m:'D', o:['Umum','Midjourney','DALL·E','Stable Diffusion','Ideogram','Leonardo'], c:'Umum' }
   ],
   aturan:[
-    'Jangan memasukkan label, penjelasan, atau instruksi percakapan ke dalam blok prompt utama.',
-    'Susun prompt dengan urutan subjek, aksi atau ekspresi, latar, komposisi, gaya, pencahayaan, warna, kualitas, dan rasio bila relevan.',
+    'Buat gambar secara langsung dan jangan mengeluarkan prompt, label, penjelasan, terjemahan, parameter, atau instruksi percakapan di luar gambar.',
+    'Susun elemen visual berdasarkan subjek, aksi atau ekspresi, latar, komposisi, gaya, pencahayaan, warna, kualitas, dan rasio bila relevan.',
     'Gunakan detail yang diberikan pengguna tanpa menambahkan objek utama yang bertentangan.',
-    'Jika target alat mendukung parameter khusus, tambahkan hanya parameter yang relevan dan valid untuk alat tersebut.',
-    'Jika detail yang harus dihindari diisi, tulis negative prompt terpisah. Jangan mencampurnya dengan prompt utama.',
-    'Jika Bahasa Inggris dipilih, prompt utama harus berbahasa Inggris dan terjemahan Bahasa Indonesia diletakkan setelahnya. Jika Bahasa Indonesia dipilih, jadikan Bahasa Indonesia sebagai hasil utama.'
+    'Gunakan detail yang harus dihindari sebagai batasan visual tanpa menuliskannya sebagai negative prompt di luar gambar.',
+    'Jika gambar memuat teks, gunakan bahasa yang dipilih, ejaan yang benar, dan tata letak teks yang mudah dibaca.',
+    'Jangan menampilkan brief, caption, alt text, rekomendasi, atau penjelasan setelah gambar.'
   ],
-  format:['Gunakan urutan tetap: Prompt Utama dalam satu blok kode, Negative Prompt dalam blok terpisah bila ada, Terjemahan Bahasa Indonesia bila prompt utama berbahasa Inggris, lalu Parameter Alat bila relevan. Penjelasan unsur maksimal 5 bullet.']
+  format:['Keluaran akhir hanya satu gambar. Jangan memberikan teks atau respons tambahan di luar gambar.']
 },
 {
-  id:'logo', kategori:'gambar', ikon:'🏷️', nama:'Logo & Identitas Visual',
-  deskripsi:'Konsep logo lengkap: makna, bentuk, warna, dan prompt gambarnya.',
-  peran:'Anda adalah desainer logo dan identitas visual berpengalaman.',
-  tugas:'Rancanglah konsep logo yang dapat ditindaklanjuti berdasarkan spesifikasi berikut. Keluarkan konsep visual yang konkret beserta prompt gambar, bukan teori desain umum.',
+  id:'logo', kategori:'gambar', ikon:'🏷️', nama:'Logo',
+  deskripsi:'Gambar logo yang siap digunakan berdasarkan identitas, simbol, kesan, dan warna yang dipilih.',
+  peran:'Anda adalah desainer logo yang menerjemahkan identitas merek menjadi satu gambar logo yang sederhana, khas, dan mudah dikenali.',
+  tugas:'Buat satu gambar logo berdasarkan spesifikasi berikut. Hasil akhir harus berupa gambar logo yang siap digunakan, bukan konsep tertulis, analisis, prompt, atau penjelasan.',
   fields:[
     { i:'merek', l:'Nama merek / usaha', j:'teks', m:'C', w:true, ph:'mis. Les Privat Atiga', c:'Les Privat Atiga' },
     { i:'bidang', l:'Bidang usaha', j:'teks', m:'C', w:true, ph:'mis. bimbingan belajar matematika', c:'bimbingan belajar matematika' },
     { i:'kesan', l:'Kesan yang diinginkan', j:'teks', m:'C', w:true, ph:'mis. terpercaya, modern, ramah', c:'terpercaya, modern, ramah' },
-    { i:'jumlahKonsep', l:'Jumlah konsep yang diminta', j:'angka', m:'C', ph:'mis. 3', c:'3' },
+    { i:'jumlahKonsep', l:'Jumlah variasi logo', j:'angka', m:'C', ph:'mis. 1', c:'1' },
     { i:'simbol', l:'Bentuk / simbol idaman', j:'teks', m:'D', ph:'mis. pensil yang membentuk huruf A', c:'pensil membentuk huruf A' },
     { i:'warnaLogo', l:'Warna', j:'teks', m:'D', ph:'mis. indigo dan amber', c:'indigo dan amber' }
   ],
   aturan:[
-    'Buat tepat sejumlah konsep sesuai kolom Jumlah konsep yang diminta.',
-    'Setiap konsep harus berbeda pendekatan visual dan simbolik, bukan variasi kecil dari satu ide.',
+    'Buat tepat sejumlah variasi logo sesuai kolom Jumlah variasi logo. Jika jumlahnya lebih dari satu, tampilkan semua variasi dalam satu gambar eksplorasi logo yang rapi.',
+    'Setiap variasi harus berbeda pendekatan visual dan simbolik, bukan variasi kecil dari satu ide.',
     'Hubungkan bentuk, simbol, tipografi, dan warna dengan bidang usaha serta kesan yang diinginkan.',
-    'Palet warna wajib berisi nama warna dan kode hex. Jangan memilih warna secara acak tanpa alasan.',
+    'Gunakan warna yang sesuai dengan bidang usaha dan kesan yang diinginkan.',
     'Pastikan logo tetap terbaca dalam ukuran kecil, versi satu warna, dan latar terang maupun gelap.',
-    'Prompt gambar logo harus meminta bentuk sederhana, bersih, tanpa mockup, tanpa watermark, dan menyisakan ruang untuk memperbaiki teks secara manual karena alat gambar sering keliru menulis.'
+    'Gunakan bentuk sederhana dan bersih tanpa mockup, watermark, teks acak, atau elemen dekoratif yang tidak diperlukan.',
+    'Jangan menampilkan konsep, makna, palet warna, tipografi, prompt, caption, atau penjelasan di luar gambar.'
   ],
-  format:['Untuk setiap konsep gunakan urutan: Nama Konsep, Ide Utama, Bentuk dan Komposisi, Makna, Palet Warna dengan kode hex, Tipografi, Penggunaan, lalu Prompt Gambar siap tempel dalam blok kode.']
+  format:['Keluaran akhir hanya satu gambar logo. Jangan memberikan teks atau respons tambahan di luar gambar.']
 },
 {
   id:'infografis', kategori:'gambar', ikon:'📈', nama:'Infografis',
-  deskripsi:'Rancangan infografis: susunan isi, alur baca, dan naskah tiap bagiannya.',
-  peran:'Anda adalah perancang infografis berpengalaman yang menyajikan data dengan jujur dan mudah dipahami.',
-  tugas:'Rancanglah satu infografis lengkap dan siap diproduksi berdasarkan spesifikasi berikut. Keluarkan naskah serta tata letak yang konkret, bukan penjelasan umum tentang infografis.',
+  deskripsi:'Gambar infografis edukatif yang siap digunakan, dengan isi dan tata letak yang jelas.',
+  peran:'Anda adalah pembuat gambar infografis edukatif yang menyajikan informasi dengan akurat, jelas, dan mudah dipahami.',
+  tugas:'Buat satu gambar infografis lengkap berdasarkan spesifikasi berikut. Hasil akhir harus berupa satu gambar infografis yang siap digunakan, bukan brief desain, rancangan, naskah, atau penjelasan.',
   fields:[
     { i:'topikInfo', l:'Topik infografis', j:'teks', m:'C', w:true, ph:'mis. Unsur-unsur Lingkaran', c:'Unsur-unsur Lingkaran' },
     { i:'poinInfo', l:'Data / poin utama', j:'area', m:'C', w:true, ph:'Satu baris satu poin…', c:'Titik pusat\nJari-jari dan diameter\nBusur dan tali busur\nJuring dan tembereng' },
@@ -601,12 +602,12 @@ const TEMPLATE = [
   aturan:[
     'Gunakan semua data atau poin utama yang diberikan dan jangan mengubah angka, istilah, urutan penting, atau fakta.',
     'Jika data numerik tidak diberikan, jangan menambahkan statistik atau persentase buatan.',
-    'Ikuti alur baca yang dipilih dan jelaskan posisi setiap bagian dari awal sampai akhir.',
-    'Tulis teks yang benar-benar akan tampil di infografis secara singkat; penjelasan untuk desainer diletakkan di kolom terpisah.',
-    'Setiap bagian harus memiliki fungsi visual yang jelas: judul, isi, ikon atau ilustrasi, warna, dan hubungan dengan bagian berikutnya.',
-    'Jika prompt gambar dibuat, pastikan prompt meminta ruang yang cukup untuk teks ditambahkan manual dan tidak mengandalkan AI untuk menulis teks kecil.'
+    'Ikuti alur baca yang dipilih melalui tata letak visual gambar.',
+    'Masukkan teks yang diperlukan langsung ke dalam gambar secara singkat, jelas, dan menggunakan Bahasa Indonesia.',
+    'Pastikan setiap bagian memiliki fungsi visual yang jelas: judul, isi, ikon atau ilustrasi, warna, dan hubungan dengan bagian berikutnya.',
+    'Jangan menampilkan atau mengeluarkan brief desain, outline, catatan desain, caption, alt text, prompt gambar, rekomendasi, atau penjelasan di luar gambar.'
   ],
-  format:['Gunakan urutan: Konsep Utama, Judul Infografis, Alur Baca, Rancangan per Bagian dalam tabel atau daftar, Palet Warna, Tipografi, lalu Prompt Gambar bila relevan. Bedakan "Teks yang tampil" dari "Catatan desain".']
+  format:['Keluaran akhir hanya satu gambar infografis. Jangan memberikan teks atau respons tambahan di luar gambar.']
 },
 
 /* ---------- Kategori 8: Prompt Bebas ---------- */

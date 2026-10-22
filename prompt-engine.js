@@ -68,11 +68,8 @@
     (t.aturan || []).forEach(a => blok.aturan.push(a));
 
     if (t.id === 'prompt-gambar'){
-      if (nilai.bahasaGambar === 'Indonesia'){
-        blok.aturan.push('Tulis prompt gambar dalam Bahasa Indonesia.');
-      } else {
-        blok.aturan.push('Tulis prompt gambar dalam Bahasa Inggris sebagai hasil utama, lalu sertakan terjemahan Bahasa Indonesianya di bawahnya.');
-      }
+      const bahasaTeks = nilai.bahasaGambar || 'Indonesia';
+      blok.aturan.push('Jika gambar memuat teks, gunakan Bahasa ' + bahasaTeks + ' di dalam gambar dan jangan menambahkan terjemahan di luar gambar.');
     }
     if (t.id === 'prompt-bebas' && detailAktif && nilai.langkahBebas){
       blok.aturan.push('Langkah pengerjaan: ' + String(nilai.langkahBebas).trim().replace(/\n/g, '; '));
@@ -86,14 +83,19 @@
     }
     const detail = preferensi.__detail || 'Standar';
     blok.format.push('Tingkat detail hasil: ' + detail + '.');
-    if (t.id !== 'prompt-gambar') blok.format.push('Seluruh jawaban dalam Bahasa Indonesia.');
+    const keluaranGambar = ['prompt-gambar', 'logo', 'infografis'].includes(t.id);
+    if (!keluaranGambar) blok.format.push('Seluruh jawaban dalam Bahasa Indonesia.');
 
     const sikap = detailAktif
       ? (preferensi.__sikap || 'Langsung kerjakan dengan asumsi terbaik')
       : 'Langsung kerjakan dengan asumsi terbaik';
-    blok.aturan.push(sikap === 'Tanya dulu sebelum mengerjakan'
-      ? 'Bila ada hal yang kurang jelas atau ambigu, tanyakan dulu kepadaku sebelum mengerjakan.'
-      : 'Bila ada hal yang kurang jelas, kerjakan dengan asumsi terbaik dan sebutkan asumsimu secara singkat.');
+    if (keluaranGambar) {
+      blok.aturan.push('Bila ada hal yang kurang jelas, gunakan asumsi visual yang wajar tanpa menuliskannya di luar gambar.');
+    } else {
+      blok.aturan.push(sikap === 'Tanya dulu sebelum mengerjakan'
+        ? 'Bila ada hal yang kurang jelas atau ambigu, tanyakan dulu kepadaku sebelum mengerjakan.'
+        : 'Bila ada hal yang kurang jelas, kerjakan dengan asumsi terbaik dan sebutkan asumsimu secara singkat.');
+    }
 
     return blok;
   }

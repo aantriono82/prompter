@@ -27,13 +27,13 @@ Prompt bisa disimpan ke **Pustaka Saya**, diunduh sebagai `.txt` / `.md`, dan pu
 | 🛠️ Aplikasi / Tools | Aplikasi Web · Kalkulator / Alat Hitung · Dasbor Data |
 | 📚 Materi Ajar & Soal | Modul Ajar / RPP · LKPD · Bank Soal · Slide Presentasi |
 | ✍️ Tulisan & Konten | Artikel / Esai / Refleksi · Cerita / Cerpen · Konten Media Sosial & Naskah Video |
-| 🎨 Gambar & Desain | Prompt Gambar AI · Logo & Identitas Visual · Infografis |
+| 🎨 Gambar & Desain | Gambar AI · Logo · Infografis |
 | 🧩 Prompt Bebas | Prompt Bebas Universal |
 
 Catatan khusus:
 
 - **Template Modul Ajar / RPP** mengikuti *Perencanaan Pembelajaran Mendalam* dalam **Panduan Mata Pelajaran Final Fase A–F (BSKAP Kemendikdasmen, 2025)**: Identifikasi → Desain Pembelajaran → Pengalaman Belajar (Memahami → Mengaplikasi → Merefleksi) → Asesmen Pembelajaran (awal, proses, akhir), dengan CP mengacu pada **Keputusan Kepala BSKAP No. 046/H/KR/2025**.
-- **Template Prompt Gambar AI** memiliki kolom *Bahasa prompt gambar* — bawaan **Inggris** (alat gambar umumnya paling paham istilah gaya berbahasa Inggris, dan hasil Inggris selalu disertai terjemahan Bahasa Indonesia di bawahnya), dapat diganti ke Bahasa Indonesia.
+- **Template Gambar AI** menghasilkan satu gambar langsung. Kolom *Bahasa teks dalam gambar* menentukan bahasa teks yang terlihat di dalam gambar bila ada.
 
 ## Format Prompt per Target AI
 
