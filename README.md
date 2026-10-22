@@ -25,7 +25,7 @@ Prompt bisa disimpan ke **Pustaka Saya**, diunduh sebagai `.txt` / `.md`, dan pu
 | 🎓 MPI | MPI Lengkap · Simulasi Interaktif — *khusus jenjang SMP (Kelas VII–IX, Fase D), semua mata pelajaran* |
 | 🎮 Game | Game Edukasi · Kuis Interaktif |
 | 🛠️ Aplikasi / Tools | Aplikasi Web · Kalkulator / Alat Hitung · Dasbor Data |
-| 📚 Materi Ajar & Soal | Modul Ajar / RPP Ringkas · LKPD · Bank Soal · Slide Presentasi |
+| 📚 Materi Ajar & Soal | Modul Ajar / RPP Ringkas · LKPD · Bank Soal · Slide Presentasi (.pptx / PDF / HTML) |
 | ✍️ Tulisan & Konten | Artikel / Esai / Refleksi · Cerita / Cerpen · Konten Media Sosial & Naskah Video |
 | 🎨 Gambar & Desain | Gambar AI · Logo · Infografis |
 | 🧩 Prompt Bebas | Prompt Bebas Universal |
@@ -34,6 +34,7 @@ Catatan khusus:
 
 - **Template Modul Ajar / RPP Ringkas** mempertahankan empat bagian *Perencanaan Pembelajaran Mendalam*: Identifikasi → Desain Pembelajaran → Pengalaman Belajar (Memahami → Mengaplikasi → Merefleksi) → Asesmen Pembelajaran (awal, proses, akhir). Formulirnya hanya meminta masukan inti; rincian opsional berada di Mode Detail. Acuan CP wajib ditempel dari [Panduan Mata Pelajaran Matematika Fase A–F dan Fase F Tingkat Lanjut (BSKAP, 2025)](https://repositori.kemendikdasmen.go.id/33608/) atau [Lampiran Keputusan Kepala BSKAP No. 046/H/KR/2025](https://kurikulum.kemendikdasmen.go.id/file/1753929861_manage_file.pdf).
 - **Template Gambar AI** menghasilkan satu gambar langsung. Kolom *Bahasa teks dalam gambar* menentukan bahasa teks yang terlihat di dalam gambar bila ada.
+- **Template Slide Presentasi** meminta AI membuat satu file presentasi yang dapat diunduh. Format defaultnya PowerPoint `.pptx`, dengan pilihan PDF atau HTML slide sebagai alternatif. Jika AI yang dipakai tidak mendukung pembuatan atau lampiran berkas, prompt meminta fallback berupa satu file HTML slide mandiri.
 
 ## Format Prompt per Target AI
 
