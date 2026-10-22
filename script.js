@@ -644,8 +644,8 @@ const KOLOM_UMUM = [
 
 /* ---------------- 2) MESIN PENYUSUN PROMPT ---------------- */
 
-function buatPrompt(t, vals, umum, targetId){
-  return globalThis.ATIGA_ENGINE.buatPrompt(t, vals, umum, targetId);
+function buatPrompt(t, vals, umum, targetId, mode = 'detail'){
+  return globalThis.ATIGA_ENGINE.buatPrompt(t, vals, umum, targetId, mode);
 }
 
 /* Ekspos untuk pengujian (tidak berpengaruh di peramban) */
@@ -1025,7 +1025,7 @@ function perbaruiProgres(formLengkap){
 /* ---------- Preview ---------- */
 function perbaruiPreview(){
   if (state.pratinjauManual) { perbaruiHitungan(); perbaruiStruktur(); return; }
-  const teks = buatPrompt(templateAktif(), state.nilai, state.umum, state.target);
+  const teks = buatPrompt(templateAktif(), state.nilai, state.umum, state.target, state.mode);
   $('areaPreview').value = teks;
   perbaruiHitungan();
   perbaruiStruktur();
@@ -1038,13 +1038,26 @@ function perbaruiHitungan(){
 }
 function perbaruiStruktur(){
   const wadah = $('panelStruktur');
-  const blok = globalThis.ATIGA_ENGINE.susunBlok(templateAktif(), state.nilai, state.umum);
+  wadah.innerHTML = '';
+
+  if (state.pratinjauManual){
+    const bagian = document.createElement('section');
+    bagian.className = 'struktur-blok';
+    const h3 = document.createElement('h3');
+    h3.textContent = 'Pratinjau manual';
+    const p = document.createElement('p');
+    p.textContent = $('areaPreview').value;
+    bagian.append(h3, p);
+    wadah.appendChild(bagian);
+    return;
+  }
+
+  const blok = globalThis.ATIGA_ENGINE.susunBlok(templateAktif(), state.nilai, state.umum, state.mode);
   const daftar = [
     ['Peran', blok.peran], ['Konteks', blok.konteks], ['Tugas', blok.tugas],
     ['Spesifikasi', blok.spesifikasi.join('\n')], ['Aturan wajib', blok.aturan.join('\n')],
     ['Format hasil', blok.format.join('\n')]
   ];
-  wadah.innerHTML = '';
   daftar.filter(([, isi]) => isi).forEach(([judul, isi]) => {
     const bagian = document.createElement('section');
     bagian.className = 'struktur-blok';
@@ -1076,6 +1089,7 @@ $('areaPreview').addEventListener('input', () => {
   state.pratinjauManual = true;
   state.sudahTersimpan = false;
   perbaruiHitungan();
+  perbaruiStruktur();
   perbaruiStatusForm();
 });
 
@@ -1295,6 +1309,7 @@ async function aksiPustaka(p, aksi){
     if (tAda){ state.target = p.target; renderTarget(); }
     state.pratinjauManual = true;
     perbaruiHitungan();
+    perbaruiStruktur();
     $('statusSalin').textContent = '📚 Memakai prompt dari Pustaka: "' + p.nama + '".';
     window.scrollTo({ top: $('areaPreview').getBoundingClientRect().top + window.scrollY - 120, behavior: 'smooth' });
   }

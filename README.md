@@ -42,13 +42,13 @@ Isi prompt selalu dibangun dari 6 blok yang sama — **Peran → Konteks → Tug
 | Target | Gaya pembungkus |
 |---|---|
 | Universal | Markdown polos (`## PERAN`, dst.) — aman untuk AI apa pun |
-| ChatGPT | Markdown + aturan bernomor + perintah langkah demi langkah |
+| ChatGPT | Markdown + aturan bernomor + urutan instruksi yang jelas |
 | Claude | Tag XML (`<peran>`, `<tugas>`, `<spesifikasi>`, …) |
 | Gemini | Judul tebal; spesifikasi panjang menjadi tabel |
-| DeepSeek | Instruksi langsung & teknis, penalaran langkah demi langkah |
+| DeepSeek | Instruksi langsung & teknis yang mengikuti format hasil |
 | Qwen | Markdown rapi |
 | Copilot | Ringkas-padat dalam paragraf berlabel |
-| Grok | Markdown + ruang untuk usulan variasi kreatif |
+| Grok | Markdown rapi dengan aturan template tetap berlaku |
 | Meta AI | Format percakapan terstruktur, daftar bernomor |
 
 ## Privasi

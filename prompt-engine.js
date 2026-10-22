@@ -12,6 +12,7 @@
   }
 
   function barisSpesifikasi(f, v){
+    if (v === undefined || v === null) return '';
     if (f.j === 'area'){
       const baris = String(v).split('\n').map(s => s.trim()).filter(Boolean);
       if (!baris.length) return '';
@@ -25,23 +26,32 @@
   function substitusiKonteks(kalimat, vals){
     const ids = [...kalimat.matchAll(/\{(\w+)\}/g)].map(m => m[1]);
     for (const id of ids){
-      if (!vals[id] || !String(vals[id]).trim()) return '';
+      if (vals[id] === undefined || vals[id] === null || !String(vals[id]).trim()) return '';
     }
     return kalimat.replace(/\{(\w+)\}/g, (_, id) => String(vals[id]).trim());
   }
 
-  function susunBlok(t, vals, umum){
+  function susunBlok(t, vals = {}, umum = {}, mode = 'detail'){
     const blok = { peran:'', konteks:'', tugas:'', spesifikasi:[], aturan:[], format:[] };
+    const nilai = vals || {};
+    const preferensi = umum || {};
+    const detailAktif = mode === 'detail';
+    const fieldKhususPromptBebas = new Set([
+      'peranBebas', 'konteksBebas', 'tugasBebas', 'formatBebas',
+      'langkahBebas', 'contohBebas', 'nadaBebas'
+    ]);
 
-    blok.peran = t.peran || teksKolom({ j:'teks' }, vals.peranBebas);
-    blok.tugas = t.tugas || teksKolom({ j:'area' }, vals.tugasBebas);
+    blok.peran = t.peran || teksKolom({ j:'teks' }, nilai.peranBebas);
+    blok.tugas = t.tugas || teksKolom({ j:'area' }, nilai.tugasBebas);
     if (t.konteks){
-      blok.konteks = t.konteks.map(k => substitusiKonteks(k, vals)).filter(Boolean).join(' ');
+      blok.konteks = t.konteks.map(k => substitusiKonteks(k, nilai)).filter(Boolean).join(' ');
     }
-    if (t.id === 'prompt-bebas' && vals.konteksBebas) blok.konteks = String(vals.konteksBebas).trim();
+    if (t.id === 'prompt-bebas' && nilai.konteksBebas) blok.konteks = String(nilai.konteksBebas).trim();
 
     for (const f of t.fields){
-      const v = vals[f.i];
+      if (f.m === 'D' && !detailAktif) continue;
+      if (t.id === 'prompt-bebas' && fieldKhususPromptBebas.has(f.i)) continue;
+      const v = nilai[f.i];
       if (f.j === 'centang'){
         const dipilih = Array.isArray(v) ? v.filter(Boolean) : [];
         if (!dipilih.length) continue;
@@ -58,27 +68,29 @@
     (t.aturan || []).forEach(a => blok.aturan.push(a));
 
     if (t.id === 'prompt-gambar'){
-      if (vals.bahasaGambar === 'Indonesia'){
+      if (nilai.bahasaGambar === 'Indonesia'){
         blok.aturan.push('Tulis prompt gambar dalam Bahasa Indonesia.');
       } else {
         blok.aturan.push('Tulis prompt gambar dalam Bahasa Inggris sebagai hasil utama, lalu sertakan terjemahan Bahasa Indonesianya di bawahnya.');
       }
     }
-    if (t.id === 'prompt-bebas' && vals.langkahBebas){
-      blok.aturan.push('Langkah pengerjaan: ' + String(vals.langkahBebas).trim().replace(/\n/g, '; '));
+    if (t.id === 'prompt-bebas' && detailAktif && nilai.langkahBebas){
+      blok.aturan.push('Langkah pengerjaan: ' + String(nilai.langkahBebas).trim().replace(/\n/g, '; '));
     }
 
     (t.format || []).forEach(x => blok.format.push(x));
     if (t.id === 'prompt-bebas'){
-      if (vals.formatBebas) blok.format.push('Bentuk hasil: ' + vals.formatBebas + '.');
-      if (vals.contohBebas) blok.format.push('Contoh hasil yang diinginkan: ' + String(vals.contohBebas).trim());
-      if (vals.nadaBebas) blok.format.push('Nada & gaya jawaban: ' + vals.nadaBebas + '.');
+      if (nilai.formatBebas) blok.format.push('Bentuk hasil: ' + nilai.formatBebas + '.');
+      if (detailAktif && nilai.contohBebas) blok.format.push('Contoh hasil yang diinginkan: ' + String(nilai.contohBebas).trim());
+      if (detailAktif && nilai.nadaBebas) blok.format.push('Nada & gaya jawaban: ' + nilai.nadaBebas + '.');
     }
-    const detail = umum.__detail || 'Standar';
+    const detail = preferensi.__detail || 'Standar';
     blok.format.push('Tingkat detail hasil: ' + detail + '.');
     if (t.id !== 'prompt-gambar') blok.format.push('Seluruh jawaban dalam Bahasa Indonesia.');
 
-    const sikap = umum.__sikap || 'Langsung kerjakan dengan asumsi terbaik';
+    const sikap = detailAktif
+      ? (preferensi.__sikap || 'Langsung kerjakan dengan asumsi terbaik')
+      : 'Langsung kerjakan dengan asumsi terbaik';
     blok.aturan.push(sikap === 'Tanya dulu sebelum mengerjakan'
       ? 'Bila ada hal yang kurang jelas atau ambigu, tanyakan dulu kepadaku sebelum mengerjakan.'
       : 'Bila ada hal yang kurang jelas, kerjakan dengan asumsi terbaik dan sebutkan asumsimu secara singkat.');
@@ -95,7 +107,7 @@
       case 'claude': {
         const tag = (nama, isi) => isi ? '<' + nama + '>\n' + isi + '\n</' + nama + '>' : '';
         return [
-          tag('peran', B.peran + (B.peran ? ' Berpikirlah secara mendalam dan terencana sebelum mulai mengerjakan.' : '')),
+          tag('peran', B.peran),
           tag('konteks', B.konteks), tag('tugas', B.tugas),
           tag('spesifikasi', B.spesifikasi.map(s => '- ' + s.replace(/\n/g, '\n  ')).join('\n')),
           tag('aturan', B.aturan.map(a => '- ' + a).join('\n')),
@@ -108,7 +120,7 @@
           md('SPESIFIKASI', B.spesifikasi.map(s => '- ' + s.replace(/\n/g, '\n  ')).join('\n')),
           md('ATURAN WAJIB', B.aturan.map((a, i) => (i + 1) + '. ' + a).join('\n')),
           md('FORMAT HASIL', B.format.map(f => '- ' + f).join('\n')),
-          'Kerjakan langkah demi langkah mengikuti urutan di atas.'
+          'Ikuti urutan instruksi di atas dan patuhi FORMAT HASIL.'
         ]);
       case 'gemini': {
         const tebal = (judul, isi) => isi ? '**' + judul + '**\n' + isi : '';
@@ -132,7 +144,7 @@
       case 'deepseek': {
         const blokTeks = (judul, isi) => isi ? judul + ':\n' + isi : '';
         return [
-          'Kerjakan tugas berikut secara langsung dan teknis. Uraikan penalaranmu langkah demi langkah sebelum memberikan hasil akhir.',
+          'Kerjakan tugas berikut secara langsung dan teknis. Berikan keluaran sesuai FORMAT HASIL.',
           blokTeks('PERAN', B.peran), blokTeks('KONTEKS', B.konteks), blokTeks('TUGAS', B.tugas),
           blokTeks('SPESIFIKASI', B.spesifikasi.map((s, i) => (i + 1) + '. ' + s.replace(/\n/g, ' ')).join('\n')),
           blokTeks('ATURAN', B.aturan.map((a, i) => (i + 1) + '. ' + a).join('\n')),
@@ -152,8 +164,7 @@
           md('PERAN', B.peran), md('KONTEKS', B.konteks), md('TUGAS', B.tugas),
           md('SPESIFIKASI', B.spesifikasi.map(s => '- ' + s.replace(/\n/g, '\n  ')).join('\n')),
           md('ATURAN WAJIB', B.aturan.map(a => '- ' + a).join('\n')),
-          md('FORMAT HASIL', B.format.map(f => '- ' + f).join('\n')),
-          'Bila kamu punya ide yang lebih baik dari spesifikasiku, usulkan sebagai variasi tambahan di akhir jawaban.'
+          md('FORMAT HASIL', B.format.map(f => '- ' + f).join('\n'))
         ]);
       case 'meta': {
         const polos = (judul, isi) => isi ? judul + '\n' + isi : '';
@@ -176,8 +187,8 @@
     }
   }
 
-  function buatPrompt(t, vals, umum, targetId){
-    return bungkus(targetId, susunBlok(t, vals, umum));
+  function buatPrompt(t, vals, umum, targetId, mode = 'detail'){
+    return bungkus(targetId, susunBlok(t, vals, umum, mode));
   }
 
   globalThis.ATIGA_ENGINE = { susunBlok, bungkus, buatPrompt };
