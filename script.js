@@ -66,7 +66,7 @@ const TEMPLATE = [
   id:'artikel-blog', kategori:'blog', ikon:'📝', nama:'Artikel Blog',
   deskripsi:'Artikel blog yang utuh dan siap terbit, termasuk untuk SEO.',
   peran:'Anda adalah penulis blog berpengalaman yang menulis dalam Bahasa Indonesia yang jernih, mengalir, dan enak dibaca, serta memahami dasar-dasar SEO.',
-  tugas:'Tuliskan satu artikel blog yang lengkap dan siap terbit berdasarkan spesifikasi berikut.',
+  tugas:'Tuliskan satu artikel blog yang lengkap dan siap terbit berdasarkan spesifikasi berikut. Keluarkan langsung naskah artikelnya, bukan rencana, analisis, atau penjelasan tentang proses penulisan.',
   konteks:['Artikel ini ditujukan untuk pembaca: {pembaca}.'],
   fields:[
     { i:'judul', l:'Judul / topik artikel', j:'teks', m:'C', w:true, ph:'mis. 7 Cara Menghafal Rumus Matematika Tanpa Stres', c:'7 Cara Menghafal Rumus Matematika Tanpa Stres' },
@@ -80,14 +80,20 @@ const TEMPLATE = [
     { i:'hindari', l:'Hal yang harus dihindari', j:'area', m:'D', ph:'mis. bahasa terlalu teknis, klaim tanpa dasar…', c:'Hindari istilah teknis tanpa penjelasan.' },
     { i:'sumber', l:'Fakta / sumber yang harus dimasukkan', j:'area', m:'D', ph:'Satu baris satu fakta atau sumber…', c:'Penelitian menunjukkan pengulangan berjarak (spaced repetition) memperkuat ingatan.' }
   ],
-  aturan:['Tulis artikel utuh, bukan kerangka saja.','Sisipkan kata kunci utama secara alami di judul, paragraf pertama, dan minimal satu subjudul.'],
-  format:['Artikel lengkap dengan judul, isi bersubjudul, dan penutup.']
+  aturan:[
+    'Keluarkan hanya naskah yang siap dipublikasikan; jangan menulis analisis, outline, atau komentar di luar artikel.',
+    'Gunakan urutan: Judul, meta description bila kata kunci tersedia, pembuka, isi dengan subjudul H2/H3, lalu penutup.',
+    'Sisipkan kata kunci utama secara alami di judul, paragraf pertama, dan minimal satu subjudul tanpa pengulangan yang terasa dipaksakan.',
+    'Gunakan paragraf pendek, contoh konkret, dan transisi yang jelas sesuai pembaca sasaran.',
+    'Gunakan hanya fakta atau sumber yang diberikan. Jika sumber tidak tersedia, jangan membuat nama penelitian, angka, atau kutipan palsu.'
+  ],
+  format:['Markdown siap terbit dengan struktur: # Judul, Meta description, pembuka, ## subjudul, isi, dan penutup. Panjang mengikuti pilihan Panjang artikel.']
 },
 {
   id:'landing-page', kategori:'blog', ikon:'🛒', nama:'Halaman Penjualan (Landing Page)',
   deskripsi:'Halaman satu layar yang meyakinkan pengunjung untuk bertindak.',
   peran:'Anda adalah copywriter halaman penjualan (landing page) berpengalaman yang menulis dalam Bahasa Indonesia yang meyakinkan tanpa berlebihan.',
-  tugas:'Buatlah naskah lengkap satu halaman penjualan (landing page) berdasarkan spesifikasi berikut, termasuk usulan susunan bagiannya.',
+  tugas:'Buatlah naskah lengkap satu halaman penjualan (landing page) berdasarkan spesifikasi berikut. Hasil harus berupa copy siap ditempatkan ke halaman web, bukan teori pemasaran atau analisis.',
   fields:[
     { i:'produk', l:'Produk / jasa yang ditawarkan', j:'teks', m:'C', w:true, ph:'mis. Kursus Matematika Online untuk SMP', c:'Kursus Matematika Online untuk SMP' },
     { i:'pembeli', l:'Target pembeli', j:'teks', m:'C', w:true, ph:'mis. orang tua siswa SMP kelas VII–IX', c:'orang tua siswa SMP kelas VII–IX' },
@@ -98,14 +104,20 @@ const TEMPLATE = [
     { i:'gayaTulis', l:'Gaya penulisan', j:'pilih', m:'D', o:['Meyakinkan','Premium','Ramah','Mendesak'], c:'Meyakinkan' },
     { i:'jaminan', l:'Jaminan / garansi', j:'teks', m:'D', ph:'mis. garansi uang kembali 14 hari', c:'Garansi uang kembali 14 hari' }
   ],
-  aturan:['Jangan membuat klaim yang tidak didukung keunggulan atau testimoni yang diberikan.','Setiap bagian diakhiri jembatan halus menuju CTA.'],
-  format:['Naskah per bagian: judul utama (headline), subjudul, isi, tombol CTA — lengkap dengan teks tombolnya.']
+  aturan:[
+    'Keluarkan hanya naskah landing page; jangan menyertakan analisis strategi, kode HTML, atau catatan proses.',
+    'Susun bagian dalam urutan: Hero, masalah atau kebutuhan, manfaat utama, cara kerja, bukti sosial bila tersedia, harga atau penawaran, jaminan bila tersedia, lalu CTA akhir.',
+    'Jangan membuat klaim, angka, diskon, testimoni, atau jaminan yang tidak diberikan pengguna.',
+    'Gunakan keunggulan yang diberikan sebagai manfaat yang mudah dipahami target pembeli, tanpa janji berlebihan.',
+    'CTA utama harus sama dengan ajakan bertindak yang diberikan dan tampil di Hero serta bagian akhir.'
+  ],
+  format:['Markdown siap salin dengan heading per bagian. Untuk setiap bagian tulis: Tujuan bagian, Headline, Subheadline bila perlu, Body copy, dan CTA atau teks tombol bila relevan.']
 },
 {
   id:'website-satu-halaman', kategori:'blog', ikon:'🌐', nama:'Website Satu Halaman',
   deskripsi:'Prompt untuk membuat website satu halaman utuh (profil, portofolio, usaha, acara).',
   peran:'Anda adalah pengembang web front-end berpengalaman yang membuat website satu halaman yang modern, responsif, dan siap pakai dalam satu file HTML (CSS & JS di dalam file yang sama bila tidak diminta lain).',
-  tugas:'Buatlah website satu halaman yang lengkap dan siap jalan berdasarkan spesifikasi berikut.',
+  tugas:'Buatlah website satu halaman yang lengkap dan siap jalan berdasarkan spesifikasi berikut. Hasil akhir harus berupa satu berkas HTML yang bisa langsung dibuka di peramban.',
   konteks:['Website ini bertema: {tema}.'],
   fields:[
     { i:'jenis', l:'Jenis website', j:'pilih', m:'C', w:true, o:['Profil pribadi','Portofolio','Profil usaha','Acara','Komunitas'], c:'Profil usaha' },
@@ -116,8 +128,16 @@ const TEMPLATE = [
     { i:'teksUtama', l:'Teks utama yang harus tampil', j:'area', m:'D', ph:'Judul besar, slogan, atau teks penting lain…', c:'Belajar Matematika Jadi Menyenangkan' },
     { i:'fitur', l:'Fitur interaktif', j:'centang', m:'D', o:['Formulir kontak','Tombol WhatsApp melayang','Peta lokasi','Mode gelap','Animasi halus'], c:['Tombol WhatsApp melayang','Mode gelap'] }
   ],
-  aturan:['Kode harus lengkap dan langsung bisa dibuka di peramban, bukan potongan.','Responsif di HP (±360px), tablet, laptop, dan layar besar.','Komentar kode dalam Bahasa Indonesia.'],
-  format:['Berikan kode lengkap satu file HTML. Awali dengan ringkasan maksimal 5 baris tentang isi halaman.']
+  aturan:[
+    'Gunakan hanya bagian halaman dan fitur yang dipilih pengguna; jangan menambahkan bagian utama yang tidak diminta.',
+    'Kode harus lengkap dan langsung bisa dibuka di peramban, bukan potongan atau pseudocode.',
+    'Letakkan HTML, CSS, dan JavaScript dalam satu file HTML tanpa CDN atau dependensi eksternal kecuali diminta pengguna.',
+    'Semua tombol dan fitur interaktif yang ditampilkan harus benar-benar berfungsi.',
+    'Responsif di HP sekitar 360px, tablet, laptop, dan layar besar; utamakan aksesibilitas keyboard dan kontras yang jelas.',
+    'Jangan membuat data, testimoni, alamat, atau klaim bisnis yang tidak diberikan; gunakan placeholder yang jelas bila diperlukan.',
+    'Komentar kode dan seluruh teks antarmuka dalam Bahasa Indonesia.'
+  ],
+  format:['Awali dengan ringkasan maksimal 5 baris, lalu berikan tepat satu blok kode HTML lengkap yang dapat langsung disimpan sebagai index.html. Jangan menaruh penjelasan setelah blok kode.']
 },
 
 /* ---------- Kategori 2: MPI (khusus SMP, semua mata pelajaran) ---------- */
@@ -125,7 +145,7 @@ const TEMPLATE = [
   id:'mpi-lengkap', kategori:'mpi', ikon:'🎓', nama:'MPI Lengkap',
   deskripsi:'Media Pembelajaran Interaktif lengkap untuk SMP (Kelas VII–IX, Fase D), semua mata pelajaran.',
   peran:'Anda adalah pengembang media pembelajaran interaktif (MPI) berpengalaman yang menguasai Kurikulum Merdeka, Panduan Mata Pelajaran Kemendikdasmen, dan pembuatan media satu file HTML.',
-  tugas:'Buatlah satu media pembelajaran interaktif yang lengkap dan siap dipakai di kelas berdasarkan spesifikasi berikut.',
+  tugas:'Buatlah satu media pembelajaran interaktif yang lengkap dan siap dipakai di kelas berdasarkan spesifikasi berikut. Hasil akhir harus berupa media yang benar-benar dapat digunakan, bukan rancangan atau pseudocode.',
   konteks:['Media ini untuk pembelajaran {mapel} kelas {kelas} SMP, materi pokok {materi}.'],
   fields:[
     { i:'namaGuru', l:'Nama guru (opsional)', j:'teks', m:'C', ph:'mis. Aan Triono, S.Pd.', c:'Aan Triono, S.Pd.' },
@@ -146,14 +166,23 @@ const TEMPLATE = [
     { i:'karakteristik', l:'Karakteristik peserta didik', j:'area', m:'D', ph:'Kemampuan awal, minat, kebutuhan khusus…', c:'Peserta didik kelas VII, kemampuan membaca beragam, menyukai tantangan berlevel.' },
     { i:'waktu', l:'Alokasi waktu', j:'teks', m:'D', ph:'mis. 2 × 40 menit', c:'2 × 40 menit' }
   ],
-  aturan:['Tujuan pembelajaran harus menjadi acuan isi media; jangan menyimpang dari CP/ATP mata pelajaran terkait.','Bila Dimensi Profil Lulusan dipilih, wujudkan secara nyata di dalam aktivitas media, bukan hanya disebut.','Komentar kode dan seluruh teks antarmuka dalam Bahasa Indonesia.'],
-  format:['Berikan kode lengkap satu file HTML yang siap jalan, bukan potongan. Awali dengan ringkasan maksimal 5 baris, lalu kode lengkapnya.']
+  aturan:[
+    'Tujuan pembelajaran harus menjadi acuan isi media; setiap aktivitas, soal, dan umpan balik harus terkait dengan tujuan tersebut.',
+    'Buat alur yang jelas: halaman pembuka, petunjuk, materi atau eksplorasi, aktivitas atau latihan, umpan balik, dan hasil akhir.',
+    'Jumlah bagian atau level harus sesuai nilai yang diminta pada kolom Jumlah bagian / level.',
+    'Bila Dimensi Profil Lulusan dipilih, wujudkan secara nyata di dalam aktivitas media, bukan hanya disebut.',
+    'Semua fitur wajib yang dipilih harus benar-benar berfungsi dan dapat dicoba pengguna.',
+    'Gunakan hanya materi dan konteks yang diberikan; jangan mengarang fakta pembelajaran yang spesifik.',
+    'Kode harus satu file HTML mandiri tanpa CDN atau dependensi eksternal, berjalan offline, responsif, dan mudah dipakai dengan keyboard serta sentuhan.',
+    'Komentar kode dan seluruh teks antarmuka dalam Bahasa Indonesia.'
+  ],
+  format:['Awali dengan ringkasan maksimal 5 baris, lalu berikan tepat satu blok kode HTML lengkap yang siap disimpan dan dibuka di peramban. Jangan memberikan pseudocode atau penjelasan setelah kode.']
 },
 {
   id:'simulasi-interaktif', kategori:'mpi', ikon:'🔬', nama:'Simulasi Interaktif',
   deskripsi:'Simulasi pembelajaran SMP yang bisa digeser, diubah, dan dieksplorasi murid.',
   peran:'Anda adalah pengembang simulasi pembelajaran interaktif berpengalaman untuk jenjang SMP yang membuat simulasi satu file HTML.',
-  tugas:'Buatlah satu simulasi interaktif yang lengkap dan siap dipakai berdasarkan spesifikasi berikut.',
+  tugas:'Buatlah satu simulasi interaktif yang lengkap dan siap dipakai berdasarkan spesifikasi berikut. Hasil akhir harus berupa simulasi yang dapat langsung dicoba, bukan deskripsi konsep saja.',
   konteks:['Simulasi ini untuk {mapel} kelas {kelas} SMP.'],
   fields:[
     { i:'mapel', l:'Mata pelajaran', j:'pilih', m:'C', w:true, o:MAPEL_SMP, c:'IPA' },
@@ -165,8 +194,16 @@ const TEMPLATE = [
     { i:'miskonsepsi', l:'Miskonsepsi yang harus dideteksi', j:'area', m:'D', ph:'Kesalahan konsep yang umum terjadi…', c:'Murid sering mengira amplitudo memengaruhi cepat rambat gelombang.' },
     { i:'fitur', l:'Fitur wajib', j:'centang', m:'D', aturan:true, o:['Tombol atur ulang (reset)','Petunjuk bertingkat','Mode guru','Satu file HTML mandiri offline','Responsif HP & IFP'], c:['Tombol atur ulang (reset)','Petunjuk bertingkat'] }
   ],
-  aturan:['Setiap perubahan variabel harus langsung terlihat akibatnya di simulasi.','Sertakan umpan balik bila jawaban / kesimpulan murid menunjukkan miskonsepsi yang disebutkan.'],
-  format:['Berikan kode lengkap satu file HTML yang siap jalan. Awali dengan ringkasan maksimal 5 baris.']
+  aturan:[
+    'Sediakan kontrol yang jelas untuk setiap variabel yang boleh diubah pengguna dan tampilkan nilai atau satuannya.',
+    'Setiap perubahan variabel harus langsung terlihat akibatnya di simulasi dan dijelaskan dengan indikator atau label yang mudah dibaca.',
+    'Sediakan tombol reset, petunjuk singkat, dan penjelasan konsep setelah pengguna bereksplorasi.',
+    'Jika pertanyaan pemandu diisi, tampilkan pertanyaan tersebut sebagai tugas eksplorasi dan berikan ruang untuk kesimpulan murid.',
+    'Sertakan umpan balik bila jawaban atau kesimpulan murid menunjukkan miskonsepsi yang disebutkan.',
+    'Gunakan rumus dan hubungan konsep yang konsisten dengan materi; jangan menampilkan angka hasil yang tidak dihitung oleh kode.',
+    'Kode harus satu file HTML mandiri, berjalan offline, responsif, dan seluruh kontrol yang ditampilkan harus berfungsi.'
+  ],
+  format:['Awali dengan ringkasan maksimal 5 baris, lalu berikan satu blok kode HTML lengkap yang siap dibuka di peramban. Jangan berhenti pada pseudocode atau rancangan antarmuka.']
 },
 
 /* ---------- Kategori 3: Game ---------- */
@@ -174,7 +211,7 @@ const TEMPLATE = [
   id:'game-edukasi', kategori:'game', ikon:'🎮', nama:'Game Edukasi',
   deskripsi:'Game yang melatih materi atau keterampilan tertentu sambil bermain.',
   peran:'Anda adalah pengembang game edukasi berpengalaman yang membuat game satu file HTML yang seru, adil, dan benar-benar melatih materi.',
-  tugas:'Buatlah satu game edukasi yang lengkap dan siap dimainkan berdasarkan spesifikasi berikut.',
+  tugas:'Buatlah satu game edukasi yang lengkap dan siap dimainkan berdasarkan spesifikasi berikut. Hasil akhir harus berupa game yang bisa langsung dimainkan, bukan konsep game atau pseudocode.',
   fields:[
     { i:'materi', l:'Materi / keterampilan yang dilatih', j:'teks', m:'C', w:true, ph:'mis. perkalian 1–10 untuk kelas III SD', c:'operasi hitung bilangan bulat untuk kelas VII SMP' },
     { i:'pemain', l:'Pemain sasaran (usia / kelas)', j:'teks', m:'C', w:true, ph:'mis. siswa SMP kelas VII', c:'siswa SMP kelas VII' },
@@ -186,14 +223,22 @@ const TEMPLATE = [
     { i:'suara', l:'Efek suara & musik', j:'pilih', m:'D', o:['Perlu — sebutkan sumber bebas lisensi (mis. freesound.org) beserta kreditnya','Tanpa suara'], c:'Perlu — sebutkan sumber bebas lisensi (mis. freesound.org) beserta kreditnya' },
     { i:'fitur', l:'Fitur wajib', j:'centang', m:'D', aturan:true, o:['Kolom nama pemain','Skor terbaik tersimpan (localStorage)','Layar mulai & layar selesai','Ramah sentuhan (HP)','Satu file HTML mandiri offline'], c:['Kolom nama pemain','Skor terbaik tersimpan (localStorage)','Layar mulai & layar selesai','Ramah sentuhan (HP)'] }
   ],
-  aturan:['Soal / tantangan harus sesuai materi dan tingkat pemain sasaran.','Berikan umpan balik langsung pada setiap aksi pemain.'],
-  format:['Berikan kode lengkap satu file HTML yang siap dimainkan. Awali dengan cara bermain singkat (maksimal 5 baris), lalu kode lengkapnya.']
+  aturan:[
+    'Buat alur bermain yang utuh: layar mulai, petunjuk, permainan, perkembangan level, kondisi menang atau kalah, dan tombol bermain lagi.',
+    'Jumlah level dan kenaikan kesulitan harus sesuai pilihan pengguna; jangan membuat level kosong atau hanya berbeda judul.',
+    'Soal atau tantangan harus sesuai materi dan tingkat pemain sasaran. Jangan memasukkan materi di luar yang diberikan.',
+    'Berikan umpan balik langsung pada setiap aksi pemain dan jelaskan jawaban atau alasan yang benar bila relevan.',
+    'Sistem skor, nyawa, dan aturan menang harus terlihat jelas serta diterapkan konsisten.',
+    'Semua fitur wajib yang dipilih harus berfungsi. Jika suara dipilih, gunakan sumber bebas lisensi atau Web Audio sederhana tanpa menghambat game.',
+    'Kode harus satu file HTML mandiri, berjalan offline, responsif, dan ramah sentuhan.'
+  ],
+  format:['Awali dengan cara bermain maksimal 5 baris, lalu berikan satu blok kode HTML lengkap yang siap dimainkan. Jangan memberikan pseudocode atau uraian panjang setelah kode.']
 },
 {
   id:'kuis-interaktif', kategori:'game', ikon:'❓', nama:'Kuis Interaktif',
   deskripsi:'Kuis dengan soal dari materimu, lengkap dengan pembahasan dan skor.',
   peran:'Anda adalah pengembang kuis interaktif dan penyusun soal berpengalaman yang membuat kuis satu file HTML.',
-  tugas:'Buatlah satu kuis interaktif yang lengkap dan siap dipakai berdasarkan spesifikasi berikut. Soal harus disusun hanya dari materi sumber yang diberikan.',
+  tugas:'Buatlah satu kuis interaktif yang lengkap dan siap dipakai berdasarkan spesifikasi berikut. Hasil akhir harus berupa kuis yang dapat langsung dimainkan dan seluruh soalnya harus disusun hanya dari materi sumber yang diberikan.',
   fields:[
     { i:'topik', l:'Topik kuis', j:'teks', m:'C', w:true, ph:'mis. Bilangan Bulat', c:'Bilangan Bulat' },
     { i:'jumlahSoal', l:'Jumlah soal', j:'angka', m:'C', w:true, ph:'mis. 10', c:'10' },
@@ -204,8 +249,17 @@ const TEMPLATE = [
     { i:'pembahasan', l:'Pembahasan tiap soal', j:'pilih', m:'D', o:['Tampilkan pembahasan','Tanpa pembahasan'], c:'Tampilkan pembahasan' },
     { i:'hasil', l:'Hasil akhir', j:'centang', m:'D', o:['Skor akhir','Predikat / nilai huruf','Tombol ulangi kuis','Daftar jawaban salah'], c:['Skor akhir','Tombol ulangi kuis','Daftar jawaban salah'] }
   ],
-  aturan:['Dilarang membuat soal di luar materi sumber yang diberikan.','Untuk soal hitungan, periksa kembali kunci jawaban dengan menghitung ulang sebelum ditampilkan.'],
-  format:['Berikan kode lengkap satu file HTML yang siap jalan, berisi seluruh soal, kunci, dan pembahasan di dalamnya.']
+  aturan:[
+    'Buat tepat sejumlah soal sesuai kolom Jumlah soal dan gunakan hanya jenis soal yang dipilih.',
+    'Dilarang membuat soal, istilah, fakta, atau jawaban di luar materi sumber yang diberikan.',
+    'Tampilkan satu soal pada satu waktu atau dalam urutan yang jelas; jangan tampilkan kunci sebelum pengguna mengirim jawaban.',
+    'Untuk soal pilihan ganda, setiap soal memiliki satu jawaban benar dan pengecoh yang masuk akal.',
+    'Untuk soal hitungan, periksa kembali kunci jawaban dengan menghitung ulang sebelum ditampilkan.',
+    'Jika pembahasan dipilih, tampilkan setelah jawaban dikirim dan jelaskan langkah atau alasan secara singkat.',
+    'Terapkan timer hanya bila dipilih. Setelah waktu habis, tandai soal dan lanjutkan dengan aman.',
+    'Semua fitur hasil akhir yang dipilih harus tersedia, dan seluruh soal, kunci, serta pembahasan tertanam di dalam kode.'
+  ],
+  format:['Awali dengan ringkasan maksimal 5 baris, lalu berikan satu blok kode HTML lengkap yang memuat seluruh soal, kunci, pembahasan, skor, dan fitur hasil yang diminta.']
 },
 
 /* ---------- Kategori 4: Aplikasi / Tools ---------- */
@@ -213,7 +267,7 @@ const TEMPLATE = [
   id:'aplikasi-web', kategori:'aplikasi', ikon:'🛠️', nama:'Aplikasi Web',
   deskripsi:'Aplikasi web apa pun: pencatat, pengelola, alat bantu kerja, dan lainnya.',
   peran:'Anda adalah pengembang aplikasi web berpengalaman yang membuat aplikasi yang sederhana, cepat, dan benar-benar menyelesaikan masalah penggunanya.',
-  tugas:'Buatlah satu aplikasi web yang lengkap dan siap dipakai berdasarkan spesifikasi berikut.',
+  tugas:'Buatlah satu aplikasi web yang lengkap dan siap dipakai berdasarkan spesifikasi berikut. Hasil akhir harus berupa aplikasi yang dapat langsung digunakan, bukan wireframe, pseudocode, atau daftar fitur saja.',
   fields:[
     { i:'namaApp', l:'Nama aplikasi', j:'teks', m:'C', w:true, ph:'mis. Catatan Belanja Bulanan', c:'Pencatat Tugas Kelas' },
     { i:'masalah', l:'Masalah yang diselesaikan', j:'area', m:'C', w:true, ph:'Masalah apa yang dialami pengguna sekarang…', c:'Guru kesulitan melacak tugas yang sudah dikumpulkan tiap kelas.' },
@@ -224,14 +278,22 @@ const TEMPLATE = [
     { i:'batasan', l:'Batasan teknis', j:'centang', m:'D', aturan:true, o:['Satu file HTML','Beberapa file terpisah','Berjalan tanpa internet','Tanpa daftar akun / login'], c:['Satu file HTML','Tanpa daftar akun / login'] },
     { i:'gayaVisual', l:'Gaya visual', j:'teks', m:'D', ph:'mis. bersih, biru muda, banyak ruang kosong', c:'bersih dan sederhana' }
   ],
-  aturan:['Utamakan kemudahan pemakaian untuk pengguna yang disebutkan.','Seluruh teks antarmuka dan komentar kode dalam Bahasa Indonesia.'],
-  format:['Berikan kode lengkap yang siap jalan. Awali dengan ringkasan fitur (maksimal 5 baris), lalu kode lengkapnya.']
+  aturan:[
+    'Ubah setiap fitur utama menjadi alur interaksi yang benar-benar dapat dicoba pengguna dari awal sampai selesai.',
+    'Sediakan keadaan kosong, validasi masukan, pesan sukses atau error, dan tombol reset bila alurnya membutuhkan.',
+    'Terapkan pilihan penyimpanan persis seperti yang diminta. Jangan menyimpan data bila pengguna memilih tidak menyimpan.',
+    'Gunakan bagian tampilan yang diminta dan buat navigasi antarbagian mudah dipahami.',
+    'Utamakan kemudahan pemakaian untuk pengguna yang disebutkan, termasuk tampilan responsif dan aksesibilitas dasar.',
+    'Seluruh teks antarmuka dan komentar kode dalam Bahasa Indonesia.',
+    'Kode harus lengkap dan dapat dijalankan tanpa pseudocode. Jika batasan satu file atau offline dipilih, jangan gunakan CDN atau dependensi eksternal.'
+  ],
+  format:['Awali dengan ringkasan fitur maksimal 5 baris, lalu berikan satu blok kode lengkap sesuai batasan teknis. Jangan memberikan potongan kode atau penjelasan panjang setelahnya.']
 },
 {
   id:'kalkulator', kategori:'aplikasi', ikon:'🧮', nama:'Kalkulator / Alat Hitung',
   deskripsi:'Alat hitung khusus: konversi, simulasi biaya, penghitung nilai, dan sejenisnya.',
   peran:'Anda adalah pengembang alat hitung (kalkulator) web berpengalaman yang teliti terhadap rumus dan satuan.',
-  tugas:'Buatlah satu kalkulator / alat hitung yang lengkap dan siap dipakai berdasarkan spesifikasi berikut.',
+  tugas:'Buatlah satu kalkulator atau alat hitung yang lengkap dan siap dipakai berdasarkan spesifikasi berikut. Hasil akhir harus menghitung sesuai rumus yang diberikan, bukan sekadar menampilkan contoh hasil.',
   fields:[
     { i:'dihitung', l:'Yang dihitung', j:'teks', m:'C', w:true, ph:'mis. nilai akhir siswa dari tugas, UH, dan UAS', c:'nilai akhir siswa' },
     { i:'masukan', l:'Masukan (input)', j:'area', m:'C', w:true, ph:'Satu baris satu masukan beserta satuannya…', c:'Nilai tugas (0–100)\nNilai ulangan harian (0–100)\nNilai ujian (0–100)' },
@@ -240,14 +302,22 @@ const TEMPLATE = [
     { i:'kasusUji', l:'Contoh kasus uji', j:'area', m:'D', ph:'Masukan → hasil yang benar…', c:'Tugas 80, UH 70, Ujian 90 → nilai akhir 81, predikat A' },
     { i:'salahInput', l:'Penanganan masukan salah', j:'teks', m:'D', ph:'mis. tampilkan pesan ramah, jangan sampai halaman error', c:'Tampilkan pesan ramah berwarna merah di bawah kolom' }
   ],
-  aturan:['Hasil hitungan harus persis mengikuti rumus yang diberikan; verifikasi dengan kasus uji bila diberikan.','Tampilkan satuan di samping angka hasil.'],
-  format:['Berikan kode lengkap satu file HTML yang siap jalan, dengan contoh terisi dari kasus uji.']
+  aturan:[
+    'Buat satu input untuk setiap masukan yang diberikan, dengan label dan satuan yang jelas.',
+    'Hasil hitungan harus persis mengikuti rumus atau aturan hitung yang diberikan; jangan mengganti bobot, pembulatan, atau asumsi tanpa menyatakannya.',
+    'Verifikasi perhitungan dengan setiap kasus uji yang diberikan sebelum menulis kode.',
+    'Tampilkan hasil utama, satuan, dan rincian perhitungan bila membantu pengguna memeriksa hasilnya.',
+    'Tolak masukan kosong, nonangka, di luar rentang, atau pembagian dengan nol menggunakan pesan yang ramah; halaman tidak boleh error.',
+    'Tombol hitung, reset, dan seluruh keluaran yang ditentukan harus berfungsi.',
+    'Kode harus satu file HTML mandiri, berjalan offline, dan memakai Bahasa Indonesia.'
+  ],
+  format:['Awali dengan ringkasan maksimal 5 baris dan tulis rumus yang diterapkan secara singkat, lalu berikan satu blok kode HTML lengkap dengan contoh kasus uji terisi.']
 },
 {
   id:'dasbor-data', kategori:'aplikasi', ikon:'📊', nama:'Dasbor Data',
   deskripsi:'Dasbor ringkasan data: kartu angka, grafik, dan tabel yang bisa disaring.',
   peran:'Anda adalah pengembang dasbor data berpengalaman yang menyajikan data secara jujur dan mudah dibaca.',
-  tugas:'Buatlah satu dasbor data yang lengkap dan siap dipakai berdasarkan spesifikasi berikut.',
+  tugas:'Buatlah satu dasbor data yang lengkap dan siap dipakai berdasarkan spesifikasi berikut. Hasil akhir harus berupa dasbor yang benar-benar menampilkan, meringkas, dan memfilter data, bukan sekadar contoh tata letak.',
   fields:[
     { i:'data', l:'Data yang ditampilkan', j:'area', m:'C', w:true, ph:'Satu baris satu jenis data…', c:'Nilai ulangan per kelas\nKehadiran siswa\nTugas terkumpul' },
     { i:'sumberData', l:'Sumber data', j:'pilih', m:'C', w:true, o:['Diketik manual di aplikasi','Ditempel sebagai tabel','Diimpor dari berkas CSV'], c:'Ditempel sebagai tabel' },
@@ -255,8 +325,16 @@ const TEMPLATE = [
     { i:'grafik', l:'Jenis grafik', j:'centang', m:'D', o:['Batang','Garis','Lingkaran','Tabel saja'], c:['Batang'] },
     { i:'saring', l:'Saring / urutkan', j:'teks', m:'D', ph:'mis. saring per kelas, urutkan nilai tertinggi', c:'saring per kelas' }
   ],
-  aturan:['Jangan mengubah angka data yang diberikan pengguna.','Beri judul dan satuan yang jelas pada setiap grafik dan kartu.'],
-  format:['Berikan kode lengkap satu file HTML yang siap jalan, lengkap dengan data contoh agar tampilannya bisa dinilai.']
+  aturan:[
+    'Gunakan data yang diberikan pengguna tanpa mengubah angka, nama kategori, urutan penting, atau satuannya.',
+    'Jika data pengguna belum tersedia, gunakan data contoh yang diberi label "Data contoh" dan buat struktur input mudah diganti.',
+    'Tampilkan setiap kartu ringkasan yang diminta dan hitung nilainya dari data, bukan mengetik angka hasil secara manual.',
+    'Beri judul, label sumbu, legenda bila perlu, dan satuan yang jelas pada setiap grafik serta kartu.',
+    'Aktifkan sumber data yang dipilih: input manual, tempel tabel, atau impor CSV. Berikan validasi dan pesan error yang jelas.',
+    'Sediakan penyaring atau pengurutan yang diminta dan pastikan kartu, grafik, serta tabel ikut diperbarui.',
+    'Kode harus satu file HTML mandiri, berjalan offline, responsif, dan tidak memakai angka fiktif sebagai fakta pengguna.'
+  ],
+  format:['Awali dengan ringkasan maksimal 5 baris, lalu berikan satu blok kode HTML lengkap dengan data contoh berlabel bila diperlukan. Jangan memberikan mockup atau pseudocode.']
 },
 
 /* ---------- Kategori 5: Materi Ajar & Soal ---------- */
@@ -264,7 +342,7 @@ const TEMPLATE = [
   id:'modul-ajar', kategori:'materi', ikon:'📘', nama:'Modul Ajar / RPP',
   deskripsi:'Modul ajar / RPP Pembelajaran Mendalam sesuai Panduan Mata Pelajaran Final Fase A–F Kemendikdasmen (2025).',
   peran:'Anda adalah penyusun modul ajar / RPP berpengalaman yang mengikuti persis Panduan Mata Pelajaran Final Fase A–F terbitan BSKAP Kemendikdasmen (2025) dan Capaian Pembelajaran menurut Keputusan Kepala BSKAP No. 046/H/KR/2025.',
-  tugas:'Susunlah satu modul ajar / RPP Pembelajaran Mendalam yang lengkap berdasarkan spesifikasi berikut, dengan struktur dokumen persis: Identitas → A. Identifikasi → B. Desain Pembelajaran → C. Pengalaman Belajar → D. Asesmen Pembelajaran.',
+  tugas:'Susunlah satu modul ajar / RPP Pembelajaran Mendalam yang lengkap dan siap digunakan berdasarkan spesifikasi berikut. Keluarkan dokumen final secara langsung dengan struktur persis: Identitas → A. Identifikasi → B. Desain Pembelajaran → C. Pengalaman Belajar → D. Asesmen Pembelajaran.',
   fields:[
     { i:'penyusun', l:'Nama penyusun & satuan pendidikan', j:'teks', m:'D', g:'Identitas', ph:'mis. Aan Triono, S.Pd. — SMP Nusantara', c:'Aan Triono, S.Pd. — SMP Nusantara' },
     { i:'jenjang', l:'Jenjang', j:'pilih', m:'C', w:true, g:'Identitas', o:['PAUD','SD','SMP','SMA','SMK'], c:'SMP' },
@@ -301,13 +379,13 @@ const TEMPLATE = [
     'Pada Pengalaman Belajar, prinsip berkesadaran, bermakna, dan menggembirakan harus tampak nyata dalam kegiatan, bukan hanya disebut.',
     'Kegiatan inti wajib mengikuti alur Memahami → Mengaplikasi → Merefleksi.'
   ],
-  format:['Dokumen modul ajar / RPP utuh dengan urutan: Identitas → A. Identifikasi → B. Desain Pembelajaran → C. Pengalaman Belajar → D. Asesmen Pembelajaran. Sertakan instrumen / rubrik yang diminta di bagian asesmen.']
+  format:['Dokumen Markdown siap salin ke Word dengan heading dan tabel yang rapi. Gunakan urutan wajib Identitas → A. Identifikasi → B. Desain Pembelajaran → C. Pengalaman Belajar → D. Asesmen Pembelajaran, lalu lampiran instrumen atau rubrik yang diminta. Jangan mengawali dengan analisis atau outline.']
 },
 {
   id:'lkpd', kategori:'materi', ikon:'📄', nama:'LKPD',
   deskripsi:'Lembar Kerja Peserta Didik yang siap dipakai dan siap cetak.',
   peran:'Anda adalah penyusun LKPD berpengalaman yang menulis lembar kerja yang jelas, bertahap, dan menyenangkan dikerjakan peserta didik.',
-  tugas:'Susunlah satu LKPD yang lengkap dan siap dipakai berdasarkan spesifikasi berikut.',
+  tugas:'Susunlah satu LKPD yang lengkap, siap dicetak, dan siap dikerjakan peserta didik berdasarkan spesifikasi berikut. Keluarkan lembar kerja final secara langsung, bukan penjelasan tentang cara membuat LKPD.',
   fields:[
     { i:'materiLkpd', l:'Materi', j:'teks', m:'C', w:true, ph:'mis. Sistem Pencernaan Manusia', c:'Sistem Pencernaan Manusia' },
     { i:'kelasLkpd', l:'Kelas', j:'teks', m:'C', w:true, ph:'mis. VIII SMP', c:'VIII SMP' },
@@ -317,14 +395,22 @@ const TEMPLATE = [
     { i:'kunci', l:'Kunci jawaban untuk guru', j:'pilih', m:'D', o:['Sertakan terpisah di akhir','Tidak perlu'], c:'Sertakan terpisah di akhir' },
     { i:'formatCetak', l:'Format cetak', j:'pilih', m:'D', o:['Dokumen biasa siap salin ke Word','Kode LaTeX A4 siap cetak'], c:'Dokumen biasa siap salin ke Word' }
   ],
-  aturan:['Bahasa petunjuk harus singkat, jelas, dan sesuai usia peserta didik.','Sediakan ruang yang cukup untuk menulis jawaban.'],
-  format:['LKPD utuh: identitas, tujuan, alat & bahan (bila relevan), langkah kegiatan, ruang jawaban, dan kesimpulan / refleksi.']
+  aturan:[
+    'Tulis instruksi langsung kepada peserta didik dengan kata kerja yang jelas, singkat, dan sesuai usia.',
+    'Jumlah tugas harus mengikuti kolom Jumlah & jenis soal / tugas; jangan mengurangi atau menambah tanpa alasan.',
+    'Sediakan ruang jawaban yang proporsional setelah setiap pertanyaan atau tugas.',
+    'Susun kegiatan secara bertahap dari pengantar, kegiatan inti, pengolahan hasil, sampai kesimpulan atau refleksi.',
+    'Jika kegiatan pengamatan atau percobaan dipilih, sertakan tujuan, alat dan bahan, langkah aman, tabel pengamatan, dan pertanyaan analisis.',
+    'Jika kunci jawaban dipilih, letakkan kunci dan pedoman penilaian terpisah setelah bagian peserta didik.',
+    'Jangan mengarang data hasil pengamatan; sediakan kolom agar peserta didik mengisinya.'
+  ],
+  format:['Jika Dokumen biasa dipilih, berikan Markdown siap salin ke Word dengan urutan: Identitas, Tujuan, Alat & Bahan, Petunjuk, Kegiatan, Tabel atau Ruang Jawaban, Refleksi, lalu Kunci Jawaban Guru bila dipilih. Jika LaTeX dipilih, berikan satu blok kode LaTeX A4 lengkap.']
 },
 {
   id:'bank-soal', kategori:'materi', ikon:'🗂️', nama:'Bank Soal',
   deskripsi:'Paket soal dari materi sumbermu, lengkap dengan kunci dan pembahasan.',
   peran:'Anda adalah penyusun soal berpengalaman yang menulis soal yang valid, jelas, dan sesuai jenjang kognitif yang diminta.',
-  tugas:'Susunlah satu paket soal yang lengkap berdasarkan spesifikasi berikut. Soal hanya boleh dibuat dari materi / ruang lingkup yang diberikan.',
+  tugas:'Susunlah satu paket soal yang lengkap dan siap digunakan berdasarkan spesifikasi berikut. Soal hanya boleh dibuat dari materi atau ruang lingkup yang diberikan, lalu tampilkan kunci dan pembahasan sesuai pilihan pengguna.',
   fields:[
     { i:'ruangLingkup', l:'Materi & ruang lingkup (materi sumber)', j:'area', m:'C', w:true, ph:'Tempel materi sumber atau jabarkan ruang lingkupnya…', c:'Bilangan bulat: pengertian, garis bilangan, membandingkan, dan operasi hitung campuran.' },
     { i:'jenjangKelas', l:'Jenjang & kelas', j:'teks', m:'C', w:true, ph:'mis. SMP Kelas VII', c:'SMP Kelas VII' },
@@ -333,14 +419,22 @@ const TEMPLATE = [
     { i:'kunciBahasan', l:'Kunci & pembahasan', j:'pilih', m:'C', w:true, o:['Kunci saja','Kunci + pembahasan','Kunci + pembahasan + rubrik esai'], c:'Kunci + pembahasan' },
     { i:'kisi', l:'Tabel spesifikasi / kisi-kisi', j:'pilih', m:'D', o:['Sertakan sebelum soal','Tidak perlu'], c:'Sertakan sebelum soal' }
   ],
-  aturan:['Untuk soal hitungan, hitung ulang setiap kunci jawaban sebelum ditulis.','Pengecoh (distraktor) pilihan ganda harus masuk akal dan berasal dari kesalahan yang umum dilakukan siswa.','Hindari soal yang jawabannya ambigu.'],
-  format:['Paket soal utuh siap pakai; kunci dan pembahasan diletakkan terpisah setelah soal.']
+  aturan:[
+    'Buat tepat jumlah dan bentuk soal yang tertulis pada kolom Jumlah & bentuk soal.',
+    'Gunakan hanya materi atau ruang lingkup sumber; jangan menambahkan konsep yang tidak ada di dalamnya.',
+    'Jika kisi-kisi dipilih, tampilkan tabel kisi-kisi sebelum soal dengan nomor, indikator, materi, bentuk soal, dan jenjang kognitif.',
+    'Untuk pilihan ganda, setiap soal memiliki satu jawaban benar, opsi konsisten, dan pengecoh yang berasal dari kesalahan umum.',
+    'Untuk soal hitungan, hitung ulang setiap kunci jawaban sebelum ditulis dan tunjukkan langkah perhitungannya pada pembahasan bila diminta.',
+    'Hindari soal yang jawabannya ambigu, memerlukan fakta di luar sumber, atau menggunakan konteks yang tidak sesuai jenjang.',
+    'Pisahkan soal dari kunci dan pembahasan agar paket soal dapat langsung dibagikan kepada peserta didik.'
+  ],
+  format:['Dokumen siap pakai dengan urutan: Kisi-kisi bila dipilih, Petunjuk, Soal bernomor, lalu Kunci Jawaban dan Pembahasan sesuai pilihan. Untuk esai, sertakan rubrik bila diminta. Jangan mengawali dengan analisis.']
 },
 {
   id:'slide-presentasi', kategori:'materi', ikon:'🖥️', nama:'Slide Presentasi',
-  deskripsi:'Naskah slide per halaman: judul, poin isi, dan saran visual.',
-  peran:'Anda adalah perancang presentasi berpengalaman yang menyusun slide yang ringkas, runtut, dan mudah disampaikan.',
-  tugas:'Susunlah naskah presentasi lengkap per slide berdasarkan spesifikasi berikut.',
+  deskripsi:'Prompt khusus untuk menghasilkan slide per halaman, bukan artikel atau paragraf panjang.',
+  peran:'Anda adalah perancang presentasi berpengalaman yang mengubah materi menjadi slide yang ringkas, runtut, mudah dipindai, dan mudah disampaikan secara lisan.',
+  tugas:'Ubah materi dan tujuan berikut menjadi presentasi yang siap dipindahkan ke PowerPoint atau Google Slides. Hasil wajib ditulis per slide, bukan sebagai artikel, esai, atau uraian paragraf panjang.',
   fields:[
     { i:'topikSlide', l:'Topik presentasi', j:'teks', m:'C', w:true, ph:'mis. Pengenalan Bilangan Bulat', c:'Pengenalan Bilangan Bulat' },
     { i:'audiens', l:'Hadirin / audiens', j:'teks', m:'C', w:true, ph:'mis. siswa SMP kelas VII', c:'siswa SMP kelas VII' },
@@ -349,8 +443,23 @@ const TEMPLATE = [
     { i:'gayaSampai', l:'Gaya penyampaian', j:'pilih', m:'D', o:['Mengajar','Seminar','Promosi','Laporan'], c:'Mengajar' },
     { i:'visual', l:'Kebutuhan visual per slide', j:'pilih', m:'D', o:['Sebutkan saran gambar / diagram tiap slide','Teks saja'], c:'Sebutkan saran gambar / diagram tiap slide' }
   ],
-  aturan:['Satu slide maksimal 5 poin singkat; kalimat panjang diletakkan di catatan pembicara.'],
-  format:['Untuk setiap slide: nomor, judul slide, poin isi, saran visual (bila diminta), dan catatan pembicara singkat.']
+  aturan:[
+    'Keluarkan tepat sejumlah slide yang diminta pada kolom Jumlah slide.',
+    'Jangan menulis artikel, esai, narasi panjang, atau penjelasan di luar struktur slide.',
+    'Gunakan format yang sama untuk setiap slide: "Slide [nomor] — [judul]", "Isi Slide", "Saran Visual", dan "Catatan Pembicara".',
+    'Bagian Isi Slide hanya boleh berisi maksimal 4 bullet point.',
+    'Setiap bullet point harus singkat, maksimal 12 kata, dan tidak boleh berupa paragraf.',
+    'Letakkan penjelasan, contoh, transisi, dan kalimat yang lebih panjang di bagian Catatan Pembicara.',
+    'Catatan Pembicara maksimal 3 kalimat singkat per slide dan tidak boleh mengulang semua bullet secara mentah.',
+    'Bangun alur presentasi yang jelas: pembuka, konteks atau masalah, pembahasan utama, contoh atau data, kesimpulan, lalu ajakan atau refleksi bila relevan.',
+    'Ikuti pilihan Kebutuhan visual per slide. Jika dipilih Teks saja, tulis "Tidak ada — teks saja" pada bagian Saran Visual.'
+  ],
+  format:[
+    'Awali langsung dengan daftar slide; jangan memberi pembuka atau ringkasan dalam bentuk artikel.',
+    'Gunakan struktur berikut untuk setiap slide:',
+    'Slide 1 — [Judul slide]\nIsi Slide:\n- [bullet singkat]\n- [bullet singkat]\nSaran Visual: [gambar, diagram, atau "Tidak ada — teks saja"]\nCatatan Pembicara: [maksimal 3 kalimat singkat].',
+    'Pisahkan setiap slide dengan satu baris kosong. Setelah slide terakhir, tambahkan bagian "Catatan Desain" maksimal 3 bullet jika memang diperlukan.'
+  ]
 },
 
 /* ---------- Kategori 6: Tulisan & Konten ---------- */
@@ -358,7 +467,7 @@ const TEMPLATE = [
   id:'artikel-esai', kategori:'tulisan', ikon:'✍️', nama:'Artikel / Esai / Refleksi',
   deskripsi:'Artikel informatif, opini, esai, sampai renungan / hikmah.',
   peran:'Anda adalah penulis artikel dan esai berpengalaman yang menulis dalam Bahasa Indonesia yang hidup, jujur, dan menyentuh pembacanya.',
-  tugas:'Tuliskan satu tulisan yang lengkap dan siap dibaca berdasarkan spesifikasi berikut.',
+  tugas:'Tuliskan satu tulisan yang lengkap dan siap dibaca berdasarkan spesifikasi berikut. Keluarkan langsung naskah final sesuai jenis tulisan yang dipilih, bukan outline atau analisis.',
   fields:[
     { i:'topikTulis', l:'Topik', j:'teks', m:'C', w:true, ph:'mis. Kesabaran dalam Mengajar', c:'Kesabaran dalam Mengajar' },
     { i:'jenisTulisan', l:'Jenis tulisan', j:'pilih', m:'C', w:true, o:['Artikel informatif','Opini','Esai','Refleksi pribadi','Hikmah & renungan'], c:'Refleksi pribadi' },
@@ -369,14 +478,20 @@ const TEMPLATE = [
     { i:'bahan', l:'Bahan / pengalaman / kutipan yang harus masuk', j:'area', m:'D', ph:'Satu baris satu bahan…', c:'Pengalaman menghadapi siswa yang lambat memahami pecahan selama 3 pertemuan.' },
     { i:'penutup', l:'Penutup yang diinginkan', j:'teks', m:'D', ph:'mis. ajakan untuk refleksi diri pembaca', c:'Ajakan refleksi diri untuk pembaca' }
   ],
-  aturan:['Jangan mengarang kutipan atau data; bila memerlukan contoh, gunakan contoh umum yang wajar.'],
-  format:['Tulisan utuh dengan judul, paragraf pembuka, isi, dan penutup.']
+  aturan:[
+    'Keluarkan hanya naskah final; jangan menulis analisis, outline, atau komentar proses di luar tulisan.',
+    'Sesuaikan struktur dengan Jenis tulisan: artikel informatif memakai subjudul dan fakta, opini memakai alasan yang runtut, esai memakai tesis dan uraian, refleksi memakai suara pribadi, dan hikmah memakai renungan yang wajar.',
+    'Pertahankan pesan utama sebagai benang merah dari pembuka sampai penutup.',
+    'Gunakan panjang dan gaya bahasa yang dipilih serta paragraf yang nyaman dibaca oleh pembaca sasaran.',
+    'Jangan mengarang kutipan, data, atau pengalaman pribadi; bila memerlukan contoh, gunakan contoh umum tanpa menyamarkannya sebagai fakta.'
+  ],
+  format:['Markdown siap baca dengan urutan: # Judul, pembuka yang menarik, isi terstruktur dengan ## subjudul bila relevan, lalu penutup yang sesuai jenis tulisan.']
 },
 {
   id:'cerita', kategori:'tulisan', ikon:'📖', nama:'Cerita / Cerpen',
   deskripsi:'Cerita pendek dengan tokoh, konflik, dan pesan moral yang jelas.',
   peran:'Anda adalah penulis cerita berpengalaman yang pandai membangun tokoh yang hidup dan alur yang mengalir.',
-  tugas:'Tuliskan satu cerita yang lengkap berdasarkan spesifikasi berikut.',
+  tugas:'Tuliskan satu cerita yang lengkap berdasarkan spesifikasi berikut. Keluarkan langsung cerita final, bukan sinopsis, analisis tokoh, atau penjelasan proses kreatif.',
   fields:[
     { i:'genre', l:'Genre', j:'pilih', m:'C', w:true, o:['Fabel','Anak','Remaja','Inspiratif','Misteri','Fiksi ilmiah','Lainnya'], c:'Fabel' },
     { i:'tokoh', l:'Tokoh utama', j:'teks', m:'C', w:true, ph:'mis. Kancil yang sombong belajar rendah hati', c:'Kancil yang sombong' },
@@ -386,14 +501,20 @@ const TEMPLATE = [
     { i:'panjangCerita', l:'Panjang cerita', j:'pilih', m:'D', o:['Pendek (±500 kata)','Sedang (±1.000 kata)','Panjang (±2.000 kata)'], c:'Sedang (±1.000 kata)' },
     { i:'sudutCerita', l:'Sudut pandang', j:'pilih', m:'D', o:['Orang ketiga','Orang pertama'], c:'Orang ketiga' }
   ],
-  aturan:['Pesan moral harus terasa dari alur cerita, bukan ditempel sebagai ceramah di akhir.'],
-  format:['Cerita utuh dengan judul; dialog diberi paragraf sendiri.']
+  aturan:[
+    'Keluarkan hanya cerita final; jangan menambahkan sinopsis, analisis alur, atau komentar setelah cerita.',
+    'Bangun alur yang utuh: pengenalan tokoh dan latar, pemicu masalah, usaha menghadapi konflik, titik balik, penyelesaian, dan perubahan tokoh.',
+    'Tokoh utama, latar, konflik, dan pesan moral yang diberikan harus muncul nyata dalam cerita.',
+    'Pesan moral harus terasa dari tindakan dan akibat dalam alur, bukan ditempel sebagai ceramah di akhir.',
+    'Gunakan sudut pandang yang dipilih secara konsisten; dialog diberi paragraf sendiri dan setiap tokoh berbicara dengan suara yang mudah dibedakan.'
+  ],
+  format:['Cerita utuh dalam Markdown dengan # Judul, narasi dan dialog yang mengalir, lalu penutup cerita. Jangan menambahkan bagian "Analisis" atau "Pesan moral" terpisah kecuali diminta.']
 },
 {
   id:'konten-sosmed', kategori:'tulisan', ikon:'📱', nama:'Konten Media Sosial & Naskah Video',
   deskripsi:'Takarir, utas, teks siaran, dan naskah video pendek maupun panjang.',
   peran:'Anda adalah pembuat konten media sosial berpengalaman yang menulis dalam Bahasa Indonesia yang segar dan sesuai karakter tiap platform.',
-  tugas:'Buatlah konten yang lengkap dan siap tayang berdasarkan spesifikasi berikut.',
+  tugas:'Buatlah konten yang lengkap dan siap tayang berdasarkan spesifikasi berikut. Ikuti bentuk konten dan platform yang dipilih; keluarkan naskah final, bukan saran umum atau kalender konten.',
   fields:[
     { i:'platform', l:'Platform', j:'pilih', m:'C', w:true, o:['Instagram','TikTok','YouTube','Facebook','X (Twitter)','WhatsApp'], c:'Instagram' },
     { i:'topikKonten', l:'Topik / produk', j:'teks', m:'C', w:true, ph:'mis. tips belajar pecahan untuk orang tua', c:'tips belajar pecahan untuk orang tua' },
@@ -403,8 +524,16 @@ const TEMPLATE = [
     { i:'ctaKonten', l:'Ajakan bertindak', j:'teks', m:'D', ph:'mis. simpan unggahan ini, bagikan ke orang tua lain', c:'Simpan unggahan ini dan bagikan ke orang tua lain' },
     { i:'tagar', l:'Tagar (hashtag)', j:'pilih', m:'D', o:['Minta dibuatkan','Tidak perlu'], c:'Minta dibuatkan' }
   ],
-  aturan:['Sesuaikan panjang dan gaya dengan platform yang dipilih.','Untuk naskah video, sertakan penanda adegan / detik bila relevan.'],
-  format:['Konten siap salin-tempel; untuk utas, beri nomor urut tiap bagian.']
+  aturan:[
+    'Keluarkan hanya konten final yang siap disalin; jangan mengawali dengan analisis strategi atau penjelasan proses.',
+    'Sesuaikan panjang, gaya, dan ajakan dengan platform serta tujuan yang dipilih.',
+    'Untuk Takarir, gunakan urutan Hook, isi, CTA bila ada, lalu hashtag bila diminta.',
+    'Untuk Naskah video, gunakan tabel atau format per adegan yang memuat durasi, visual, dialog atau voice-over, teks layar, dan audio bila relevan.',
+    'Untuk Utas, beri nomor pada setiap bagian dan pastikan tiap bagian tersambung dengan alur yang jelas.',
+    'Untuk Teks siaran WhatsApp, gunakan pembuka, informasi utama, detail penting, dan CTA tanpa format yang terlalu rumit.',
+    'Jangan membuat klaim, harga, tautan, atau fakta yang tidak diberikan pengguna; gunakan placeholder yang jelas bila diperlukan.'
+  ],
+  format:['Berikan konten siap salin-tempel. Gunakan heading sesuai bentuk: Caption, Naskah Video, Utas, atau Siaran WhatsApp. Sertakan hashtag hanya jika dipilih dan letakkan CTA pada posisi yang wajar.']
 },
 
 /* ---------- Kategori 7: Gambar & Desain ---------- */
@@ -412,7 +541,7 @@ const TEMPLATE = [
   id:'prompt-gambar', kategori:'gambar', ikon:'🖼️', nama:'Prompt Gambar AI',
   deskripsi:'Prompt siap tempel untuk alat gambar AI (Midjourney, DALL·E, dsb.). Bahasa hasil bisa dipilih — bawaannya Inggris.',
   peran:'Anda adalah ahli penulisan prompt gambar (image prompt engineer) berpengalaman untuk berbagai alat gambar AI.',
-  tugas:'Susunlah prompt gambar yang siap ditempel ke alat gambar AI berdasarkan spesifikasi berikut, lengkap dengan negative prompt bila relevan.',
+  tugas:'Susunlah prompt gambar yang siap ditempel langsung ke alat gambar AI berdasarkan spesifikasi berikut. Hasil utama harus berupa prompt bersih yang dapat disalin, bukan uraian panjang tentang teori prompt.',
   fields:[
     { i:'subjek', l:'Subjek utama gambar', j:'teks', m:'C', w:true, ph:'mis. guru muda Indonesia tersenyum di depan kelas', c:'guru muda Indonesia tersenyum di depan kelas' },
     { i:'aksi', l:'Aksi / suasana', j:'teks', m:'C', w:true, ph:'mis. sedang menjelaskan pecahan di papan tulis', c:'sedang menjelaskan pecahan di papan tulis' },
@@ -424,14 +553,21 @@ const TEMPLATE = [
     { i:'hindariGambar', l:'Detail yang harus dihindari (negative prompt)', j:'teks', m:'D', ph:'mis. teks acak, jari berlebih, buram', c:'teks acak, buram, proporsi wajah aneh' },
     { i:'alatGambar', l:'Target alat gambar', j:'pilih', m:'D', o:['Umum','Midjourney','DALL·E','Stable Diffusion','Ideogram','Leonardo'], c:'Umum' }
   ],
-  aturan:['Tulis prompt gambar dalam satu blok yang ringkas dan padat berisi subjek, aksi, latar, gaya, pencahayaan, dan detail teknis (rasio / parameter alat bila alatnya mendukung).'],
-  format:['Satu blok prompt gambar siap tempel, lalu negative prompt terpisah (bila ada), lalu penjelasan singkat tiap unsur dalam Bahasa Indonesia.']
+  aturan:[
+    'Jangan memasukkan label, penjelasan, atau instruksi percakapan ke dalam blok prompt utama.',
+    'Susun prompt dengan urutan subjek, aksi atau ekspresi, latar, komposisi, gaya, pencahayaan, warna, kualitas, dan rasio bila relevan.',
+    'Gunakan detail yang diberikan pengguna tanpa menambahkan objek utama yang bertentangan.',
+    'Jika target alat mendukung parameter khusus, tambahkan hanya parameter yang relevan dan valid untuk alat tersebut.',
+    'Jika detail yang harus dihindari diisi, tulis negative prompt terpisah. Jangan mencampurnya dengan prompt utama.',
+    'Jika Bahasa Inggris dipilih, prompt utama harus berbahasa Inggris dan terjemahan Bahasa Indonesia diletakkan setelahnya. Jika Bahasa Indonesia dipilih, jadikan Bahasa Indonesia sebagai hasil utama.'
+  ],
+  format:['Gunakan urutan tetap: Prompt Utama dalam satu blok kode, Negative Prompt dalam blok terpisah bila ada, Terjemahan Bahasa Indonesia bila prompt utama berbahasa Inggris, lalu Parameter Alat bila relevan. Penjelasan unsur maksimal 5 bullet.']
 },
 {
   id:'logo', kategori:'gambar', ikon:'🏷️', nama:'Logo & Identitas Visual',
   deskripsi:'Konsep logo lengkap: makna, bentuk, warna, dan prompt gambarnya.',
   peran:'Anda adalah desainer logo dan identitas visual berpengalaman.',
-  tugas:'Rancanglah konsep logo berdasarkan spesifikasi berikut.',
+  tugas:'Rancanglah konsep logo yang dapat ditindaklanjuti berdasarkan spesifikasi berikut. Keluarkan konsep visual yang konkret beserta prompt gambar, bukan teori desain umum.',
   fields:[
     { i:'merek', l:'Nama merek / usaha', j:'teks', m:'C', w:true, ph:'mis. Les Privat Atiga', c:'Les Privat Atiga' },
     { i:'bidang', l:'Bidang usaha', j:'teks', m:'C', w:true, ph:'mis. bimbingan belajar matematika', c:'bimbingan belajar matematika' },
@@ -440,14 +576,21 @@ const TEMPLATE = [
     { i:'simbol', l:'Bentuk / simbol idaman', j:'teks', m:'D', ph:'mis. pensil yang membentuk huruf A', c:'pensil membentuk huruf A' },
     { i:'warnaLogo', l:'Warna', j:'teks', m:'D', ph:'mis. indigo dan amber', c:'indigo dan amber' }
   ],
-  aturan:['Setiap konsep harus berbeda pendekatan, bukan variasi kecil dari satu ide.'],
-  format:['Untuk tiap konsep: nama konsep, deskripsi bentuk, makna, palet warna (dengan kode hex), dan prompt gambar siap tempel untuk membuatnya di alat gambar AI.']
+  aturan:[
+    'Buat tepat sejumlah konsep sesuai kolom Jumlah konsep yang diminta.',
+    'Setiap konsep harus berbeda pendekatan visual dan simbolik, bukan variasi kecil dari satu ide.',
+    'Hubungkan bentuk, simbol, tipografi, dan warna dengan bidang usaha serta kesan yang diinginkan.',
+    'Palet warna wajib berisi nama warna dan kode hex. Jangan memilih warna secara acak tanpa alasan.',
+    'Pastikan logo tetap terbaca dalam ukuran kecil, versi satu warna, dan latar terang maupun gelap.',
+    'Prompt gambar logo harus meminta bentuk sederhana, bersih, tanpa mockup, tanpa watermark, dan menyisakan ruang untuk memperbaiki teks secara manual karena alat gambar sering keliru menulis.'
+  ],
+  format:['Untuk setiap konsep gunakan urutan: Nama Konsep, Ide Utama, Bentuk dan Komposisi, Makna, Palet Warna dengan kode hex, Tipografi, Penggunaan, lalu Prompt Gambar siap tempel dalam blok kode.']
 },
 {
   id:'infografis', kategori:'gambar', ikon:'📈', nama:'Infografis',
   deskripsi:'Rancangan infografis: susunan isi, alur baca, dan naskah tiap bagiannya.',
   peran:'Anda adalah perancang infografis berpengalaman yang menyajikan data dengan jujur dan mudah dipahami.',
-  tugas:'Rancanglah satu infografis lengkap berdasarkan spesifikasi berikut.',
+  tugas:'Rancanglah satu infografis lengkap dan siap diproduksi berdasarkan spesifikasi berikut. Keluarkan naskah serta tata letak yang konkret, bukan penjelasan umum tentang infografis.',
   fields:[
     { i:'topikInfo', l:'Topik infografis', j:'teks', m:'C', w:true, ph:'mis. Unsur-unsur Lingkaran', c:'Unsur-unsur Lingkaran' },
     { i:'poinInfo', l:'Data / poin utama', j:'area', m:'C', w:true, ph:'Satu baris satu poin…', c:'Titik pusat\nJari-jari dan diameter\nBusur dan tali busur\nJuring dan tembereng' },
@@ -455,8 +598,15 @@ const TEMPLATE = [
     { i:'alurInfo', l:'Alur baca', j:'pilih', m:'D', o:['Atas ke bawah','Kiri ke kanan','Melingkar','Perbandingan dua sisi'], c:'Atas ke bawah' },
     { i:'gayaInfo', l:'Gaya visual', j:'pilih', m:'D', o:['Modern cerah','Minimalis','Kartun edukasi','Formal'], c:'Modern cerah' }
   ],
-  aturan:['Jangan mengubah angka atau fakta dari poin yang diberikan.'],
-  format:['Rancangan per bagian: judul bagian, isi teks persisnya, saran ikon / ilustrasi, dan saran warna — ditutup prompt gambar untuk membuat latar / ikonnya bila relevan.']
+  aturan:[
+    'Gunakan semua data atau poin utama yang diberikan dan jangan mengubah angka, istilah, urutan penting, atau fakta.',
+    'Jika data numerik tidak diberikan, jangan menambahkan statistik atau persentase buatan.',
+    'Ikuti alur baca yang dipilih dan jelaskan posisi setiap bagian dari awal sampai akhir.',
+    'Tulis teks yang benar-benar akan tampil di infografis secara singkat; penjelasan untuk desainer diletakkan di kolom terpisah.',
+    'Setiap bagian harus memiliki fungsi visual yang jelas: judul, isi, ikon atau ilustrasi, warna, dan hubungan dengan bagian berikutnya.',
+    'Jika prompt gambar dibuat, pastikan prompt meminta ruang yang cukup untuk teks ditambahkan manual dan tidak mengandalkan AI untuk menulis teks kecil.'
+  ],
+  format:['Gunakan urutan: Konsep Utama, Judul Infografis, Alur Baca, Rancangan per Bagian dalam tabel atau daftar, Palet Warna, Tipografi, lalu Prompt Gambar bila relevan. Bedakan "Teks yang tampil" dari "Catatan desain".']
 },
 
 /* ---------- Kategori 8: Prompt Bebas ---------- */
@@ -475,8 +625,14 @@ const TEMPLATE = [
     { i:'contohBebas', l:'Contoh hasil yang diinginkan', j:'area', m:'D', ph:'Tempel contoh gaya / bentuk hasil…', c:'Contoh: "Suhu di kota A adalah −4°C…" (gaya soal seperti ini)' },
     { i:'nadaBebas', l:'Nada & gaya jawaban', j:'pilih', m:'D', o:['Netral','Ramah','Formal','Santai','Tegas'], c:'Ramah' }
   ],
-  aturan:[],
-  format:[]
+  aturan:[
+    'Kerjakan tugas utama secara langsung berdasarkan Peran, Konteks, dan Tugas yang diberikan.',
+    'Ikuti semua Aturan & batasan pengguna tanpa mengabaikannya atau menambah batasan yang bertentangan.',
+    'Gunakan Format hasil yang dipilih sebagai struktur keluaran wajib; jangan mengubahnya menjadi artikel bila bukan itu yang dipilih.',
+    'Keluarkan hanya hasil akhir yang dapat digunakan. Tambahkan asumsi singkat hanya jika memang diperlukan untuk menyelesaikan tugas.',
+    'Jika contoh hasil diberikan, tiru struktur dan tingkat kedetailannya tanpa menyalin isi yang tidak relevan.'
+  ],
+  format:['Awali langsung dengan hasil sesuai pilihan Format hasil. Jangan memberikan pembuka, analisis proses, atau penutup tambahan di luar format yang dipilih.']
 }
 ];
 
