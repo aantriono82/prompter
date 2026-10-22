@@ -531,7 +531,9 @@ const state = {
   umum: {},           // nilai kolom umum template aktif
   draf: normalisasiDraf(bacaJSON(KUNCI_DRAF, {})),
   pustaka: normalisasiPustaka(bacaJSON(KUNCI_PUSTAKA, [])),
+  urutkanPustaka: 'terbaru',
   pratinjauManual: false,
+  sudahTersimpan: false,
   peringatanPenyimpanan: false
 };
 
@@ -665,6 +667,7 @@ function pilihTemplate(id){
   state.templateId = id;
   state.kategori = t.kategori;
   state.pratinjauManual = false;
+  state.sudahTersimpan = false;
   muatDrafTemplate();
   renderForm();
   simpanPilihan();
@@ -675,6 +678,8 @@ $('cariTemplate').addEventListener('input', () => { renderKategori(); renderDaft
 function renderMode(){
   $('modeCepat').classList.toggle('aktif', state.mode === 'cepat');
   $('modeDetail').classList.toggle('aktif', state.mode === 'detail');
+  $('modeCepat').setAttribute('aria-pressed', String(state.mode === 'cepat'));
+  $('modeDetail').setAttribute('aria-pressed', String(state.mode === 'detail'));
   $('petunjukMode').textContent = state.mode === 'cepat'
     ? 'Mode Cepat: hanya kolom inti. Ganti ke Detail bila ingin hasil yang lebih kaya.'
     : 'Mode Detail: semua kolom tampil, termasuk kolom tambahan bertanda Detail.';
@@ -689,10 +694,12 @@ function renderTarget(){
     const b = document.createElement('button');
     b.type = 'button';
     b.className = 'chip' + (a.id === state.target ? ' aktif' : '');
+    b.setAttribute('aria-pressed', String(a.id === state.target));
     b.textContent = a.nama;
     b.addEventListener('click', () => {
       state.target = a.id;
       state.pratinjauManual = false;
+      state.sudahTersimpan = false;
       renderTarget(); perbaruiPreview(); simpanPilihan();
     });
     wadah.appendChild(b);
@@ -749,7 +756,8 @@ function buatInput(f, nilaiAwal, wadahNilai){
         const pesanError = bungkus.querySelector('.pesan-error');
         if (pesanError) pesanError.hidden = true;
         state.pratinjauManual = false;
-        simpanDraf(); perbaruiPreview();
+        state.sudahTersimpan = false;
+        simpanDraf(); perbaruiPreview(); perbaruiStatusForm();
       });
     });
   } else {
@@ -761,7 +769,8 @@ function buatInput(f, nilaiAwal, wadahNilai){
       const pesanError = bungkus.querySelector('.pesan-error');
       if (pesanError) pesanError.hidden = true;
       state.pratinjauManual = false;
-      simpanDraf(); perbaruiPreview();
+      state.sudahTersimpan = false;
+      simpanDraf(); perbaruiPreview(); perbaruiStatusForm();
     });
   }
   return bungkus;
@@ -774,46 +783,145 @@ function renderForm(){
   const form = $('formTemplate');
   form.innerHTML = '';
 
-  let grupKini = null, fieldsetKini = null;
-  const tambahKolom = (f, wadahNilai) => {
-    if (!kolomTerlihat(f)) return;
+  const renderFields = (fields, wadahForm, wadahNilai) => {
+    let grupKini = null, fieldsetKini = null;
+    for (const f of fields){
+    if (!kolomTerlihat(f)) continue;
     if (f.g){
       if (f.g !== grupKini){
         grupKini = f.g;
         fieldsetKini = document.createElement('fieldset');
         fieldsetKini.className = 'grup-kolom';
         fieldsetKini.innerHTML = '<legend>' + f.g + '</legend>';
-        form.appendChild(fieldsetKini);
+        wadahForm.appendChild(fieldsetKini);
       }
       fieldsetKini.appendChild(buatInput(f, wadahNilai[f.i], wadahNilai));
     } else {
-      form.appendChild(buatInput(f, wadahNilai[f.i], wadahNilai));
+      wadahForm.appendChild(buatInput(f, wadahNilai[f.i], wadahNilai));
+    }
     }
   };
-  t.fields.forEach(f => tambahKolom(f, state.nilai));
+
+  renderFields(t.fields.filter(f => f.m === 'C'), form, state.nilai);
 
   const fsUmum = document.createElement('fieldset');
   fsUmum.className = 'grup-kolom';
   fsUmum.innerHTML = '<legend>Pengaturan Hasil</legend>';
-  KOLOM_UMUM.forEach(f => {
-    if (kolomTerlihat(f)) fsUmum.appendChild(buatInput(f, state.umum[f.i], state.umum));
-  });
+  renderFields(KOLOM_UMUM.filter(f => f.m === 'C'), fsUmum, state.umum);
   form.appendChild(fsUmum);
+
+  const fieldsDetail = t.fields.filter(f => f.m === 'D');
+  const umumDetail = KOLOM_UMUM.filter(f => f.m === 'D');
+  if (state.mode === 'detail' && (fieldsDetail.length || umumDetail.length)){
+    const detail = document.createElement('details');
+    detail.className = 'detail-lanjutan';
+    detail.open = true;
+    detail.innerHTML = '<summary>🧩 Pengaturan detail (' + (fieldsDetail.length + umumDetail.length) + ' kolom tambahan)</summary>';
+    const isi = document.createElement('div');
+    isi.className = 'detail-lanjutan-isi';
+    renderFields(fieldsDetail, isi, state.nilai);
+    if (umumDetail.length){
+      const fsDetail = document.createElement('fieldset');
+      fsDetail.className = 'grup-kolom';
+      fsDetail.innerHTML = '<legend>Preferensi tambahan</legend>';
+      renderFields(umumDetail, fsDetail, state.umum);
+      isi.appendChild(fsDetail);
+    }
+    detail.appendChild(isi);
+    form.appendChild(detail);
+  }
+
   perbaruiPreview();
+  perbaruiStatusForm();
+}
+
+function nilaiTerisi(f, wadahNilai){
+  const nilai = wadahNilai[f.i];
+  return f.j === 'centang'
+    ? Array.isArray(nilai) && nilai.length > 0
+    : String(nilai || '').trim().length > 0;
+}
+
+function perbaruiStatusForm(){
+  const t = templateAktif();
+  const wajib = [...t.fields, ...KOLOM_UMUM].filter(f => f.w && kolomTerlihat(f));
+  const terisi = wajib.filter(f => nilaiTerisi(f, t.fields.includes(f) ? state.nilai : state.umum)).length;
+  const lengkap = terisi === wajib.length;
+  $('statusForm').textContent = lengkap
+    ? '✓ Semua kolom wajib terisi'
+    : terisi + ' dari ' + wajib.length + ' kolom wajib';
+  $('statusForm').classList.toggle('lengkap', lengkap);
+  perbaruiProgres(lengkap);
+}
+
+function perbaruiProgres(formLengkap){
+  const tahapAktif = state.sudahTersimpan && formLengkap ? 4 : formLengkap ? 3 : 2;
+  document.querySelectorAll('.progres-item').forEach(item => {
+    const nomor = Number(item.dataset.langkah);
+    item.classList.toggle('aktif', nomor === tahapAktif);
+    item.classList.toggle('selesai', nomor < tahapAktif);
+  });
+  document.querySelectorAll('.progres-garis').forEach((garis, idx) => {
+    garis.classList.toggle('selesai', idx + 1 < tahapAktif);
+  });
 }
 
 /* ---------- Preview ---------- */
 function perbaruiPreview(){
-  if (state.pratinjauManual) { perbaruiHitungan(); return; }
+  if (state.pratinjauManual) { perbaruiHitungan(); perbaruiStruktur(); return; }
   const teks = buatPrompt(templateAktif(), state.nilai, state.umum, state.target);
   $('areaPreview').value = teks;
   perbaruiHitungan();
+  perbaruiStruktur();
   $('statusSalin').textContent = '';
 }
 function perbaruiHitungan(){
   $('jumlahKarakter').textContent = $('areaPreview').value.length.toLocaleString('id-ID') + ' karakter';
+  $('statusPreview').textContent = state.pratinjauManual ? 'Diedit manual' : 'Otomatis';
+  $('tombolPulihkan').hidden = !state.pratinjauManual;
 }
-$('areaPreview').addEventListener('input', () => { state.pratinjauManual = true; perbaruiHitungan(); });
+function perbaruiStruktur(){
+  const wadah = $('panelStruktur');
+  const blok = globalThis.ATIGA_ENGINE.susunBlok(templateAktif(), state.nilai, state.umum);
+  const daftar = [
+    ['Peran', blok.peran], ['Konteks', blok.konteks], ['Tugas', blok.tugas],
+    ['Spesifikasi', blok.spesifikasi.join('\n')], ['Aturan wajib', blok.aturan.join('\n')],
+    ['Format hasil', blok.format.join('\n')]
+  ];
+  wadah.innerHTML = '';
+  daftar.filter(([, isi]) => isi).forEach(([judul, isi]) => {
+    const bagian = document.createElement('section');
+    bagian.className = 'struktur-blok';
+    const h3 = document.createElement('h3');
+    h3.textContent = judul;
+    const p = document.createElement('p');
+    p.textContent = isi;
+    bagian.append(h3, p);
+    wadah.appendChild(bagian);
+  });
+}
+function pilihTabPreview(tab){
+  const promptAktif = tab === 'prompt';
+  $('tabPrompt').classList.toggle('aktif', promptAktif);
+  $('tabStruktur').classList.toggle('aktif', !promptAktif);
+  $('tabPrompt').setAttribute('aria-selected', String(promptAktif));
+  $('tabStruktur').setAttribute('aria-selected', String(!promptAktif));
+  $('panelPrompt').hidden = !promptAktif;
+  $('panelStruktur').hidden = promptAktif;
+}
+$('tabPrompt').addEventListener('click', () => pilihTabPreview('prompt'));
+$('tabStruktur').addEventListener('click', () => pilihTabPreview('struktur'));
+$('tombolPulihkan').addEventListener('click', () => {
+  state.pratinjauManual = false;
+  perbaruiPreview();
+  toast('Pratinjau otomatis dipulihkan.');
+});
+$('areaPreview').addEventListener('input', () => {
+  state.pratinjauManual = true;
+  state.sudahTersimpan = false;
+  perbaruiHitungan();
+  perbaruiStatusForm();
+});
 
 /* ---------- Validasi ---------- */
 function validasi(){
@@ -869,11 +977,18 @@ async function salinTeks(teks){
     try { return document.execCommand('copy'); } catch (e2) { return false; }
   }
 }
-$('tombolSalin').addEventListener('click', async () => {
+async function salinPromptUtama(){
   if (!validasi()) return;
   const ok = await salinTeks($('areaPreview').value);
   $('statusSalin').textContent = ok ? '✅ Prompt tersalin — tempel (Ctrl+V) di AI tujuanmu.' : '';
   toast(ok ? 'Prompt berhasil disalin.' : 'Gagal menyalin otomatis — blok teks pratinjau lalu salin manual (Ctrl+C).');
+}
+$('tombolSalin').addEventListener('click', salinPromptUtama);
+$('tombolSalinMobile').addEventListener('click', salinPromptUtama);
+$('tombolPreviewMobile').addEventListener('click', () => {
+  $('kartuPreview').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  pilihTabPreview('prompt');
+  setTimeout(() => $('areaPreview').focus({ preventScroll: true }), 250);
 });
 
 function renderMenuKirim(){
@@ -927,6 +1042,7 @@ $('tombolContoh').addEventListener('click', () => {
   t.fields.forEach(f => { if (f.c !== undefined) state.nilai[f.i] = f.c; });
   KOLOM_UMUM.forEach(f => { if (f.c !== undefined) state.umum[f.i] = f.c; });
   state.pratinjauManual = false;
+  state.sudahTersimpan = false;
   simpanDraf(true); renderForm();
   toast('Formulir terisi contoh untuk template ' + t.nama + '. Silakan ubah seperlunya.');
 });
@@ -934,6 +1050,7 @@ $('tombolReset').addEventListener('click', () => {
   state.nilai = {};
   state.umum = { __detail: 'Standar', __sikap: 'Langsung kerjakan dengan asumsi terbaik' };
   state.pratinjauManual = false;
+  state.sudahTersimpan = false;
   simpanDraf(true); renderForm();
   toast('Formulir dikosongkan.');
 });
@@ -980,15 +1097,20 @@ $('tombolSimpan').addEventListener('click', () => {
     favorit: false,
     waktu: Date.now()
   });
+  state.sudahTersimpan = true;
+  perbaruiProgres(true);
   if (simpanPustaka()) toast('Tersimpan di Pustaka Saya.');
   document.getElementById('pustaka').scrollIntoView({ behavior: 'smooth' });
 });
 function renderPustaka(){
   const wadah = $('daftarPustaka');
   const kata = $('cariPustaka').value.trim().toLowerCase();
-  const daftar = state.pustaka
-    .filter(p => !kata || (p.nama + ' ' + p.templateNama + ' ' + p.teks).toLowerCase().includes(kata))
-    .sort((a, b) => (b.favorit - a.favorit) || (b.waktu - a.waktu));
+  const daftar = state.pustaka.filter(p => !kata || (p.nama + ' ' + p.templateNama + ' ' + p.teks).toLowerCase().includes(kata));
+  daftar.sort((a, b) => {
+    if (state.urutkanPustaka === 'favorit') return (b.favorit - a.favorit) || (b.waktu - a.waktu);
+    if (state.urutkanPustaka === 'terlama') return a.waktu - b.waktu;
+    return b.waktu - a.waktu;
+  });
   $('jumlahPustaka').textContent = state.pustaka.length + ' prompt';
   wadah.innerHTML = '';
   if (!daftar.length){
@@ -1047,6 +1169,10 @@ async function aksiPustaka(p, aksi){
   }
 }
 $('cariPustaka').addEventListener('input', renderPustaka);
+$('urutkanPustaka').addEventListener('change', e => {
+  state.urutkanPustaka = e.target.value;
+  renderPustaka();
+});
 $('tombolEksporJson').addEventListener('click', () => {
   if (!state.pustaka.length){ toast('Pustaka masih kosong.'); return; }
   const paket = {

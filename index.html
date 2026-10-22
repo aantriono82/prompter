@@ -36,11 +36,21 @@
   </ol>
 </section>
 
+<nav class="progres-aplikasi" aria-label="Progres membuat prompt">
+  <div class="progres-item aktif" data-langkah="1"><span>1</span><strong>Template</strong></div>
+  <div class="progres-garis" aria-hidden="true"></div>
+  <div class="progres-item" data-langkah="2"><span>2</span><strong>Isi kolom</strong></div>
+  <div class="progres-garis" aria-hidden="true"></div>
+  <div class="progres-item" data-langkah="3"><span>3</span><strong>Pratinjau</strong></div>
+  <div class="progres-garis" aria-hidden="true"></div>
+  <div class="progres-item" data-langkah="4"><span>4</span><strong>Simpan / kirim</strong></div>
+</nav>
+
 <main class="tata">
 
   <div class="kolom-kiri">
 
-    <section class="kartu" aria-labelledby="judulKategori">
+    <section class="kartu" data-langkah="1" aria-labelledby="judulKategori">
       <h2 id="judulKategori">1 · Mau membuat apa?</h2>
       <label class="cari">
         <span class="sr-only">Cari template</span>
@@ -51,14 +61,14 @@
       <div id="daftarTemplate" class="daftar-template"></div>
     </section>
 
-    <section class="kartu" aria-labelledby="judulAtur">
+    <section class="kartu" data-langkah="2" aria-labelledby="judulAtur">
       <h2 id="judulAtur">2 · Atur mode &amp; target AI</h2>
       <div class="baris-atur">
         <div>
           <span class="label-grup">Mode isian</span>
           <div class="segmen" role="group" aria-label="Mode isian">
-            <button id="modeCepat" type="button" class="segmen-tombol aktif">⚡ Cepat</button>
-            <button id="modeDetail" type="button" class="segmen-tombol">🧩 Detail</button>
+            <button id="modeCepat" type="button" class="segmen-tombol aktif" aria-pressed="true">⚡ Cepat</button>
+            <button id="modeDetail" type="button" class="segmen-tombol" aria-pressed="false">🧩 Detail</button>
           </div>
           <p class="petunjuk" id="petunjukMode">Mode Cepat: hanya kolom inti. Ganti ke Detail bila ingin hasil yang lebih kaya.</p>
         </div>
@@ -68,11 +78,14 @@
       <p class="petunjuk" id="petunjukTarget"></p>
     </section>
 
-    <section class="kartu" aria-labelledby="judulForm">
+    <section class="kartu" data-langkah="2" aria-labelledby="judulForm">
       <h2 id="judulForm">3 · Isi kolomnya</h2>
       <div class="form-kepala">
-        <h3 id="namaTemplate">—</h3>
-        <p id="deskripsiTemplate" class="petunjuk"></p>
+        <div>
+          <h3 id="namaTemplate">—</h3>
+          <p id="deskripsiTemplate" class="petunjuk"></p>
+        </div>
+        <span id="statusForm" class="status-form" role="status" aria-live="polite">0 kolom wajib</span>
       </div>
       <form id="formTemplate" novalidate></form>
       <div class="baris-tombol">
@@ -84,13 +97,26 @@
   </div>
 
   <div class="kolom-kanan">
-    <section class="kartu kartu-preview" aria-labelledby="judulPreview">
+    <section id="kartuPreview" class="kartu kartu-preview" data-langkah="3" aria-labelledby="judulPreview">
       <div class="preview-kepala">
         <h2 id="judulPreview">4 · Pratinjau prompt</h2>
-        <span id="jumlahKarakter" class="lencana">0 karakter</span>
+        <div class="preview-meta">
+          <span id="statusPreview" class="status-preview">Otomatis</span>
+          <span id="jumlahKarakter" class="lencana">0 karakter</span>
+        </div>
       </div>
-      <textarea id="areaPreview" rows="18" spellcheck="false" aria-label="Pratinjau prompt yang dihasilkan"></textarea>
-      <p class="petunjuk">Pratinjau berubah langsung saat kamu mengetik. Boleh diedit manual sebelum disalin — suntingan manual hilang bila kolom diubah lagi.</p>
+      <div class="tab-preview" role="tablist" aria-label="Tampilan pratinjau">
+        <button id="tabPrompt" class="tab-preview-tombol aktif" type="button" role="tab" aria-selected="true" aria-controls="panelPrompt">Prompt</button>
+        <button id="tabStruktur" class="tab-preview-tombol" type="button" role="tab" aria-selected="false" aria-controls="panelStruktur">Struktur</button>
+      </div>
+      <div id="panelPrompt" role="tabpanel">
+        <textarea id="areaPreview" rows="18" spellcheck="false" aria-label="Pratinjau prompt yang dihasilkan"></textarea>
+        <div class="preview-bawah">
+          <p class="petunjuk">Pratinjau berubah langsung saat kamu mengetik. Kamu boleh mengeditnya sebelum disalin.</p>
+          <button id="tombolPulihkan" class="tombol tombol-hantu kecil" type="button" hidden>↺ Pulihkan otomatis</button>
+        </div>
+      </div>
+      <div id="panelStruktur" class="struktur-preview" role="tabpanel" hidden></div>
       <div class="baris-tombol">
         <button id="tombolSalin" class="tombol tombol-utama" type="button">📋 Salin Prompt</button>
         <div class="menu-kirim">
@@ -100,22 +126,37 @@
       </div>
       <div class="baris-tombol">
         <button id="tombolSimpan" class="tombol tombol-sekunder" type="button">💾 Simpan ke Pustaka</button>
-        <button id="tombolEksporTxt" class="tombol tombol-hantu" type="button">⬇ .txt</button>
-        <button id="tombolEksporMd" class="tombol tombol-hantu" type="button">⬇ .md</button>
+        <details class="menu-ekspor">
+          <summary class="tombol tombol-hantu">⬇ Ekspor</summary>
+          <div class="menu-ekspor-isi">
+            <button id="tombolEksporTxt" class="tombol tombol-hantu kecil" type="button">.txt</button>
+            <button id="tombolEksporMd" class="tombol tombol-hantu kecil" type="button">.md</button>
+          </div>
+        </details>
       </div>
       <p id="statusSalin" class="status" role="status" aria-live="polite"></p>
     </section>
 
-    <section class="kartu" id="pustaka" aria-labelledby="judulPustaka">
+    <section class="kartu" id="pustaka" data-langkah="4" aria-labelledby="judulPustaka">
       <div class="preview-kepala">
         <h2 id="judulPustaka">📚 Pustaka Saya</h2>
         <span id="jumlahPustaka" class="lencana">0 prompt</span>
       </div>
       <p class="petunjuk">Prompt tersimpan hanya di perangkat ini (localStorage) — tetap ada walau halaman ditutup, dan tidak dikirim ke server mana pun.</p>
-      <label class="cari">
-        <span class="sr-only">Cari di pustaka</span>
-        <input id="cariPustaka" type="search" placeholder="🔍 Cari di pustaka…">
-      </label>
+      <div class="pustaka-kontrol">
+        <label class="cari">
+          <span class="sr-only">Cari di pustaka</span>
+          <input id="cariPustaka" type="search" placeholder="🔍 Cari di pustaka…">
+        </label>
+        <label class="pilih-urutkan">
+          <span class="sr-only">Urutkan pustaka</span>
+          <select id="urutkanPustaka">
+            <option value="terbaru">Terbaru</option>
+            <option value="favorit">Favorit dulu</option>
+            <option value="terlama">Terlama</option>
+          </select>
+        </label>
+      </div>
       <div id="daftarPustaka" class="daftar-pustaka"></div>
       <div class="baris-tombol">
         <button id="tombolEksporJson" class="tombol tombol-hantu" type="button">⬇ Ekspor Pustaka (.json)</button>
@@ -128,6 +169,11 @@
   </div>
 
 </main>
+
+<div class="baris-aksi-mobile" aria-label="Aksi cepat mobile">
+  <button id="tombolPreviewMobile" class="tombol tombol-hantu" type="button">👁 Preview</button>
+  <button id="tombolSalinMobile" class="tombol tombol-utama" type="button">📋 Salin Prompt</button>
+</div>
 
 <footer class="kaki">
   <p><strong>Atiga Prompter</strong> · Bagian dari keluarga Atiga · <a href="https://prompter.aantriono.com">prompter.aantriono.com</a></p>
