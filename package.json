@@ -1,0 +1,9 @@
+{
+  "name": "atiga-prompter",
+  "private": true,
+  "scripts": {
+    "check:syntax": "node --check prompt-engine.js && node --check storage.js && node --check script.js",
+    "test": "node --test",
+    "check": "npm run check:syntax && npm test"
+  }
+}

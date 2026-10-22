@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Atiga Prompter — Susun Prompt yang Bagus, untuk AI Apa Pun</title>
+<meta name="description" content="Atiga Prompter membantu siapa pun menyusun prompt yang bagus untuk ChatGPT, Claude, Gemini, DeepSeek, Qwen, Copilot, Grok, dan Meta AI — tanpa perlu hafal rumus prompt. Pilih template, isi, pratinjau, salin.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%234F46E5'/%3E%3Ctext x='32' y='44' font-size='34' text-anchor='middle' fill='%23F59E0B' font-family='Arial' font-weight='bold'%3EA%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="kepala">
+  <div class="kepala-dalam">
+    <a class="merek" href="#">
+      <span class="merek-logo" aria-hidden="true">A</span>
+      <span class="merek-teks">
+        <strong>Atiga Prompter</strong>
+        <small>Susun prompt yang bagus, untuk AI apa pun — tanpa perlu hafal rumus prompt.</small>
+      </span>
+    </a>
+    <div class="kepala-aksi">
+      <a class="tombol tombol-hantu" href="#pustaka">📚 Pustaka Saya</a>
+      <button id="tombolTema" class="tombol tombol-hantu" type="button" aria-label="Ganti mode gelap/terang">🌙 Gelap</button>
+    </div>
+  </div>
+</header>
+
+<section class="pahlawan">
+  <h1>Mau membuat apa hari ini?</h1>
+  <p>Pilih kategori, isi kolomnya, lalu salin prompt jadinya ke AI favoritmu. Tiga langkah, tanpa daftar, tanpa bayar.</p>
+  <ol class="langkah">
+    <li><span>1</span> Pilih template</li>
+    <li><span>2</span> Isi kolom &amp; atur target AI</li>
+    <li><span>3</span> Pratinjau → salin / kirim ke AI</li>
+  </ol>
+</section>
+
+<main class="tata">
+
+  <div class="kolom-kiri">
+
+    <section class="kartu" aria-labelledby="judulKategori">
+      <h2 id="judulKategori">1 · Mau membuat apa?</h2>
+      <label class="cari">
+        <span class="sr-only">Cari template</span>
+        <input id="cariTemplate" type="search" placeholder="🔍 Cari template… misalnya: kuis, blog, logo">
+      </label>
+      <div id="gridKategori" class="grid-kategori" role="list"></div>
+      <h3 class="subjudul">Template <span id="labelTemplate"></span></h3>
+      <div id="daftarTemplate" class="daftar-template"></div>
+    </section>
+
+    <section class="kartu" aria-labelledby="judulAtur">
+      <h2 id="judulAtur">2 · Atur mode &amp; target AI</h2>
+      <div class="baris-atur">
+        <div>
+          <span class="label-grup">Mode isian</span>
+          <div class="segmen" role="group" aria-label="Mode isian">
+            <button id="modeCepat" type="button" class="segmen-tombol aktif">⚡ Cepat</button>
+            <button id="modeDetail" type="button" class="segmen-tombol">🧩 Detail</button>
+          </div>
+          <p class="petunjuk" id="petunjukMode">Mode Cepat: hanya kolom inti. Ganti ke Detail bila ingin hasil yang lebih kaya.</p>
+        </div>
+      </div>
+      <span class="label-grup">Prompt ini akan dijalankan di…</span>
+      <div id="chipTarget" class="chip-baris" role="group" aria-label="Target AI"></div>
+      <p class="petunjuk" id="petunjukTarget"></p>
+    </section>
+
+    <section class="kartu" aria-labelledby="judulForm">
+      <h2 id="judulForm">3 · Isi kolomnya</h2>
+      <div class="form-kepala">
+        <h3 id="namaTemplate">—</h3>
+        <p id="deskripsiTemplate" class="petunjuk"></p>
+      </div>
+      <form id="formTemplate" novalidate></form>
+      <div class="baris-tombol">
+        <button id="tombolContoh" class="tombol tombol-sekunder" type="button">✨ Isi Contoh</button>
+        <button id="tombolReset" class="tombol tombol-hantu" type="button">↺ Reset</button>
+      </div>
+    </section>
+
+  </div>
+
+  <div class="kolom-kanan">
+    <section class="kartu kartu-preview" aria-labelledby="judulPreview">
+      <div class="preview-kepala">
+        <h2 id="judulPreview">4 · Pratinjau prompt</h2>
+        <span id="jumlahKarakter" class="lencana">0 karakter</span>
+      </div>
+      <textarea id="areaPreview" rows="18" spellcheck="false" aria-label="Pratinjau prompt yang dihasilkan"></textarea>
+      <p class="petunjuk">Pratinjau berubah langsung saat kamu mengetik. Boleh diedit manual sebelum disalin — suntingan manual hilang bila kolom diubah lagi.</p>
+      <div class="baris-tombol">
+        <button id="tombolSalin" class="tombol tombol-utama" type="button">📋 Salin Prompt</button>
+        <div class="menu-kirim">
+          <button id="tombolKirim" class="tombol tombol-aksen" type="button" aria-haspopup="true" aria-expanded="false">🚀 Kirim ke AI ▾</button>
+          <div id="menuKirim" class="menu-turun" role="menu" hidden></div>
+        </div>
+      </div>
+      <div class="baris-tombol">
+        <button id="tombolSimpan" class="tombol tombol-sekunder" type="button">💾 Simpan ke Pustaka</button>
+        <button id="tombolEksporTxt" class="tombol tombol-hantu" type="button">⬇ .txt</button>
+        <button id="tombolEksporMd" class="tombol tombol-hantu" type="button">⬇ .md</button>
+      </div>
+      <p id="statusSalin" class="status" role="status" aria-live="polite"></p>
+    </section>
+
+    <section class="kartu" id="pustaka" aria-labelledby="judulPustaka">
+      <div class="preview-kepala">
+        <h2 id="judulPustaka">📚 Pustaka Saya</h2>
+        <span id="jumlahPustaka" class="lencana">0 prompt</span>
+      </div>
+      <p class="petunjuk">Prompt tersimpan hanya di perangkat ini (localStorage) — tetap ada walau halaman ditutup, dan tidak dikirim ke server mana pun.</p>
+      <label class="cari">
+        <span class="sr-only">Cari di pustaka</span>
+        <input id="cariPustaka" type="search" placeholder="🔍 Cari di pustaka…">
+      </label>
+      <div id="daftarPustaka" class="daftar-pustaka"></div>
+      <div class="baris-tombol">
+        <button id="tombolEksporJson" class="tombol tombol-hantu" type="button">⬇ Ekspor Pustaka (.json)</button>
+        <label class="tombol tombol-hantu berkas">
+          ⬆ Impor Pustaka
+          <input id="berkasImpor" type="file" accept="application/json,.json" hidden>
+        </label>
+      </div>
+    </section>
+  </div>
+
+</main>
+
+<footer class="kaki">
+  <p><strong>Atiga Prompter</strong> · Bagian dari keluarga Atiga · <a href="https://prompter.aantriono.com">prompter.aantriono.com</a></p>
+  <p>🔒 Privasi: semua proses berjalan di perambanmu. Isian, draf, dan Pustaka tidak pernah meninggalkan perangkatmu.</p>
+  <p class="kaki-kecil">Atiga Prompter adalah alat bantu menyusun prompt; hasil akhir tetap ditentukan oleh AI yang kamu pakai. Periksa kembali keluaran AI sebelum digunakan.</p>
+</footer>
+
+<div id="pemberitahuan" class="pemberitahuan" role="status" aria-live="polite"></div>
+
+<script src="prompt-engine.js"></script>
+<script src="storage.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
