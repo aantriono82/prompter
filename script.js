@@ -111,7 +111,7 @@ const TEMPLATE = [
     'Gunakan keunggulan yang diberikan sebagai manfaat yang mudah dipahami target pembeli, tanpa janji berlebihan.',
     'CTA utama harus sama dengan ajakan bertindak yang diberikan dan tampil di Hero serta bagian akhir.'
   ],
-  format:['Markdown siap salin dengan heading per bagian. Untuk setiap bagian tulis: Tujuan bagian, Headline, Subheadline bila perlu, Body copy, dan CTA atau teks tombol bila relevan.']
+  format:['Markdown siap salin dengan heading per bagian. Untuk setiap bagian tulis hanya Headline, Subheadline bila perlu, Body copy, dan CTA atau teks tombol bila relevan. Jangan menambahkan tujuan bagian, analisis strategi, atau catatan proses.']
 },
 {
   id:'website-satu-halaman', kategori:'blog', ikon:'🌐', nama:'Website Satu Halaman',
@@ -137,7 +137,7 @@ const TEMPLATE = [
     'Jangan membuat data, testimoni, alamat, atau klaim bisnis yang tidak diberikan; gunakan placeholder yang jelas bila diperlukan.',
     'Komentar kode dan seluruh teks antarmuka dalam Bahasa Indonesia.'
   ],
-  format:['Awali dengan ringkasan maksimal 5 baris, lalu berikan tepat satu blok kode HTML lengkap yang dapat langsung disimpan sebagai index.html. Jangan menaruh penjelasan setelah blok kode.']
+  format:['Keluarkan tepat satu blok kode HTML lengkap yang dapat langsung disimpan sebagai index.html. Jangan menambahkan ringkasan atau penjelasan di luar blok kode.']
 },
 
 /* ---------- Kategori 2: MPI (khusus SMP, semua mata pelajaran) ---------- */
@@ -176,7 +176,7 @@ const TEMPLATE = [
     'Kode harus satu file HTML mandiri tanpa CDN atau dependensi eksternal, berjalan offline, responsif, dan mudah dipakai dengan keyboard serta sentuhan.',
     'Komentar kode dan seluruh teks antarmuka dalam Bahasa Indonesia.'
   ],
-  format:['Awali dengan ringkasan maksimal 5 baris, lalu berikan tepat satu blok kode HTML lengkap yang siap disimpan dan dibuka di peramban. Jangan memberikan pseudocode atau penjelasan setelah kode.']
+  format:['Keluarkan tepat satu blok kode HTML lengkap yang siap disimpan dan dibuka di peramban. Jangan memberikan ringkasan, pseudocode, atau penjelasan di luar blok kode.']
 },
 {
   id:'simulasi-interaktif', kategori:'mpi', ikon:'🔬', nama:'Simulasi Interaktif',
@@ -203,7 +203,7 @@ const TEMPLATE = [
     'Gunakan rumus dan hubungan konsep yang konsisten dengan materi; jangan menampilkan angka hasil yang tidak dihitung oleh kode.',
     'Kode harus satu file HTML mandiri, berjalan offline, responsif, dan seluruh kontrol yang ditampilkan harus berfungsi.'
   ],
-  format:['Awali dengan ringkasan maksimal 5 baris, lalu berikan satu blok kode HTML lengkap yang siap dibuka di peramban. Jangan berhenti pada pseudocode atau rancangan antarmuka.']
+  format:['Keluarkan satu blok kode HTML lengkap yang siap dibuka di peramban. Jangan memberikan ringkasan, pseudocode, rancangan antarmuka, atau penjelasan di luar blok kode.']
 },
 
 /* ---------- Kategori 3: Game ---------- */
@@ -232,7 +232,7 @@ const TEMPLATE = [
     'Semua fitur wajib yang dipilih harus berfungsi. Jika suara dipilih, gunakan sumber bebas lisensi atau Web Audio sederhana tanpa menghambat game.',
     'Kode harus satu file HTML mandiri, berjalan offline, responsif, dan ramah sentuhan.'
   ],
-  format:['Awali dengan cara bermain maksimal 5 baris, lalu berikan satu blok kode HTML lengkap yang siap dimainkan. Jangan memberikan pseudocode atau uraian panjang setelah kode.']
+  format:['Keluarkan satu blok kode HTML lengkap yang siap dimainkan. Pastikan cara bermain dan petunjuk tersedia di dalam game. Jangan memberikan ringkasan, pseudocode, atau uraian di luar blok kode.']
 },
 {
   id:'kuis-interaktif', kategori:'game', ikon:'❓', nama:'Kuis Interaktif',
@@ -259,7 +259,7 @@ const TEMPLATE = [
     'Terapkan timer hanya bila dipilih. Setelah waktu habis, tandai soal dan lanjutkan dengan aman.',
     'Semua fitur hasil akhir yang dipilih harus tersedia, dan seluruh soal, kunci, serta pembahasan tertanam di dalam kode.'
   ],
-  format:['Awali dengan ringkasan maksimal 5 baris, lalu berikan satu blok kode HTML lengkap yang memuat seluruh soal, kunci, pembahasan, skor, dan fitur hasil yang diminta.']
+  format:['Keluarkan satu blok kode HTML lengkap yang memuat seluruh soal, kunci, pembahasan, skor, dan fitur hasil yang diminta. Jangan memberikan ringkasan atau penjelasan di luar blok kode.']
 },
 
 /* ---------- Kategori 4: Aplikasi / Tools ---------- */
@@ -275,7 +275,8 @@ const TEMPLATE = [
     { i:'fiturUtama', l:'Fitur utama', j:'area', m:'C', w:true, ph:'Satu baris satu fitur…', c:'Tambah tugas per kelas\nTandai tugas terkumpul\nRekap per siswa' },
     { i:'penyimpanan', l:'Data disimpan di mana', j:'pilih', m:'C', o:['Tidak disimpan (hilang saat ditutup)','Di perangkat (localStorage)','Diunduh sebagai berkas'], c:'Di perangkat (localStorage)' },
     { i:'tampilanApp', l:'Tampilan (halaman / bagian)', j:'area', m:'C', w:true, ph:'Satu baris satu halaman atau bagian…', c:'Beranda: daftar kelas\nHalaman kelas: daftar tugas & status' },
-    { i:'batasan', l:'Batasan teknis', j:'centang', m:'D', aturan:true, o:['Satu file HTML','Beberapa file terpisah','Berjalan tanpa internet','Tanpa daftar akun / login'], c:['Satu file HTML','Tanpa daftar akun / login'] },
+    { i:'strukturFile', l:'Struktur berkas', j:'pilih', m:'D', aturan:true, o:['Satu file HTML','Beberapa file terpisah'], c:'Satu file HTML' },
+    { i:'batasan', l:'Batasan tambahan', j:'centang', m:'D', aturan:true, o:['Berjalan tanpa internet','Tanpa daftar akun / login'], c:['Tanpa daftar akun / login'] },
     { i:'gayaVisual', l:'Gaya visual', j:'teks', m:'D', ph:'mis. bersih, biru muda, banyak ruang kosong', c:'bersih dan sederhana' }
   ],
   aturan:[
@@ -285,9 +286,9 @@ const TEMPLATE = [
     'Gunakan bagian tampilan yang diminta dan buat navigasi antarbagian mudah dipahami.',
     'Utamakan kemudahan pemakaian untuk pengguna yang disebutkan, termasuk tampilan responsif dan aksesibilitas dasar.',
     'Seluruh teks antarmuka dan komentar kode dalam Bahasa Indonesia.',
-    'Kode harus lengkap dan dapat dijalankan tanpa pseudocode. Jika batasan satu file atau offline dipilih, jangan gunakan CDN atau dependensi eksternal.'
+    'Kode harus lengkap dan dapat dijalankan tanpa pseudocode. Jika Struktur berkas Satu file HTML atau batasan Berjalan tanpa internet dipilih, jangan gunakan CDN atau dependensi eksternal.'
   ],
-  format:['Awali dengan ringkasan fitur maksimal 5 baris, lalu berikan satu blok kode lengkap sesuai batasan teknis. Jangan memberikan potongan kode atau penjelasan panjang setelahnya.']
+  format:['Jika Struktur berkas Satu file HTML dipilih, keluarkan tepat satu blok kode HTML lengkap. Jika Beberapa file terpisah dipilih, keluarkan setiap file dalam blok kode terpisah dengan nama file yang jelas. Jangan memberikan ringkasan, potongan kode, atau penjelasan di luar blok kode.']
 },
 {
   id:'kalkulator', kategori:'aplikasi', ikon:'🧮', nama:'Kalkulator / Alat Hitung',
@@ -311,7 +312,7 @@ const TEMPLATE = [
     'Tombol hitung, reset, dan seluruh keluaran yang ditentukan harus berfungsi.',
     'Kode harus satu file HTML mandiri, berjalan offline, dan memakai Bahasa Indonesia.'
   ],
-  format:['Awali dengan ringkasan maksimal 5 baris dan tulis rumus yang diterapkan secara singkat, lalu berikan satu blok kode HTML lengkap dengan contoh kasus uji terisi.']
+  format:['Keluarkan satu blok kode HTML lengkap dengan rumus dan contoh kasus uji terisi di dalam aplikasi. Jangan memberikan ringkasan atau penjelasan di luar blok kode.']
 },
 {
   id:'dasbor-data', kategori:'aplikasi', ikon:'📊', nama:'Dasbor Data',
@@ -334,7 +335,7 @@ const TEMPLATE = [
     'Sediakan penyaring atau pengurutan yang diminta dan pastikan kartu, grafik, serta tabel ikut diperbarui.',
     'Kode harus satu file HTML mandiri, berjalan offline, responsif, dan tidak memakai angka fiktif sebagai fakta pengguna.'
   ],
-  format:['Awali dengan ringkasan maksimal 5 baris, lalu berikan satu blok kode HTML lengkap dengan data contoh berlabel bila diperlukan. Jangan memberikan mockup atau pseudocode.']
+  format:['Keluarkan satu blok kode HTML lengkap dengan data contoh berlabel bila diperlukan. Jangan memberikan ringkasan, mockup, pseudocode, atau penjelasan di luar blok kode.']
 },
 
 /* ---------- Kategori 5: Materi Ajar & Soal ---------- */
@@ -458,7 +459,7 @@ const TEMPLATE = [
     'Awali langsung dengan daftar slide; jangan memberi pembuka atau ringkasan dalam bentuk artikel.',
     'Gunakan struktur berikut untuk setiap slide:',
     'Slide 1 — [Judul slide]\nIsi Slide:\n- [bullet singkat]\n- [bullet singkat]\nSaran Visual: [gambar, diagram, atau "Tidak ada — teks saja"]\nCatatan Pembicara: [maksimal 3 kalimat singkat].',
-    'Pisahkan setiap slide dengan satu baris kosong. Setelah slide terakhir, tambahkan bagian "Catatan Desain" maksimal 3 bullet jika memang diperlukan.'
+    'Pisahkan setiap slide dengan satu baris kosong dan jangan menambahkan bagian di luar struktur slide.'
   ]
 },
 
@@ -550,7 +551,7 @@ const TEMPLATE = [
     { i:'rasio', l:'Rasio gambar', j:'pilih', m:'C', o:['16:9','1:1','9:16','4:3'], c:'16:9' },
     { i:'bahasaGambar', l:'Bahasa teks dalam gambar', j:'pilih', m:'C', w:true, o:['Indonesia','Inggris'], c:'Indonesia', h:'Pilih bahasa untuk teks yang terlihat di dalam gambar bila ada.' },
     { i:'cahaya', l:'Pencahayaan & suasana warna', j:'teks', m:'D', ph:'mis. cahaya pagi lembut, warna hangat', c:'cahaya pagi lembut, warna hangat' },
-    { i:'hindariGambar', l:'Detail yang harus dihindari (negative prompt)', j:'teks', m:'D', ph:'mis. teks acak, jari berlebih, buram', c:'teks acak, buram, proporsi wajah aneh' },
+    { i:'hindariGambar', l:'Detail yang harus dihindari', j:'teks', m:'D', ph:'mis. teks acak, jari berlebih, buram', c:'teks acak, buram, proporsi wajah aneh' },
     { i:'alatGambar', l:'Target alat gambar', j:'pilih', m:'D', o:['Umum','Midjourney','DALL·E','Stable Diffusion','Ideogram','Leonardo'], c:'Umum' }
   ],
   aturan:[
