@@ -25,14 +25,14 @@ Prompt bisa disimpan ke **Pustaka Saya**, diunduh sebagai `.txt` / `.md`, dan pu
 | 🎓 MPI | MPI Lengkap · Simulasi Interaktif — *khusus jenjang SMP (Kelas VII–IX, Fase D), semua mata pelajaran* |
 | 🎮 Game | Game Edukasi · Kuis Interaktif |
 | 🛠️ Aplikasi / Tools | Aplikasi Web · Kalkulator / Alat Hitung · Dasbor Data |
-| 📚 Materi Ajar & Soal | Modul Ajar / RPP · LKPD · Bank Soal · Slide Presentasi |
+| 📚 Materi Ajar & Soal | Modul Ajar / RPP Ringkas · LKPD · Bank Soal · Slide Presentasi |
 | ✍️ Tulisan & Konten | Artikel / Esai / Refleksi · Cerita / Cerpen · Konten Media Sosial & Naskah Video |
 | 🎨 Gambar & Desain | Gambar AI · Logo · Infografis |
 | 🧩 Prompt Bebas | Prompt Bebas Universal |
 
 Catatan khusus:
 
-- **Template Modul Ajar / RPP** mengikuti *Perencanaan Pembelajaran Mendalam* dalam **Panduan Mata Pelajaran Final Fase A–F (BSKAP Kemendikdasmen, 2025)**: Identifikasi → Desain Pembelajaran → Pengalaman Belajar (Memahami → Mengaplikasi → Merefleksi) → Asesmen Pembelajaran (awal, proses, akhir), dengan CP mengacu pada **Keputusan Kepala BSKAP No. 046/H/KR/2025**.
+- **Template Modul Ajar / RPP Ringkas** mempertahankan empat bagian *Perencanaan Pembelajaran Mendalam*: Identifikasi → Desain Pembelajaran → Pengalaman Belajar (Memahami → Mengaplikasi → Merefleksi) → Asesmen Pembelajaran (awal, proses, akhir). Formulirnya hanya meminta masukan inti; rincian opsional berada di Mode Detail. Acuan CP wajib ditempel dari [Panduan Mata Pelajaran Matematika Fase A–F dan Fase F Tingkat Lanjut (BSKAP, 2025)](https://repositori.kemendikdasmen.go.id/33608/) atau [Lampiran Keputusan Kepala BSKAP No. 046/H/KR/2025](https://kurikulum.kemendikdasmen.go.id/file/1753929861_manage_file.pdf).
 - **Template Gambar AI** menghasilkan satu gambar langsung. Kolom *Bahasa teks dalam gambar* menentukan bahasa teks yang terlihat di dalam gambar bila ada.
 
 ## Format Prompt per Target AI
