@@ -427,9 +427,9 @@ const TEMPLATE = [
 },
 {
   id:'slide-presentasi', kategori:'materi', ikon:'🖥️', nama:'Slide Presentasi',
-  deskripsi:'Membuat file presentasi yang dapat langsung diunduh, bukan hanya outline teks.',
-  peran:'Anda adalah perancang presentasi sekaligus pembuat file presentasi berpengalaman. Anda mengubah materi menjadi slide yang ringkas, runtut, menarik secara visual, dan siap digunakan.',
-  tugas:'Buat presentasi final berdasarkan materi dan tujuan berikut dalam Format keluaran yang dipilih. Hasil utama wajib berupa file presentasi yang dapat langsung diunduh dan dibuka. Jangan berhenti pada outline, rancangan, atau daftar isi slide.',
+  deskripsi:'Membuat file presentasi siap unduh dengan alur, sistem desain, dan visual yang konsisten.',
+  peran:'Anda adalah desainer presentasi profesional, instructional designer, dan pembuat file PowerPoint. Anda mengubah materi menjadi presentasi yang ringkas, runtut, mudah dipahami, dan memiliki sistem desain visual yang konsisten.',
+  tugas:'Buat presentasi final berdasarkan materi dan tujuan berikut dalam Format keluaran yang dipilih. Hasil utama wajib berupa satu file presentasi yang dapat langsung diunduh dan dibuka. Jangan berhenti pada outline, rancangan, atau daftar isi slide.',
   fields:[
     { i:'topikSlide', l:'Topik presentasi', j:'teks', m:'C', w:true, ph:'mis. Pengenalan Bilangan Bulat', c:'Pengenalan Bilangan Bulat' },
     { i:'audiens', l:'Hadirin / audiens', j:'teks', m:'C', w:true, ph:'mis. siswa SMP kelas VII', c:'siswa SMP kelas VII' },
@@ -437,7 +437,9 @@ const TEMPLATE = [
     { i:'tujuanPresentasi', l:'Tujuan presentasi', j:'teks', m:'C', w:true, ph:'mis. siswa memahami bilangan negatif lewat contoh suhu dan utang', c:'siswa memahami bilangan negatif lewat contoh sehari-hari' },
     { i:'formatKeluaran', l:'Format keluaran', j:'pilih', m:'C', w:true, o:['PowerPoint (.pptx) — buat dan lampirkan file','PDF (.pdf) — buat dan lampirkan file','HTML slide mandiri (.html) — buat dan lampirkan file'], c:'PowerPoint (.pptx) — buat dan lampirkan file' },
     { i:'gayaSampai', l:'Gaya penyampaian', j:'pilih', m:'D', o:['Mengajar','Seminar','Promosi','Laporan'], c:'Mengajar' },
-    { i:'visual', l:'Kebutuhan visual per slide', j:'pilih', m:'D', o:['Gunakan gambar / diagram yang relevan','Teks saja'], c:'Gunakan gambar / diagram yang relevan' }
+    { i:'visual', l:'Kebutuhan visual per slide', j:'pilih', m:'C', o:['Gunakan gambar / diagram yang relevan','Teks saja'], c:'Gunakan gambar / diagram yang relevan' },
+    { i:'gayaVisual', l:'Gaya visual presentasi', j:'pilih', m:'C', o:['Modern edukatif — biru tua, hijau, dan kuning lembut','Minimal profesional — monokrom dengan satu warna aksen','Cerah ramah — warna hangat dengan kontras tinggi'], c:'Modern edukatif — biru tua, hijau, dan kuning lembut' },
+    { i:'arahVisual', l:'Arahan visual khusus (opsional)', j:'area', m:'D', ph:'Jelaskan visual, contoh, atau identitas yang ingin ditampilkan…', c:'Gunakan diagram alur, ikon sederhana, dan mockup antarmuka. Hindari gambar dekoratif yang tidak membantu pemahaman.' }
   ],
   aturan:[
     'Keluarkan tepat sejumlah slide yang diminta pada kolom Jumlah slide.',
@@ -450,12 +452,25 @@ const TEMPLATE = [
     'Letakkan penjelasan, contoh, transisi, dan kalimat yang lebih panjang di bagian Catatan Pembicara.',
     'Catatan Pembicara maksimal 3 kalimat singkat per slide dan tidak boleh mengulang semua bullet secara mentah.',
     'Bangun alur presentasi yang jelas: pembuka, konteks atau masalah, pembahasan utama, contoh atau data, kesimpulan, lalu ajakan atau refleksi bila relevan.',
-    'Ikuti pilihan Kebutuhan visual per slide dan masukkan visualnya langsung ke dalam slide bila format mendukung. Jika dipilih Teks saja, gunakan tata letak yang bersih tanpa gambar tambahan.',
+    'Sebelum merender file, rancang alur dan fokus setiap slide secara internal. Jangan menampilkan outline tersebut sebagai pengganti file.',
+    'Jika jumlah slide minimal 8, susun alur dengan pembuka, konteks, peta proses, pembahasan utama, contoh atau data, masalah umum, ringkasan, dan ajakan.',
+    'Gunakan satu pesan utama pada setiap slide dan ubah konsep yang berurutan menjadi diagram alur, timeline, proses bernomor, atau perbandingan.',
+    'Terapkan sistem desain yang konsisten: latar terang atau gelap yang terkontrol, maksimal 4 warna utama, font sans-serif yang mudah dibaca, judul minimal 28 pt, dan isi minimal 18 pt.',
+    'Gunakan ruang kosong yang cukup, margin yang konsisten, kontras tinggi, dan hierarki ukuran yang jelas. Jangan memenuhi slide dengan teks.',
+    'Gunakan variasi layout yang terencana: slide pembuka, kartu manfaat, diagram proses, checklist, mockup, perbandingan, dan ringkasan.',
+    'Jika topik berupa teknologi atau prosedur, prioritaskan diagram alur, potongan kode pendek, struktur folder, mockup antarmuka, atau anotasi langkah yang relevan.',
+    'Jika topik berupa konsep atau pembelajaran, prioritaskan contoh konkret, perbandingan, ilustrasi hubungan sebab-akibat, dan visual yang membantu menjelaskan ide.',
+    'Masukkan visual langsung ke dalam slide bila format mendukung. Gunakan ikon sederhana atau bentuk PowerPoint yang dapat diedit bila gambar khusus tidak tersedia.',
+    'Hindari clip art generik, gambar dekoratif tanpa fungsi, screenshot buram, teks kecil, tabel padat, dan pengulangan layout yang sama pada semua slide.',
+    'Ikuti pilihan Gaya visual presentasi dan Arahan visual khusus bila diisi. Jika dipilih Teks saja, gunakan tata letak bersih tanpa gambar tambahan, tetapi pertahankan hierarki, warna, dan ruang kosong yang baik.',
+    'Jika Gaya visual presentasi atau Kebutuhan visual per slide tidak diisi, gunakan gaya Modern edukatif dan visual diagram atau bentuk yang relevan.',
+    'Lakukan pemeriksaan akhir: jumlah slide tepat, semua teks terbaca, tidak ada elemen bertumpuk atau keluar batas, warna dan font konsisten, serta visual relevan dengan isi.',
     'Setelah file dibuat, berikan nama file dan tautan unduhan singkat. Jika lingkungan tidak mendukung pembuatan atau lampiran file, buat satu file HTML slide mandiri lengkap sebagai fallback dan jangan kembali ke outline.'
   ],
   format:[
     'Keluaran akhir: satu file presentasi yang dapat langsung diunduh dan dibuka sesuai Format keluaran.',
     'Untuk PowerPoint, hasil akhir harus berupa file .pptx yang berisi seluruh slide, tata letak, teks, visual, dan catatan pembicara bila format file mendukungnya.',
+    'Gunakan nama file yang jelas dan aman, misalnya presentasi-[topik].pptx.',
     'Jangan mengawali respons dengan analisis atau outline. Setelah file terlampir, cukup tulis nama file dan keterangan singkat bahwa presentasi siap digunakan.'
   ]
 },
