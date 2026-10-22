@@ -120,8 +120,10 @@
       <div class="baris-tombol">
         <button id="tombolSalin" class="tombol tombol-utama" type="button">📋 Salin Prompt</button>
         <div class="menu-kirim">
-          <button id="tombolKirim" class="tombol tombol-aksen" type="button" aria-haspopup="true" aria-expanded="false">🚀 Kirim ke AI ▾</button>
-          <div id="menuKirim" class="menu-turun" role="menu" hidden></div>
+          <label class="sr-only" for="pilihKirimAI">Pilih model AI tujuan</label>
+          <select id="pilihKirimAI" class="tombol pilih-kirim" aria-label="Kirim prompt ke AI">
+            <option value="">🚀 Kirim ke AI ▾</option>
+          </select>
         </div>
       </div>
       <div class="baris-tombol">

@@ -991,21 +991,15 @@ $('tombolPreviewMobile').addEventListener('click', () => {
   setTimeout(() => $('areaPreview').focus({ preventScroll: true }), 250);
 });
 
-function renderMenuKirim(){
-  const menu = $('menuKirim');
-  menu.innerHTML = '';
+function renderPilihKirimAI(){
+  const pilih = $('pilihKirimAI');
+  pilih.innerHTML = '<option value="">🚀 Kirim ke AI ▾</option>';
   for (const a of TARGET_AI){
     if (!a.url) continue;
-    const b = document.createElement('button');
-    b.type = 'button';
-    b.setAttribute('role', 'menuitem');
-    b.textContent = '🚀 ' + a.nama;
-    b.addEventListener('click', () => {
-      menu.hidden = true;
-      $('tombolKirim').setAttribute('aria-expanded', 'false');
-      kirimKeAI(a);
-    });
-    menu.appendChild(b);
+    const option = document.createElement('option');
+    option.value = a.id;
+    option.textContent = '🚀 ' + a.nama;
+    pilih.appendChild(option);
   }
 }
 async function kirimKeAI(a){
@@ -1024,16 +1018,11 @@ async function kirimKeAI(a){
   const tab = window.open(alamat, '_blank', 'noopener,noreferrer');
   if (!tab) toast('Popup diblokir peramban. Izinkan popup untuk membuka ' + a.nama + '.');
 }
-$('tombolKirim').addEventListener('click', () => {
-  const menu = $('menuKirim');
-  menu.hidden = !menu.hidden;
-  $('tombolKirim').setAttribute('aria-expanded', String(!menu.hidden));
-});
-document.addEventListener('click', e => {
-  if (!e.target.closest('.menu-kirim')){
-    $('menuKirim').hidden = true;
-    $('tombolKirim').setAttribute('aria-expanded', 'false');
-  }
+$('pilihKirimAI').addEventListener('change', e => {
+  const a = TARGET_AI.find(target => target.id === e.target.value);
+  if (!a) return;
+  kirimKeAI(a);
+  e.target.value = '';
 });
 
 /* ---------- Isi contoh & reset ---------- */
@@ -1220,7 +1209,7 @@ renderKategori();
 renderDaftarTemplate();
 renderMode();
 renderTarget();
-renderMenuKirim();
+renderPilihKirimAI();
 renderForm();
 renderPustaka();
 simpanPilihan();
