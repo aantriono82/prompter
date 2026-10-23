@@ -2,7 +2,7 @@
 
 > **Susun prompt yang bagus, untuk AI apa pun — tanpa perlu hafal rumus prompt.**
 
-Atiga Prompter adalah aplikasi web untuk **menghasilkan prompt siap pakai** yang kemudian dijalankan di AI mana pun: ChatGPT, Claude, Gemini, DeepSeek, Qwen, Copilot, Grok, Meta AI, atau AI lain (format Universal).
+Atiga Prompter adalah aplikasi web untuk **membantu guru menghasilkan prompt siap pakai** yang kemudian dijalankan di AI mana pun: ChatGPT, Claude, Gemini, DeepSeek, Qwen, Copilot, Grok, Meta AI, atau AI lain (format Universal).
 
 🌐 **Alamat:** https://prompter.aantriono.com
 📦 **Repositori:** https://github.com/aantriono82/prompter
@@ -11,24 +11,22 @@ Atiga Prompter adalah aplikasi web untuk **menghasilkan prompt siap pakai** yang
 
 ## Cara Pakai (3 langkah)
 
-1. **Pilih template** — mulai dari pertanyaan "Mau membuat apa?": ada 8 kategori dan 21 template.
+1. **Pilih template** — mulai dari pertanyaan "Mau membuat apa?": ada 6 kategori dan 17 template utama.
 2. **Isi kolomnya** — pilih Mode **Cepat** (kolom inti) atau **Detail** (semua kolom), lalu pilih **target AI** agar format prompt menyesuaikan dengan AI tujuan.
 3. **Pratinjau → salin / kirim** — pratinjau berubah langsung saat mengetik dan boleh diedit manual. Tekan **Salin Prompt**, atau **Kirim ke AI** agar prompt tersalin dan situs AI terbuka di tab baru (khusus ChatGPT, prompt terisi otomatis bila tidak terlalu panjang).
 
 Prompt bisa disimpan ke **Pustaka Saya**, diunduh sebagai `.txt` / `.md`, dan pustaka bisa diekspor–impor sebagai `.json` untuk pindah perangkat. Berkas pustaka memakai format berversi agar perubahan struktur data dapat ditangani dengan aman; format array lama tetap bisa diimpor.
 
-## Kategori & Template (8 kategori, 21 template)
+## Kategori & Template (6 kategori, 17 template utama)
 
 | Kategori | Template |
 |---|---|
-| 🌐 Blog / Website | Artikel Blog · Halaman Penjualan (Landing Page) · Website Satu Halaman |
-| 🎓 MPI | MPI Lengkap · Simulasi Interaktif — *khusus jenjang SMP (Kelas VII–IX, Fase D), semua mata pelajaran* |
-| 🎮 Game | Game Edukasi · Kuis Interaktif |
-| 🛠️ Aplikasi / Tools | Aplikasi Web · Kalkulator / Alat Hitung · Dasbor Data |
-| 📚 Materi Ajar & Soal | Modul Ajar / RPP Ringkas · LKPD · Bank Soal · Slide Presentasi (.pptx / PDF / HTML) |
-| ✍️ Tulisan & Konten | Artikel / Esai / Refleksi · Cerita / Cerpen · Konten Media Sosial & Naskah Video |
-| 🎨 Gambar & Desain | Gambar AI · Logo · Infografis |
-| 🧩 Prompt Bebas | Prompt Bebas Universal |
+| 📚 Perencanaan & Materi | Modul Ajar / RPP Ringkas · LKPD · Slide Presentasi (.pptx / PDF / HTML) |
+| 🧾 Asesmen & Penilaian | Bank Soal · Kuis Interaktif · Rubrik & Penilaian · Rekap Nilai & Analisis Hasil Belajar |
+| 🗂️ Administrasi Guru | Absensi & Jurnal Mengajar · Umpan Balik & Laporan Perkembangan |
+| 🎓 Media Pembelajaran | MPI Lengkap · Simulasi Interaktif · Game Edukasi — *khusus jenjang SMP (Kelas VII–IX, Fase D), semua mata pelajaran* |
+| 🎨 Gambar & Infografis | Gambar AI · Infografis |
+| 🧩 Lainnya | Aplikasi Web Bebas · Website Satu Halaman · Prompt Bebas Universal |
 
 Catatan khusus:
 

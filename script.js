@@ -5,11 +5,11 @@
    Vanilla JS, tanpa pustaka luar. Seluruh data & logika lokal.
 
    Struktur berkas:
-   1) DATA  : KATEGORI, TARGET_AI, TEMPLATE (21 template)
+   1) DATA  : KATEGORI, TARGET_AI, TEMPLATE (17 template utama)
    2) MESIN : susunBlok() + bungkus() — penyusun prompt per target AI
    3) UI    : render & interaksi halaman (hanya berjalan di peramban)
 
-   Cara menambah template: tambahkan satu objek ke TEMPLATE.
+   Cara menambah template: tambahkan satu objek ke TEMPLATE lalu masukkan id-nya ke ID_TEMPLATE_UTAMA.
    Kolom (fields) — singkatan:
      i = id unik kolom          l = label yang tampil
      j = jenis: 'teks' | 'area' | 'pilih' | 'centang' | 'angka'
@@ -25,14 +25,12 @@
 /* ---------------- 1) DATA ---------------- */
 
 const KATEGORI = [
-  { id:'blog',     ikon:'🌐', nama:'Blog / Website',    deskripsi:'Artikel blog, halaman penjualan, website satu halaman' },
-  { id:'mpi',      ikon:'🎓', nama:'MPI',               deskripsi:'Media Pembelajaran Interaktif — khusus SMP, semua mata pelajaran' },
-  { id:'game',     ikon:'🎮', nama:'Game',              deskripsi:'Game edukasi dan kuis interaktif' },
-  { id:'aplikasi', ikon:'🛠️', nama:'Aplikasi / Tools',  deskripsi:'Aplikasi web, kalkulator, dan dasbor data' },
-  { id:'materi',   ikon:'📚', nama:'Materi Ajar & Soal',deskripsi:'Modul ajar / RPP, LKPD, bank soal, slide presentasi' },
-  { id:'tulisan',  ikon:'✍️', nama:'Tulisan & Konten',  deskripsi:'Artikel, esai, cerita, dan konten media sosial' },
-  { id:'gambar',   ikon:'🎨', nama:'Gambar & Desain',   deskripsi:'Gambar AI, logo, dan infografis' },
-  { id:'bebas',    ikon:'🧩', nama:'Prompt Bebas',      deskripsi:'Kerangka universal untuk kebutuhan apa pun' }
+  { id:'materi',       ikon:'📚', nama:'Perencanaan & Materi', deskripsi:'Modul ajar, LKPD, dan slide presentasi' },
+  { id:'asesmen',      ikon:'🧾', nama:'Asesmen & Penilaian',   deskripsi:'Bank soal, kuis, rubrik, dan rekap nilai' },
+  { id:'administrasi', ikon:'🗂️', nama:'Administrasi Guru',    deskripsi:'Absensi, jurnal, dan laporan perkembangan siswa' },
+  { id:'mpi',          ikon:'🎓', nama:'Media Pembelajaran',    deskripsi:'MPI, simulasi, dan game edukasi untuk kelas' },
+  { id:'media',        ikon:'🎨', nama:'Gambar & Infografis',   deskripsi:'Visual edukasi untuk materi dan kelas' },
+  { id:'umum',         ikon:'🧩', nama:'Lainnya',               deskripsi:'Aplikasi web bebas dan prompt universal' }
 ];
 
 const TARGET_AI = [
@@ -114,7 +112,7 @@ const TEMPLATE = [
   format:['Markdown siap salin dengan heading per bagian. Untuk setiap bagian tulis hanya Headline, Subheadline bila perlu, Body copy, dan CTA atau teks tombol bila relevan. Jangan menambahkan tujuan bagian, analisis strategi, atau catatan proses.']
 },
 {
-  id:'website-satu-halaman', kategori:'blog', ikon:'🌐', nama:'Website Satu Halaman',
+  id:'website-satu-halaman', kategori:'umum', ikon:'🌐', nama:'Website Satu Halaman',
   deskripsi:'Prompt untuk membuat website satu halaman utuh (profil, portofolio, usaha, acara).',
   peran:'Anda adalah pengembang web front-end berpengalaman yang membuat website satu halaman yang modern, responsif, dan siap pakai dalam satu file HTML (CSS & JS di dalam file yang sama bila tidak diminta lain).',
   tugas:'Buatlah website satu halaman yang lengkap dan siap jalan berdasarkan spesifikasi berikut. Hasil akhir harus berupa satu berkas HTML yang bisa langsung dibuka di peramban.',
@@ -208,7 +206,7 @@ const TEMPLATE = [
 
 /* ---------- Kategori 3: Game ---------- */
 {
-  id:'game-edukasi', kategori:'game', ikon:'🎮', nama:'Game Edukasi',
+  id:'game-edukasi', kategori:'mpi', ikon:'🎮', nama:'Game Edukasi',
   deskripsi:'Game yang melatih materi atau keterampilan tertentu sambil bermain.',
   peran:'Anda adalah pengembang game edukasi berpengalaman yang membuat game satu file HTML yang seru, adil, dan benar-benar melatih materi.',
   tugas:'Buatlah satu game edukasi yang lengkap dan siap dimainkan berdasarkan spesifikasi berikut. Hasil akhir harus berupa game yang bisa langsung dimainkan, bukan konsep game atau pseudocode.',
@@ -235,7 +233,7 @@ const TEMPLATE = [
   format:['Keluarkan satu blok kode HTML lengkap yang siap dimainkan. Pastikan cara bermain dan petunjuk tersedia di dalam game. Jangan memberikan ringkasan, pseudocode, atau uraian di luar blok kode.']
 },
 {
-  id:'kuis-interaktif', kategori:'game', ikon:'❓', nama:'Kuis Interaktif',
+  id:'kuis-interaktif', kategori:'asesmen', ikon:'❓', nama:'Kuis Interaktif',
   deskripsi:'Kuis dengan soal dari materimu, lengkap dengan pembahasan dan skor.',
   peran:'Anda adalah pengembang kuis interaktif dan penyusun soal berpengalaman yang membuat kuis satu file HTML.',
   tugas:'Buatlah satu kuis interaktif yang lengkap dan siap dipakai berdasarkan spesifikasi berikut. Hasil akhir harus berupa kuis yang dapat langsung dimainkan dan seluruh soalnya harus disusun hanya dari materi sumber yang diberikan.',
@@ -262,9 +260,9 @@ const TEMPLATE = [
   format:['Keluarkan satu blok kode HTML lengkap yang memuat seluruh soal, kunci, pembahasan, skor, dan fitur hasil yang diminta. Jangan memberikan ringkasan atau penjelasan di luar blok kode.']
 },
 
-/* ---------- Kategori 4: Aplikasi / Tools ---------- */
+/* ---------- Kategori 4: Alat Kerja Guru ---------- */
 {
-  id:'aplikasi-web', kategori:'aplikasi', ikon:'🛠️', nama:'Aplikasi Web',
+  id:'aplikasi-web', kategori:'umum', ikon:'🛠️', nama:'Aplikasi Web Bebas',
   deskripsi:'Aplikasi web apa pun: pencatat, pengelola, alat bantu kerja, dan lainnya.',
   peran:'Anda adalah pengembang aplikasi web berpengalaman yang membuat aplikasi yang sederhana, cepat, dan benar-benar menyelesaikan masalah penggunanya.',
   tugas:'Buatlah satu aplikasi web yang lengkap dan siap dipakai berdasarkan spesifikasi berikut. Hasil akhir harus berupa aplikasi yang dapat langsung digunakan, bukan wireframe, pseudocode, atau daftar fitur saja.',
@@ -337,6 +335,108 @@ const TEMPLATE = [
   ],
   format:['Keluarkan satu blok kode HTML lengkap dengan data contoh berlabel bila diperlukan. Jangan memberikan ringkasan, mockup, pseudocode, atau penjelasan di luar blok kode.']
 },
+{
+  id:'rekap-nilai', kategori:'asesmen', ikon:'🧾', nama:'Rekap Nilai & Analisis Hasil Belajar',
+  deskripsi:'Mengolah nilai siswa menjadi rekap, ringkasan, dan analisis yang mudah dibaca.',
+  peran:'Anda adalah pengembang aplikasi penilaian kelas yang teliti, memahami alur kerja guru, dan menyajikan data hasil belajar secara jujur serta mudah diperiksa.',
+  tugas:'Buatlah satu aplikasi web rekap nilai dan analisis hasil belajar yang lengkap dan siap dipakai berdasarkan spesifikasi berikut. Hasil akhir harus benar-benar dapat menerima data, menghitung nilai, dan menampilkan rekap, bukan sekadar mockup atau tabel contoh.',
+  konteks:['Aplikasi ini digunakan oleh {penggunaNilai} untuk mengelola hasil belajar {kelasNilai}.'],
+  fields:[
+    { i:'penggunaNilai', l:'Pengguna aplikasi', j:'teks', m:'C', w:true, ph:'mis. guru SMP', c:'guru SMP' },
+    { i:'kelasNilai', l:'Jenjang, kelas, dan mata pelajaran', j:'teks', m:'C', w:true, ph:'mis. SMP kelas VII, Matematika', c:'SMP kelas VII, Matematika' },
+    { i:'komponenNilai', l:'Komponen penilaian', j:'area', m:'C', w:true, ph:'Satu baris satu komponen…', c:'Tugas harian\nKuis\nProyek\nPenilaian akhir' },
+    { i:'bobotNilai', l:'Bobot setiap komponen', j:'area', m:'C', w:true, ph:'Satu baris satu bobot…', c:'Tugas harian 20%\nKuis 20%\nProyek 30%\nPenilaian akhir 30%' },
+    { i:'dataSiswaNilai', l:'Data siswa / nilai awal', j:'area', m:'C', w:true, ph:'Tempel nama siswa dan nilai, atau jelaskan kolom datanya…', c:'Nama,Nama Tugas harian,Kuis,Proyek,Penilaian akhir\nAlya,80,75,88,90\nBima,65,70,72,68' },
+    { i:'sumberNilai', l:'Cara memasukkan data', j:'pilih', m:'C', w:true, o:['Diketik langsung di aplikasi','Ditempel sebagai tabel','Diimpor dari CSV'], c:'Ditempel sebagai tabel' },
+    { i:'hasilNilai', l:'Keluaran yang diperlukan', j:'area', m:'C', w:true, ph:'Satu baris satu keluaran…', c:'Nilai akhir tiap siswa\nRata-rata kelas\nNilai tertinggi dan terendah\nRingkasan per komponen' },
+    { i:'fiturNilai', l:'Fitur tambahan', j:'centang', m:'D', aturan:true, o:['Edit dan hapus data','Saring per siswa atau rentang nilai','Urutkan nilai','Ekspor CSV','Cetak rekap','Simpan di perangkat (localStorage)'], c:['Edit dan hapus data','Saring per siswa atau rentang nilai','Urutkan nilai','Cetak rekap','Simpan di perangkat (localStorage)'] }
+  ],
+  aturan:[
+    'Gunakan bobot persis seperti yang diberikan dan tampilkan rincian perhitungan agar guru dapat memeriksa hasilnya.',
+    'Jangan mengubah nama siswa, nilai, bobot, atau satuan. Jika data belum lengkap, sediakan data contoh yang diberi label dan mudah diganti.',
+    'Validasi nilai kosong, bukan angka, dan nilai di luar rentang yang ditentukan; tampilkan pesan yang ramah tanpa membuat halaman error.',
+    'Tampilkan rekap individu dan ringkasan kelas sesuai keluaran yang diminta. Semua ringkasan harus dihitung dari data, bukan ditulis sebagai angka tetap.',
+    'Jangan menetapkan batas ketuntasan, predikat, atau kebijakan penilaian yang tidak diberikan pengguna. Jika dibutuhkan tetapi belum ada, sediakan pengaturan yang dapat diubah guru.',
+    'Seluruh teks antarmuka dan komentar kode dalam Bahasa Indonesia. Kode harus satu file HTML mandiri, responsif, berjalan offline, dan tidak memakai CDN.'
+  ],
+  format:['Keluarkan satu blok kode HTML lengkap. Sertakan data contoh berlabel bila diperlukan, rumus yang terlihat, validasi, dan seluruh fitur tambahan yang dipilih. Jangan memberikan ringkasan atau penjelasan di luar blok kode.']
+},
+{
+  id:'absensi-jurnal', kategori:'administrasi', ikon:'📅', nama:'Absensi & Jurnal Mengajar',
+  deskripsi:'Mencatat kehadiran, materi, aktivitas, dan tindak lanjut setiap pertemuan.',
+  peran:'Anda adalah pengembang aplikasi administrasi kelas yang memahami kebutuhan guru untuk mencatat kehadiran dan jurnal pembelajaran secara cepat.',
+  tugas:'Buatlah satu aplikasi web absensi dan jurnal mengajar yang lengkap dan siap dipakai. Aplikasi harus membantu guru mencatat satu pertemuan dari awal sampai selesai, melihat rekap, dan menemukan catatan yang diperlukan.',
+  konteks:['Aplikasi ini digunakan oleh {penggunaAbsensi} untuk kelas {kelasAbsensi}.'],
+  fields:[
+    { i:'penggunaAbsensi', l:'Pengguna aplikasi', j:'teks', m:'C', w:true, ph:'mis. guru kelas atau guru mata pelajaran', c:'guru mata pelajaran' },
+    { i:'kelasAbsensi', l:'Kelas dan mata pelajaran', j:'teks', m:'C', w:true, ph:'mis. VII A — Matematika', c:'VII A — Matematika' },
+    { i:'daftarSiswaAbsensi', l:'Daftar siswa', j:'area', m:'C', w:true, ph:'Satu nama per baris…', c:'Alya\nBima\nCitra\nDanu' },
+    { i:'statusAbsensi', l:'Status kehadiran', j:'centang', m:'C', w:true, o:['Hadir','Sakit','Izin','Alpa','Terlambat'], c:['Hadir','Sakit','Izin','Alpa','Terlambat'] },
+    { i:'isiJurnal', l:'Isi jurnal pertemuan', j:'area', m:'C', w:true, ph:'Misalnya materi, tujuan, kegiatan, dan catatan…', c:'Materi: Operasi bilangan bulat\nKegiatan: diskusi berpasangan dan latihan soal\nCatatan: beberapa siswa perlu penguatan konsep tanda negatif' },
+    { i:'fiturAbsensi', l:'Fitur tambahan', j:'centang', m:'D', aturan:true, o:['Riwayat pertemuan','Rekap per siswa','Filter tanggal atau status','Edit dan hapus catatan','Cetak jurnal','Ekspor CSV','Simpan di perangkat (localStorage)'], c:['Riwayat pertemuan','Rekap per siswa','Filter tanggal atau status','Cetak jurnal','Simpan di perangkat (localStorage)'] }
+  ],
+  aturan:[
+    'Sediakan alur yang cepat untuk memilih tanggal atau pertemuan, mengisi status setiap siswa, menulis jurnal, lalu menyimpan catatan.',
+    'Nama siswa dan status harus tetap konsisten. Berikan penanda bila ada siswa yang belum diberi status.',
+    'Tampilkan rekap jumlah dan persentase tiap status serta rekap per siswa bila diminta. Hitung semua ringkasan dari data yang tersimpan.',
+    'Sediakan keadaan kosong, validasi masukan, konfirmasi sebelum menghapus, dan pesan sukses atau error yang jelas.',
+    'Jangan mengarang nama siswa, tanggal, materi, atau catatan sebagai data nyata. Data contoh harus diberi label.',
+    'Seluruh teks antarmuka dan komentar kode dalam Bahasa Indonesia. Kode harus satu file HTML mandiri, responsif, berjalan offline, dan tidak memakai CDN.'
+  ],
+  format:['Keluarkan satu blok kode HTML lengkap dengan formulir, daftar siswa, penyimpanan, rekap, dan fitur tambahan yang dipilih. Jangan memberikan ringkasan atau penjelasan di luar blok kode.']
+},
+{
+  id:'rubrik-penilaian', kategori:'asesmen', ikon:'📐', nama:'Rubrik & Penilaian',
+  deskripsi:'Membuat rubrik, menilai karya siswa, dan menghasilkan skor serta umpan balik.',
+  peran:'Anda adalah pengembang alat asesmen yang membantu guru membuat rubrik yang jelas, konsisten, dan mudah digunakan saat menilai pekerjaan siswa.',
+  tugas:'Buatlah satu aplikasi web rubrik dan penilaian yang lengkap dan siap dipakai. Guru harus dapat menentukan kriteria, memilih level pencapaian, menilai beberapa siswa, lalu memperoleh skor dan umpan balik yang dapat diperiksa.',
+  konteks:['Rubrik ini digunakan untuk {tugasRubrik} pada {kelasRubrik}.'],
+  fields:[
+    { i:'tugasRubrik', l:'Tugas / karya yang dinilai', j:'teks', m:'C', w:true, ph:'mis. presentasi proyek pencemaran lingkungan', c:'presentasi proyek pencemaran lingkungan' },
+    { i:'kelasRubrik', l:'Jenjang, kelas, dan mata pelajaran', j:'teks', m:'C', w:true, ph:'mis. SMP kelas VIII, IPA', c:'SMP kelas VIII, IPA' },
+    { i:'tujuanRubrik', l:'Tujuan atau kompetensi yang dinilai', j:'area', m:'C', w:true, ph:'Satu baris satu tujuan…', c:'Menjelaskan hubungan sebab-akibat\nMenggunakan bukti yang relevan\nMenyampaikan gagasan dengan jelas' },
+    { i:'kriteriaRubrik', l:'Kriteria penilaian', j:'area', m:'C', w:true, ph:'Satu baris satu kriteria…', c:'Ketepatan isi\nPenggunaan bukti\nKejelasan komunikasi' },
+    { i:'levelRubrik', l:'Level pencapaian', j:'teks', m:'C', w:true, ph:'mis. 4 level: Sangat baik, Baik, Cukup, Perlu bimbingan', c:'4 level: Sangat baik, Baik, Cukup, Perlu bimbingan' },
+    { i:'bobotRubrik', l:'Bobot kriteria (opsional)', j:'area', m:'D', ph:'Satu baris satu bobot…', c:'Ketepatan isi 40%\nPenggunaan bukti 30%\nKejelasan komunikasi 30%' },
+    { i:'dataSiswaRubrik', l:'Nama siswa / hasil penilaian awal', j:'area', m:'D', ph:'Satu nama per baris atau tempel data…', c:'Alya\nBima\nCitra' },
+    { i:'fiturRubrik', l:'Fitur tambahan', j:'centang', m:'D', aturan:true, o:['Skor otomatis','Umpan balik per kriteria','Penilaian beberapa siswa','Edit rubrik','Cetak rubrik kosong','Ekspor hasil','Simpan di perangkat (localStorage)'], c:['Skor otomatis','Umpan balik per kriteria','Penilaian beberapa siswa','Cetak rubrik kosong','Simpan di perangkat (localStorage)'] }
+  ],
+  aturan:[
+    'Buat deskriptor yang dapat diamati untuk setiap kriteria dan level. Hindari kata yang terlalu umum tanpa indikator perilaku atau bukti.',
+    'Jika bobot diberikan, pastikan jumlah bobot terlihat dan perhitungan skor mengikuti bobot tersebut. Jika tidak diberikan, gunakan bobot sama rata dan tampilkan asumsi itu di aplikasi.',
+    'Sediakan tampilan rubrik kosong untuk dipakai guru dan tampilan penilaian untuk satu atau beberapa siswa sesuai fitur yang dipilih.',
+    'Skor, predikat, dan umpan balik harus dihitung atau dipilih dari data rubrik. Jangan membuat hasil penilaian siswa yang tidak dimasukkan guru.',
+    'Validasi kriteria kosong, bobot tidak valid, dan level yang tidak lengkap; tampilkan pesan yang ramah.',
+    'Seluruh teks antarmuka dan komentar kode dalam Bahasa Indonesia. Kode harus satu file HTML mandiri, responsif, berjalan offline, dan tidak memakai CDN.'
+  ],
+  format:['Keluarkan satu blok kode HTML lengkap yang memuat pembuat rubrik, formulir penilaian, perhitungan skor, dan fitur tambahan yang dipilih. Jangan memberikan ringkasan atau penjelasan di luar blok kode.']
+},
+{
+  id:'umpan-balik-siswa', kategori:'administrasi', ikon:'💬', nama:'Umpan Balik & Laporan Perkembangan',
+  deskripsi:'Menyusun komentar perkembangan siswa dari catatan dan bukti belajar guru.',
+  peran:'Anda adalah pengembang alat bantu guru yang membantu menyusun umpan balik siswa secara personal, spesifik, hangat, dan berbasis bukti yang dimasukkan guru.',
+  tugas:'Buatlah satu aplikasi web untuk menyusun umpan balik dan laporan perkembangan siswa. Guru harus dapat memasukkan catatan per siswa, memilih gaya keluaran, mengedit hasil, lalu menyalin atau mencetaknya.',
+  konteks:['Aplikasi ini digunakan oleh {penggunaUmpanBalik} untuk menyusun laporan {periodeUmpanBalik} pada {kelasUmpanBalik}.'],
+  fields:[
+    { i:'penggunaUmpanBalik', l:'Pengguna aplikasi', j:'teks', m:'C', w:true, ph:'mis. wali kelas', c:'wali kelas' },
+    { i:'kelasUmpanBalik', l:'Kelas dan mata pelajaran', j:'teks', m:'C', w:true, ph:'mis. VIII B — Matematika', c:'VIII B — Matematika' },
+    { i:'periodeUmpanBalik', l:'Periode laporan', j:'teks', m:'C', w:true, ph:'mis. semester 1 tahun ajaran 2026/2027', c:'semester 1 tahun ajaran 2026/2027' },
+    { i:'dataUmpanBalik', l:'Catatan dan bukti belajar siswa', j:'area', m:'C', w:true, ph:'Masukkan nama, kekuatan, perkembangan, kebutuhan, dan bukti yang relevan…', c:'Alya — aktif menjelaskan strategi saat diskusi; hasil latihan pecahan meningkat; perlu lebih teliti menulis langkah.\nBima — memahami konsep dasar; masih perlu berlatih membaca soal cerita.' },
+    { i:'fokusUmpanBalik', l:'Bagian yang harus disusun', j:'centang', m:'C', w:true, o:['Kekuatan siswa','Perkembangan yang terlihat','Hal yang perlu ditingkatkan','Saran tindak lanjut','Apresiasi'], c:['Kekuatan siswa','Perkembangan yang terlihat','Hal yang perlu ditingkatkan','Saran tindak lanjut'] },
+    { i:'gayaUmpanBalik', l:'Gaya bahasa', j:'pilih', m:'C', w:true, o:['Hangat dan memotivasi','Formal dan ringkas','Objektif dan berbasis bukti','Ramah untuk orang tua'], c:'Hangat dan memotivasi' },
+    { i:'formatUmpanBalik', l:'Format keluaran', j:'pilih', m:'C', w:true, o:['Satu paragraf per siswa','Poin-poin per siswa','Tabel ringkas','Laporan lengkap per siswa'], c:'Satu paragraf per siswa' },
+    { i:'fiturUmpanBalik', l:'Fitur tambahan', j:'centang', m:'D', aturan:true, o:['Edit hasil sebelum disalin','Cari nama siswa','Cetak laporan','Ekspor teks atau CSV','Simpan di perangkat (localStorage)','Tombol hapus semua data'], c:['Edit hasil sebelum disalin','Cari nama siswa','Cetak laporan','Simpan di perangkat (localStorage)'] }
+  ],
+  aturan:[
+    'Gunakan hanya catatan dan bukti yang dimasukkan guru. Jangan menambahkan prestasi, diagnosis, angka, atau kesimpulan yang tidak tersedia.',
+    'Pisahkan fakta yang diamati dari saran tindak lanjut. Gunakan bahasa yang menghargai siswa dan berorientasi pada perkembangan.',
+    'Buat keluaran untuk setiap siswa yang datanya diberikan dan pertahankan nama siswa dengan benar.',
+    'Jika catatan seorang siswa tidak lengkap, tandai bagian yang perlu dilengkapi guru; jangan mengisi kekosongan dengan asumsi tentang siswa.',
+    'Sediakan hasil yang dapat diedit sebelum disalin atau dicetak. Jangan mengirim data siswa ke layanan eksternal dan jangan memakai CDN.',
+    'Seluruh teks antarmuka dan komentar kode dalam Bahasa Indonesia. Kode harus satu file HTML mandiri, responsif, dan berjalan offline.'
+  ],
+  format:['Keluarkan satu blok kode HTML lengkap dengan input catatan, hasil per siswa, editor hasil, dan fitur tambahan yang dipilih. Jangan memberikan ringkasan atau penjelasan di luar blok kode.']
+},
 
 /* ---------- Kategori 5: Materi Ajar & Soal ---------- */
 {
@@ -402,7 +502,7 @@ const TEMPLATE = [
   format:['Jika Dokumen biasa dipilih, berikan Markdown siap salin ke Word dengan urutan: Identitas, Tujuan, Alat & Bahan, Petunjuk, Kegiatan, Tabel atau Ruang Jawaban, Refleksi, lalu Kunci Jawaban Guru bila dipilih. Jika LaTeX dipilih, berikan satu blok kode LaTeX A4 lengkap.']
 },
 {
-  id:'bank-soal', kategori:'materi', ikon:'🗂️', nama:'Bank Soal',
+  id:'bank-soal', kategori:'asesmen', ikon:'🗂️', nama:'Bank Soal',
   deskripsi:'Paket soal dari materi sumbermu, lengkap dengan kunci dan pembahasan.',
   peran:'Anda adalah penyusun soal berpengalaman yang menulis soal yang valid, jelas, dan sesuai jenjang kognitif yang diminta.',
   tugas:'Susunlah satu paket soal yang lengkap dan siap digunakan berdasarkan spesifikasi berikut. Soal hanya boleh dibuat dari materi atau ruang lingkup yang diberikan, lalu tampilkan kunci dan pembahasan sesuai pilihan pengguna.',
@@ -551,7 +651,7 @@ const TEMPLATE = [
 
 /* ---------- Kategori 7: Gambar & Desain ---------- */
 {
-  id:'prompt-gambar', kategori:'gambar', ikon:'🖼️', nama:'Gambar AI',
+  id:'prompt-gambar', kategori:'media', ikon:'🖼️', nama:'Gambar AI',
   deskripsi:'Gambar AI yang siap digunakan berdasarkan subjek, suasana, gaya, dan komposisi yang dipilih.',
   peran:'Anda adalah pembuat gambar AI yang menerjemahkan spesifikasi pengguna menjadi satu gambar yang jelas, menarik, dan sesuai tujuan.',
   tugas:'Buat satu gambar berdasarkan spesifikasi berikut. Hasil akhir harus berupa satu gambar yang siap digunakan, bukan prompt, brief, konsep, terjemahan, atau penjelasan.',
@@ -601,7 +701,7 @@ const TEMPLATE = [
   format:['Keluaran akhir hanya satu gambar logo. Jangan memberikan teks atau respons tambahan di luar gambar.']
 },
 {
-  id:'infografis', kategori:'gambar', ikon:'📈', nama:'Infografis',
+  id:'infografis', kategori:'media', ikon:'📈', nama:'Infografis',
   deskripsi:'Gambar infografis edukatif yang siap digunakan, dengan isi dan tata letak yang jelas.',
   peran:'Anda adalah pembuat gambar infografis edukatif yang menyajikan informasi dengan akurat, jelas, dan mudah dipahami.',
   tugas:'Buat satu gambar infografis lengkap berdasarkan spesifikasi berikut. Hasil akhir harus berupa satu gambar infografis yang siap digunakan, bukan brief desain, rancangan, naskah, atau penjelasan.',
@@ -625,7 +725,7 @@ const TEMPLATE = [
 
 /* ---------- Kategori 8: Prompt Bebas ---------- */
 {
-  id:'prompt-bebas', kategori:'bebas', ikon:'🧩', nama:'Prompt Bebas Universal',
+  id:'prompt-bebas', kategori:'umum', ikon:'🧩', nama:'Prompt Bebas Universal',
   deskripsi:'Kerangka universal Peran → Konteks → Tugas → Aturan → Format Hasil, untuk kebutuhan apa pun.',
   peran:'', /* peran diambil dari kolom pengguna */
   tugas:'', /* tugas diambil dari kolom pengguna */
@@ -650,6 +750,19 @@ const TEMPLATE = [
 }
 ];
 
+/* Katalog utama yang tampil di UI. Template lama tetap berada di data untuk kompatibilitas draf, tetapi tidak memenuhi layar pilihan. */
+const ID_TEMPLATE_UTAMA = [
+  'modul-ajar', 'lkpd', 'slide-presentasi',
+  'bank-soal', 'kuis-interaktif', 'rubrik-penilaian', 'rekap-nilai',
+  'absensi-jurnal', 'umpan-balik-siswa',
+  'mpi-lengkap', 'simulasi-interaktif', 'game-edukasi',
+  'prompt-gambar', 'infografis',
+  'aplikasi-web', 'website-satu-halaman', 'prompt-bebas'
+];
+const TEMPLATE_TERSEDIA = ID_TEMPLATE_UTAMA
+  .map(id => TEMPLATE.find(t => t.id === id))
+  .filter(Boolean);
+
 /* Kolom umum untuk semua template (di luar kolom khusus template) */
 const KOLOM_UMUM = [
   { i:'__detail', l:'Tingkat detail hasil', j:'pilih', m:'C', o:['Ringkas','Standar','Sangat detail'], c:'Standar' },
@@ -665,7 +778,7 @@ function buatPrompt(t, vals, umum, targetId, mode = 'detail'){
 /* Ekspos untuk pengujian (tidak berpengaruh di peramban) */
 if (typeof globalThis !== 'undefined'){
   globalThis.ATIGA = {
-    KATEGORI, TARGET_AI, TEMPLATE, KOLOM_UMUM,
+    KATEGORI, TARGET_AI, TEMPLATE: TEMPLATE_TERSEDIA, TEMPLATE_LENGKAP: TEMPLATE, KOLOM_UMUM,
     ...globalThis.ATIGA_ENGINE
   };
 }
@@ -693,8 +806,8 @@ function normalisasiPustaka(data){
 }
 
 const state = {
-  kategori: 'blog',
-  templateId: 'artikel-blog',
+  kategori: 'materi',
+  templateId: 'modul-ajar',
   mode: 'cepat',
   target: 'universal',
   nilai: {},          // nilai kolom template aktif: { idKolom: nilai }
@@ -721,11 +834,15 @@ function migrasiDataLokal(){
 const pilihanLama = bacaJSON(KUNCI_PILIHAN, null);
 if (pilihanLama){
   if (KATEGORI.some(k => k.id === pilihanLama.kategori)) state.kategori = pilihanLama.kategori;
-  if (TEMPLATE.some(t => t.id === pilihanLama.templateId)) state.templateId = pilihanLama.templateId;
+  const templateLama = TEMPLATE_TERSEDIA.find(t => t.id === pilihanLama.templateId);
+  if (templateLama){
+    state.templateId = templateLama.id;
+    state.kategori = templateLama.kategori;
+  }
   if (pilihanLama.mode === 'detail') state.mode = 'detail';
   if (TARGET_AI.some(a => a.id === pilihanLama.target)) state.target = pilihanLama.target;
 }
-const templateAktif = () => TEMPLATE.find(t => t.id === state.templateId) || TEMPLATE[0];
+const templateAktif = () => TEMPLATE_TERSEDIA.find(t => t.id === state.templateId) || TEMPLATE_TERSEDIA[0];
 const targetAktif = () => TARGET_AI.find(a => a.id === state.target) || TARGET_AI[0];
 
 function simpanPilihan(){
@@ -790,7 +907,7 @@ function renderKategori(){
   wadah.innerHTML = '';
   const kata = $('cariTemplate').value.trim();
   for (const k of KATEGORI){
-    const jumlah = TEMPLATE.filter(t => t.kategori === k.id).length;
+    const jumlah = TEMPLATE_TERSEDIA.filter(t => t.kategori === k.id).length;
     const b = document.createElement('button');
     b.type = 'button';
     b.className = 'kartu-kategori' + (!kata && k.id === state.kategori ? ' aktif' : '');
@@ -798,7 +915,7 @@ function renderKategori(){
     b.innerHTML = '<span class="ikon">' + k.ikon + '</span><strong>' + k.nama + '</strong><small>' + k.deskripsi + ' · ' + jumlah + ' template</small>';
     b.addEventListener('click', () => {
       state.kategori = k.id;
-      const pertama = TEMPLATE.find(t => t.kategori === k.id);
+      const pertama = TEMPLATE_TERSEDIA.find(t => t.kategori === k.id);
       if (pertama) pilihTemplate(pertama.id);
       renderKategori(); renderDaftarTemplate(); simpanPilihan();
     });
@@ -811,10 +928,10 @@ function renderDaftarTemplate(){
   wadah.innerHTML = '';
   let daftar;
   if (kata){
-    daftar = TEMPLATE.filter(t => (t.nama + ' ' + t.deskripsi).toLowerCase().includes(kata));
+    daftar = TEMPLATE_TERSEDIA.filter(t => (t.nama + ' ' + t.deskripsi).toLowerCase().includes(kata));
     $('labelTemplate').textContent = '— hasil pencarian "' + $('cariTemplate').value.trim() + '"';
   } else {
-    daftar = TEMPLATE.filter(t => t.kategori === state.kategori);
+    daftar = TEMPLATE_TERSEDIA.filter(t => t.kategori === state.kategori);
     const k = KATEGORI.find(x => x.id === state.kategori);
     $('labelTemplate').textContent = k ? '— ' + k.nama : '';
   }
@@ -832,7 +949,7 @@ function renderDaftarTemplate(){
   }
 }
 function pilihTemplate(id){
-  const t = TEMPLATE.find(x => x.id === id);
+  const t = TEMPLATE_TERSEDIA.find(x => x.id === id);
   if (!t) return;
   state.templateId = id;
   state.kategori = t.kategori;
