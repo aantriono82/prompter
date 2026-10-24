@@ -36,7 +36,7 @@ Catatan khusus:
 
 ## Format Prompt per Target AI
 
-Isi prompt selalu dibangun dari 6 blok yang sama — **Peran → Konteks → Tugas → Spesifikasi → Aturan Wajib → Format Hasil** — tetapi pembungkusnya menyesuaikan target:
+Isi prompt selalu dibangun dari 6 blok yang sama — **Peran → Konteks → Tugas → Spesifikasi → Aturan Wajib → Format Hasil** — tetapi pembungkusnya menyesuaikan target. Di akhir prompt selalu ada **Daftar Periksa** yang mengulang isian penting (jumlah, bentuk, bagian wajib, bahasa) agar AI mencocokkan hasilnya sebelum menjawab.
 
 | Target | Gaya pembungkus |
 |---|---|

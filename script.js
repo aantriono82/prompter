@@ -57,6 +57,9 @@ const FITUR_MPI = ['Satu file HTML mandiri, berjalan offline tanpa internet/CDN'
   'Diferensiasi 3 tingkat: mudah, sedang, menantang','Progres tersimpan di perangkat (localStorage)',
   'Umpan balik langsung pada setiap jawaban','Skor akhir','Bisa dicetak / disertai LKPD'];
 
+const mapelModul = v => String(v.mapel || '').trim() || 'yang dipilih pengguna';
+const modulMatematika = v => /matematika/i.test(String(v.mapel || ''));
+
 const TEMPLATE = [
 
 /* ---------- Kategori 1: Blog / Website ---------- */
@@ -172,7 +175,7 @@ const TEMPLATE = [
     'Semua fitur wajib yang dipilih harus benar-benar berfungsi dan dapat dicoba pengguna.',
     'Gunakan hanya materi dan konteks yang diberikan; jangan mengarang fakta pembelajaran yang spesifik.',
     'Kode harus satu file HTML mandiri tanpa CDN atau dependensi eksternal, berjalan offline, responsif, dan mudah dipakai dengan keyboard serta sentuhan.',
-    'Komentar kode dan seluruh teks antarmuka dalam Bahasa Indonesia.'
+    'Komentar kode dan label navigasi antarmuka dalam Bahasa Indonesia; isi materi untuk peserta didik mengikuti aturan bahasa keluaran di FORMAT HASIL.'
   ],
   format:['Keluarkan tepat satu blok kode HTML lengkap yang siap disimpan dan dibuka di peramban. Jangan memberikan ringkasan, pseudocode, atau penjelasan di luar blok kode.']
 },
@@ -442,7 +445,9 @@ const TEMPLATE = [
 {
   id:'modul-ajar', kategori:'materi', ikon:'📘', nama:'Modul Ajar / RPP Ringkas',
   deskripsi:'Modul ajar / RPP ringkas berbasis Perencanaan Pembelajaran Mendalam dan CP resmi 2025.',
-  peran:'Anda adalah penyusun dokumen perencanaan pembelajaran yang berpengalaman. Gunakan Panduan Mata Pelajaran Matematika Fase A–F dan Fase F Tingkat Lanjut (BSKAP, 2025) serta Keputusan Kepala BSKAP No. 046/H/KR/2025 sebagai acuan. Sesuaikan penerapannya dengan mata pelajaran yang dipilih pengguna.',
+  peran: v => 'Anda adalah penyusun dokumen perencanaan pembelajaran yang berpengalaman. ' + (modulMatematika(v)
+    ? 'Gunakan Panduan Mata Pelajaran Matematika Fase A–F dan Fase F Tingkat Lanjut (BSKAP, 2025) serta Keputusan Kepala BSKAP No. 046/H/KR/2025 sebagai acuan.'
+    : 'Gunakan Keputusan Kepala BSKAP No. 046/H/KR/2025 serta panduan mata pelajaran ' + mapelModul(v) + ' yang berlaku sebagai acuan.'),
   tugas:'Susunlah satu dokumen perencanaan pembelajaran yang ringkas, jelas, fleksibel, dan siap digunakan. Pertahankan empat bagian resmi: Identifikasi → Desain Pembelajaran → Pengalaman Belajar → Asesmen Pembelajaran. Isi bagian yang tidak ditentukan pengguna dengan rancangan yang wajar dan tandai asumsi yang perlu diperiksa guru.',
   fields:[
     { i:'penyusun', l:'Penyusun / satuan pendidikan (opsional)', j:'teks', m:'D', g:'Identitas', ph:'mis. Aan Triono, S.Pd. — SMP Nusantara', c:'Aan Triono, S.Pd. — SMP Nusantara' },
@@ -466,10 +471,14 @@ const TEMPLATE = [
   aturan:[
     'Gunakan istilah resmi "Dimensi Profil Lulusan" dan susun dokumen dengan empat bagian: A. Identifikasi, B. Desain Pembelajaran, C. Pengalaman Belajar, D. Asesmen Pembelajaran.',
     'Jangan menyebut format ini sebagai satu-satunya format resmi. Perencanaan pembelajaran bersifat fleksibel, jelas, dan sederhana.',
-    'Sumber acuan resmi: Panduan Mata Pelajaran Matematika Fase A–F dan Fase F Tingkat Lanjut (https://repositori.kemendikdasmen.go.id/33608/) dan Keputusan Kepala BSKAP No. 046/H/KR/2025 beserta lampirannya (https://kurikulum.kemendikdasmen.go.id/file/1753929861_manage_file.pdf).',
+    v => modulMatematika(v)
+      ? 'Sumber acuan resmi: Panduan Mata Pelajaran Matematika Fase A–F dan Fase F Tingkat Lanjut (https://repositori.kemendikdasmen.go.id/33608/) dan Keputusan Kepala BSKAP No. 046/H/KR/2025 beserta lampirannya (https://kurikulum.kemendikdasmen.go.id/file/1753929861_manage_file.pdf).'
+      : 'Sumber acuan resmi: Keputusan Kepala BSKAP No. 046/H/KR/2025 beserta lampirannya (https://kurikulum.kemendikdasmen.go.id/file/1753929861_manage_file.pdf) dan panduan mata pelajaran ' + mapelModul(v) + ' yang berlaku. Jangan memakai panduan atau istilah khas Matematika untuk mata pelajaran ini.',
     'CP harus diperlakukan sebagai teks sumber. Jangan mengubah, meringkas, atau mengarang rumusan CP. Jika CP tidak lengkap, tandai [CP PERLU DIPERIKSA GURU].',
     'Selaraskan TP dengan CP, fase, elemen, dan topik. Jika TP diturunkan oleh AI, tandai sebagai "Rancangan TP" dan gunakan tujuan yang dapat diamati.',
-    'Template ini dioptimalkan untuk Matematika. Hubungkan kegiatan dan asesmen dengan elemen materi yang dipilih serta proses matematis yang relevan seperti penalaran, pemecahan masalah, komunikasi, representasi, atau koneksi. Untuk mata pelajaran lain, gunakan panduan mata pelajaran resminya sebagai sumber CP dan materi.',
+    v => modulMatematika(v)
+      ? 'Hubungkan kegiatan dan asesmen dengan elemen materi yang dipilih serta proses matematis yang relevan seperti penalaran, pemecahan masalah, komunikasi, representasi, atau koneksi.'
+      : 'Hubungkan kegiatan dan asesmen dengan elemen CP yang dipilih serta keterampilan khas mata pelajaran ' + mapelModul(v) + '.',
     'Pada Pengalaman Belajar, tampilkan prinsip berkesadaran, bermakna, dan menggembirakan melalui tindakan nyata. Susun pengalaman inti dengan urutan Memahami → Mengaplikasi → Merefleksi.',
     'Asesmen wajib memuat bukti yang selaras dengan tujuan pada awal, proses, dan akhir pembelajaran. Gunakan istilah diagnostik, formatif, dan sumatif hanya sebagai keterangan bila membantu.',
     'Jangan menambahkan komponen, lampiran, atau rubrik yang tidak diminta. Bila informasi opsional kosong, buat rancangan secukupnya dan tandai asumsi yang perlu diperiksa guru.'
@@ -758,8 +767,12 @@ const FIELD_METADATA = {
   ruangLingkup:{ promptRole:'source', preserveWhitespace:true },
   data:{ promptRole:'source', preserveWhitespace:true },
   dataSiswaNilai:{ promptRole:'source', preserveWhitespace:true },
-  materiLkpd:{ promptRole:'source' },
-  topik:{ promptRole:'source' },
+  materiLkpd:{ promptRole:'source', penandaMapel:true },
+  topik:{ promptRole:'source', penandaMapel:true },
+  mapel:{ penandaMapel:true },
+  materi:{ penandaMapel:true },
+  jenjangKelas:{ penandaMapel:true },
+  kelasLkpd:{ penandaMapel:true },
   fiturWajib:{ promptRole:'requirement' },
   fiturNilai:{ promptRole:'requirement' },
   fiturAbsensi:{ promptRole:'requirement' },
@@ -772,6 +785,33 @@ for (const template of TEMPLATE){
   }
 }
 
+/* Isian yang diulang di DAFTAR PERIKSA akhir prompt. true = "Label: nilai"; string = kalimat dengan {nilai}. */
+const DAFTAR_PERIKSA = {
+  'modul-ajar': { jenjang:true, fase:true, kelas:true, mapel:true, topik:true, alokasi:true, dimensi:'Dimensi Profil Lulusan yang diwujudkan: {nilai}.', lampiran:'Lampiran hanya: {nilai}.' },
+  'lkpd': { kelasLkpd:true, jenisKegiatan:true, jumlahTugas:'Jumlah & jenis tugas tepat: {nilai}.', kunci:true, formatCetak:true },
+  'slide-presentasi': { jumlahSlide:'Tepat {nilai} slide.', formatKeluaran:true, audiens:true, visual:true },
+  'bank-soal': { jenjangKelas:true, jumlahBentuk:'Jumlah & bentuk soal tepat: {nilai}.', kognitif:true, kunciBahasan:true, kisi:true },
+  'kuis-interaktif': { jumlahSoal:'Tepat {nilai} soal.', jenisSoal:'Jenis soal hanya: {nilai}.', kesulitan:true, timer:true, pembahasan:true, hasil:true },
+  'rubrik-penilaian': { kriteriaRubrik:true, levelRubrik:true, bobotRubrik:true, fiturRubrik:true },
+  'rekap-nilai': { komponenNilai:true, bobotNilai:true, sumberNilai:true, hasilNilai:true, fiturNilai:true },
+  'absensi-jurnal': { statusAbsensi:'Status kehadiran hanya: {nilai}.', isiJurnal:true, fiturAbsensi:true },
+  'umpan-balik-siswa': { fokusUmpanBalik:true, gayaUmpanBalik:true, formatUmpanBalik:true, fiturUmpanBalik:true },
+  'mpi-lengkap': { kelas:true, mapel:true, materi:true, jenis:true, jumlahBagian:'Tepat {nilai} bagian / level.', fiturWajib:true },
+  'simulasi-interaktif': { kelas:true, mapel:true, konsep:true, variabel:true, fitur:true },
+  'game-edukasi': { materi:true, pemain:true, jenis:true, level:true, fitur:true },
+  'prompt-gambar': { subjek:true, gayaGambar:true, rasio:true, bahasaGambar:true, hindariGambar:'Tidak memuat: {nilai}.' },
+  'infografis': { topikInfo:true, pembacaInfo:true, alurInfo:true },
+  'aplikasi-web': { fiturUtama:true, penyimpanan:true, strukturFile:true, batasan:true },
+  'website-satu-halaman': { nama:true, bagian:'Bagian halaman hanya: {nilai}.', fitur:'Fitur interaktif hanya: {nilai}.' },
+  'prompt-bebas': { formatBebas:true, aturanBebas:true }
+};
+for (const template of TEMPLATE){
+  const peta = DAFTAR_PERIKSA[template.id] || {};
+  for (const field of template.fields || []){
+    if (peta[field.i]) field.cek = peta[field.i];
+  }
+}
+
 const OUTPUT_CONTRACTS = {
   'modul-ajar': { requiredSections:['A. Identifikasi','B. Desain Pembelajaran','C. Pengalaman Belajar','D. Asesmen Pembelajaran'] },
   'lkpd': { requiredSections:['Identitas','Tujuan','Petunjuk','Kegiatan','Refleksi'] },
@@ -781,7 +821,7 @@ const OUTPUT_CONTRACTS = {
   'mpi-lengkap': { type:'single-code-block', language:'HTML' },
   'simulasi-interaktif': { type:'single-code-block', language:'HTML' },
   'game-edukasi': { type:'single-code-block', language:'HTML' },
-  'aplikasi-web': { type:'single-code-block', language:'HTML' },
+  'aplikasi-web': { type:'single-code-block', language:'HTML', kecualiJika:{ strukturFile:'Beberapa file terpisah' } },
   'website-satu-halaman': { type:'single-code-block', language:'HTML' },
   'prompt-gambar': { requiredSections:['prompt gambar final'] },
   'infografis': { requiredSections:['prompt infografis final'] }
@@ -824,6 +864,9 @@ function validasiKatalog(){
         throw new Error('Pilihan kolom tidak valid pada: ' + template.id + '/' + field.i);
       }
       fieldIds.add(field.i);
+    }
+    for (const id of Object.keys(DAFTAR_PERIKSA[template.id] || {})){
+      if (!fieldIds.has(id)) throw new Error('Kolom daftar periksa tidak ditemukan: ' + template.id + '/' + id);
     }
   }
 }
@@ -1262,7 +1305,7 @@ function perbaruiStruktur(){
     ['Sumber data', blok.sumber.join('\n')], ['Kebutuhan wajib', blok.kebutuhan.join('\n')],
     ['Preferensi', blok.preferensi.join('\n')],
     ['Spesifikasi', blok.spesifikasi.join('\n')], ['Aturan wajib', blok.aturan.join('\n')],
-    ['Format hasil', blok.format.join('\n')]
+    ['Format hasil', blok.format.join('\n')], ['Daftar periksa', blok.periksa.join('\n')]
   ];
   daftar.filter(([, isi]) => isi).forEach(([judul, isi]) => {
     const bagian = document.createElement('section');
