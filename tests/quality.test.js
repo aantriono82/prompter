@@ -125,3 +125,52 @@ test('aplikasi beberapa file tidak dipaksa menjadi satu blok kode', () => {
   assert.doesNotMatch(hasil, /Kontrak keluaran: keluarkan tepat satu blok kode/);
 });
 
+require('../prompt-lint.js');
+const lint = global.ATIGA_LINT;
+function lintTemplate(id, tambahan = {}, mode = 'detail'){
+  const template = templateDenganId(id);
+  const values = isiContoh(template, tambahan);
+  const text = engine.buatPrompt(template, values, {}, 'universal', mode);
+  return lint.lintPrompt({ template, values, common: { __fields: [] }, mode, text, targets: katalog.TARGET_AI });
+}
+
+test('lint memperingatkan data contoh yang belum diganti', () => {
+  const hasil = lintTemplate('modul-ajar');
+  assert.ok(hasil.warnings.some(item => item.startsWith('Masih berisi data contoh:') && item.includes('Penyusun / satuan pendidikan')));
+  const bersih = lintTemplate('modul-ajar', Object.fromEntries(
+    templateDenganId('modul-ajar').fields.filter(field => field.j === 'teks' || field.j === 'area').map(field => [field.i, 'Isian guru ' + field.i + ' yang sudah diganti dengan data asli'])));
+  assert.ok(!bersih.warnings.some(item => item.startsWith('Masih berisi data contoh')));
+});
+
+test('lint tidak memeriksa data contoh pada kolom yang tersembunyi di mode cepat', () => {
+  const hasil = lintTemplate('modul-ajar', {}, 'cepat');
+  const pesan = hasil.warnings.find(item => item.startsWith('Masih berisi data contoh')) || '';
+  assert.ok(!pesan.includes('Penyusun'));
+});
+
+test('lint memperingatkan CP yang terlalu pendek', () => {
+  assert.ok(lintTemplate('modul-ajar', { cp: 'Bilangan rasional' }).warnings.some(item => item.startsWith('CP resmi tampaknya terlalu pendek')));
+  assert.ok(!lintTemplate('modul-ajar').warnings.some(item => item.includes('terlalu pendek')));
+});
+
+test('lint memperingatkan jenjang, fase, dan kelas yang tidak konsisten', () => {
+  const konsisten = lintTemplate('modul-ajar').warnings.join(' ');
+  assert.doesNotMatch(konsisten, /tidak sesuai|tidak termasuk/);
+  assert.ok(lintTemplate('modul-ajar', { fase: 'E (Kelas X)' }).warnings.some(item => item === 'Fase E tidak sesuai dengan jenjang SMP.'));
+  assert.ok(lintTemplate('modul-ajar', { kelas: 'IV' }).warnings.some(item => item === 'Kelas IV tidak termasuk Fase D.'));
+  assert.ok(lintTemplate('bank-soal', { jenjangKelas: 'SMP Kelas X' }).warnings.some(item => item.includes('kelas 10 bukan jenjang SMP')));
+  assert.ok(!lintTemplate('bank-soal', { jenjangKelas: 'SMP kelas 8' }).warnings.some(item => item.includes('tidak konsisten')));
+});
+
+test('angka kelas dibaca dari romawi dan angka', () => {
+  assert.equal(lint.angkaKelas('VII'), 7);
+  assert.equal(lint.angkaKelas('Kelas 10'), 10);
+  assert.equal(lint.angkaKelas('SMP Kelas IX'), 9);
+  assert.equal(lint.angkaKelas('7A'), null);
+});
+
+test('lint tidak menandai isian umum yang kebetulan sama dengan contoh', () => {
+  const pesan = lintTemplate('modul-ajar').warnings.find(item => item.startsWith('Masih berisi data contoh')) || '';
+  for (const label of ['Kelas', 'Mata pelajaran', 'Topik', 'TP atau arahan']) assert.ok(!pesan.includes(label), label);
+  assert.ok(pesan.includes('CP resmi') && pesan.includes('Kondisi murid'));
+});
