@@ -1216,6 +1216,8 @@ function perbaruiProgres(formLengkap){
     const nomor = Number(item.dataset.langkah);
     item.classList.toggle('aktif', nomor === tahapAktif);
     item.classList.toggle('selesai', nomor < tahapAktif);
+    if (nomor === tahapAktif) item.setAttribute('aria-current', 'step');
+    else item.removeAttribute('aria-current');
   });
   document.querySelectorAll('.progres-garis').forEach((garis, idx) => {
     garis.classList.toggle('selesai', idx + 1 < tahapAktif);
@@ -1234,6 +1236,7 @@ function perbaruiPreview(){
 }
 function perbaruiHitungan(){
   $('jumlahKarakter').textContent = $('areaPreview').value.length.toLocaleString('id-ID') + ' karakter';
+  $('targetPreview').textContent = targetAktif().nama;
   $('statusPreview').textContent = state.pratinjauManual ? 'Diedit manual' : 'Otomatis';
   $('tombolPulihkan').hidden = !state.pratinjauManual;
 }
@@ -1504,7 +1507,9 @@ function renderPustaka(){
   $('jumlahPustaka').textContent = state.pustaka.length + ' prompt';
   wadah.innerHTML = '';
   if (!daftar.length){
-    wadah.innerHTML = '<p class="kosong">' + (state.pustaka.length ? 'Tidak ada yang cocok dengan pencarian.' : 'Belum ada prompt tersimpan. Buat prompt lalu tekan "Simpan ke Pustaka".') + '</p>';
+    wadah.innerHTML = state.pustaka.length
+      ? '<p class="kosong">Tidak ada prompt yang cocok dengan pencarian.</p>'
+      : '<div class="kosong empty-pustaka"><span class="ikon" aria-hidden="true">📚</span><strong>Belum ada prompt tersimpan</strong><p>Simpan prompt pertamamu untuk menemukannya lagi dengan cepat.</p></div>';
     return;
   }
   for (const p of daftar){

@@ -28,17 +28,18 @@
 
 <section class="pahlawan">
   <h1>Mau membuat apa hari ini?</h1>
-  <p>Pilih kebutuhan mengajar, isi kolomnya, lalu salin prompt jadinya ke AI favoritmu. Tiga langkah, tanpa daftar, tanpa bayar.</p>
+  <p>Pilih kebutuhan, atur detailnya, lalu salin prompt siap pakai ke AI favoritmu. Empat langkah, tanpa daftar, tanpa bayar.</p>
+  <p class="trust-badge"><span aria-hidden="true">🔒</span> Data tersimpan di perangkatmu · tanpa akun · tanpa biaya</p>
 </section>
 
 <nav class="progres-aplikasi" aria-label="Progres membuat prompt">
   <div class="progres-item aktif" data-langkah="1"><span>1</span><strong>Template</strong></div>
   <div class="progres-garis" aria-hidden="true"></div>
-  <div class="progres-item" data-langkah="2"><span>2</span><strong>Isi kolom</strong></div>
+  <div class="progres-item" data-langkah="2"><span>2</span><strong>Atur</strong></div>
   <div class="progres-garis" aria-hidden="true"></div>
-  <div class="progres-item" data-langkah="3"><span>3</span><strong>Pratinjau</strong></div>
+  <div class="progres-item" data-langkah="3"><span>3</span><strong>Isi kolom</strong></div>
   <div class="progres-garis" aria-hidden="true"></div>
-  <div class="progres-item" data-langkah="4"><span>4</span><strong>Simpan / kirim</strong></div>
+  <div class="progres-item" data-langkah="4"><span>4</span><strong>Tinjau &amp; kirim</strong></div>
 </nav>
 
 <main class="tata">
@@ -73,7 +74,7 @@
       <p class="petunjuk" id="petunjukTarget"></p>
     </section>
 
-    <section class="kartu" data-langkah="2" aria-labelledby="judulForm">
+    <section class="kartu" data-langkah="3" aria-labelledby="judulForm">
       <h2 id="judulForm">3 · Isi kolomnya</h2>
       <div class="form-kepala">
         <div>
@@ -92,10 +93,11 @@
   </div>
 
   <div class="kolom-kanan">
-    <section id="kartuPreview" class="kartu kartu-preview" data-langkah="3" aria-labelledby="judulPreview">
+    <section id="kartuPreview" class="kartu kartu-preview" data-langkah="4" aria-labelledby="judulPreview">
       <div class="preview-kepala">
-        <h2 id="judulPreview">4 · Pratinjau prompt</h2>
+        <h2 id="judulPreview">4 · Tinjau prompt</h2>
         <div class="preview-meta">
+          <span id="targetPreview" class="target-preview">Universal</span>
           <span id="statusPreview" class="status-preview">Otomatis</span>
           <span id="jumlahKarakter" class="lencana">0 karakter</span>
         </div>
@@ -112,7 +114,7 @@
         </div>
       </div>
       <div id="panelStruktur" class="struktur-preview" role="tabpanel" hidden></div>
-      <div class="baris-tombol">
+      <div class="baris-tombol preview-aksi-utama">
         <button id="tombolSalin" class="tombol tombol-utama" type="button">📋 Salin Prompt</button>
         <div class="menu-kirim">
           <label class="sr-only" for="pilihKirimAI">Pilih model AI tujuan</label>
@@ -121,7 +123,7 @@
           </select>
         </div>
       </div>
-      <div class="baris-tombol">
+      <div class="baris-tombol preview-aksi-sekunder">
         <button id="tombolSimpan" class="tombol tombol-sekunder" type="button">💾 Simpan ke Pustaka</button>
         <details class="menu-ekspor">
           <summary class="tombol tombol-hantu">⬇ Ekspor</summary>
