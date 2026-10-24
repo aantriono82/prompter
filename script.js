@@ -34,15 +34,15 @@ const KATEGORI = [
 ];
 
 const TARGET_AI = [
-  { id:'universal', nama:'Universal', url:null,                              petunjuk:'Format Markdown polos — aman ditempel ke AI apa pun.' },
-  { id:'chatgpt',   nama:'ChatGPT',   url:'https://chatgpt.com/',            petunjuk:'Markdown dengan aturan bernomor. Tombol Kirim mencoba mengisi prompt otomatis bila tidak terlalu panjang.' },
-  { id:'claude',    nama:'Claude',    url:'https://claude.ai/new',           petunjuk:'Dibungkus tag XML — paling rapi untuk konteks panjang dan Mode Detail.' },
-  { id:'gemini',    nama:'Gemini',    url:'https://gemini.google.com/app',   petunjuk:'Judul tebal; spesifikasi yang panjang ditampilkan sebagai tabel.' },
-  { id:'deepseek',  nama:'DeepSeek',  url:'https://chat.deepseek.com/',      petunjuk:'Instruksi langsung dan teknis, dengan penalaran langkah demi langkah.' },
-  { id:'qwen',      nama:'Qwen',      url:'https://chat.qwen.ai/',           petunjuk:'Markdown rapi; aman untuk konteks panjang.' },
-  { id:'copilot',   nama:'Copilot',   url:'https://copilot.microsoft.com/',  petunjuk:'Ringkas dan padat — paling cocok dipadukan dengan Mode Cepat.' },
-  { id:'grok',      nama:'Grok',      url:'https://grok.com/',               petunjuk:'Gaya langsung; AI diberi ruang mengusulkan variasi yang lebih baik.' },
-  { id:'meta',      nama:'Meta AI',   url:'https://www.meta.ai/',            petunjuk:'Format percakapan terstruktur dengan daftar bernomor.' }
+  { id:'universal', nama:'Universal', url:null,                              batasToken:12000, petunjuk:'Format Markdown polos — aman ditempel ke AI apa pun.' },
+  { id:'chatgpt',   nama:'ChatGPT',   url:'https://chatgpt.com/',            batasToken:12000, petunjuk:'Markdown dengan aturan bernomor. Prompt disalin ke clipboard sebelum situs dibuka.' },
+  { id:'claude',    nama:'Claude',    url:'https://claude.ai/new',           batasToken:16000, petunjuk:'Dibungkus tag XML — paling rapi untuk konteks panjang dan Mode Detail.' },
+  { id:'gemini',    nama:'Gemini',    url:'https://gemini.google.com/app',   batasToken:16000, petunjuk:'Judul tebal; spesifikasi yang panjang ditampilkan sebagai tabel.' },
+  { id:'deepseek',  nama:'DeepSeek',  url:'https://chat.deepseek.com/',      batasToken:12000, petunjuk:'Instruksi langsung dan teknis, dengan pemeriksaan keluaran internal.' },
+  { id:'qwen',      nama:'Qwen',      url:'https://chat.qwen.ai/',           batasToken:12000, petunjuk:'Markdown rapi; aman untuk konteks panjang.' },
+  { id:'copilot',   nama:'Copilot',   url:'https://copilot.microsoft.com/',  batasToken:8000,  petunjuk:'Ringkas dan padat — paling cocok dipadukan dengan Mode Cepat.' },
+  { id:'grok',      nama:'Grok',      url:'https://grok.com/',               batasToken:12000, petunjuk:'Gaya langsung dengan kontrak keluaran tetap berlaku.' },
+  { id:'meta',      nama:'Meta AI',   url:'https://www.meta.ai/',            batasToken:8000,  petunjuk:'Format percakapan terstruktur dengan daftar bernomor.' }
 ];
 
 const MAPEL_SMP = ['Matematika','IPA','IPS','Bahasa Indonesia','Bahasa Inggris','Bahasa Daerah',
@@ -750,6 +750,46 @@ const TEMPLATE = [
 }
 ];
 
+/* Metadata prompt: sumber dipertahankan apa adanya; kebutuhan dan preferensi dipisahkan dari fakta. */
+const FIELD_METADATA = {
+  cp:{ promptRole:'source', preserveWhitespace:true },
+  konteks:{ promptRole:'source', preserveWhitespace:true, warnIfEmpty:true },
+  materiSumber:{ promptRole:'source', preserveWhitespace:true },
+  ruangLingkup:{ promptRole:'source', preserveWhitespace:true },
+  data:{ promptRole:'source', preserveWhitespace:true },
+  dataSiswaNilai:{ promptRole:'source', preserveWhitespace:true },
+  materiLkpd:{ promptRole:'source' },
+  topik:{ promptRole:'source' },
+  fiturWajib:{ promptRole:'requirement' },
+  fiturNilai:{ promptRole:'requirement' },
+  fiturAbsensi:{ promptRole:'requirement' },
+  fiturRubrik:{ promptRole:'requirement' },
+  fiturUmpanBalik:{ promptRole:'requirement' }
+};
+for (const template of TEMPLATE){
+  for (const field of template.fields || []){
+    if (FIELD_METADATA[field.i]) Object.assign(field, FIELD_METADATA[field.i]);
+  }
+}
+
+const OUTPUT_CONTRACTS = {
+  'modul-ajar': { requiredSections:['A. Identifikasi','B. Desain Pembelajaran','C. Pengalaman Belajar','D. Asesmen Pembelajaran'] },
+  'lkpd': { requiredSections:['Identitas','Tujuan','Petunjuk','Kegiatan','Refleksi'] },
+  'bank-soal': { requiredSections:['Petunjuk','Soal','Kunci Jawaban'] },
+  'kuis-interaktif': { type:'single-code-block', language:'HTML' },
+  'slide-presentasi': { requiredSections:['file presentasi final'] },
+  'mpi-lengkap': { type:'single-code-block', language:'HTML' },
+  'simulasi-interaktif': { type:'single-code-block', language:'HTML' },
+  'game-edukasi': { type:'single-code-block', language:'HTML' },
+  'aplikasi-web': { type:'single-code-block', language:'HTML' },
+  'website-satu-halaman': { type:'single-code-block', language:'HTML' },
+  'prompt-gambar': { requiredSections:['prompt gambar final'] },
+  'infografis': { requiredSections:['prompt infografis final'] }
+};
+for (const template of TEMPLATE){
+  if (OUTPUT_CONTRACTS[template.id]) template.outputContract = OUTPUT_CONTRACTS[template.id];
+}
+
 /* Katalog utama yang tampil di UI. Template lama tetap berada di data untuk kompatibilitas draf, tetapi tidak memenuhi layar pilihan. */
 const ID_TEMPLATE_UTAMA = [
   'modul-ajar', 'lkpd', 'slide-presentasi',
@@ -759,9 +799,35 @@ const ID_TEMPLATE_UTAMA = [
   'prompt-gambar', 'infografis',
   'aplikasi-web', 'website-satu-halaman', 'prompt-bebas'
 ];
-const TEMPLATE_TERSEDIA = ID_TEMPLATE_UTAMA
-  .map(id => TEMPLATE.find(t => t.id === id))
-  .filter(Boolean);
+const TEMPLATE_TERSEDIA = ID_TEMPLATE_UTAMA.map(id => {
+  const template = TEMPLATE.find(t => t.id === id);
+  if (!template) throw new Error('Template utama tidak ditemukan: ' + id);
+  return template;
+});
+
+function validasiKatalog(){
+  const jenisField = new Set(['teks','area','pilih','centang','angka']);
+  const ids = new Set();
+  for (const template of TEMPLATE_TERSEDIA){
+    if (ids.has(template.id)) throw new Error('ID template duplikat: ' + template.id);
+    ids.add(template.id);
+    if (!template.nama || !Array.isArray(template.fields) || !Array.isArray(template.format)){
+      throw new Error('Struktur template tidak lengkap: ' + template.id);
+    }
+    const fieldIds = new Set();
+    for (const field of template.fields){
+      if (!field.i || fieldIds.has(field.i)) throw new Error('ID kolom duplikat atau kosong pada: ' + template.id);
+      if (!jenisField.has(field.j) || !['C','D'].includes(field.m)){
+        throw new Error('Jenis atau mode kolom tidak valid pada: ' + template.id + '/' + field.i);
+      }
+      if ((field.j === 'pilih' || field.j === 'centang') && !Array.isArray(field.o)){
+        throw new Error('Pilihan kolom tidak valid pada: ' + template.id + '/' + field.i);
+      }
+      fieldIds.add(field.i);
+    }
+  }
+}
+validasiKatalog();
 
 /* Kolom umum untuk semua template (di luar kolom khusus template) */
 const KOLOM_UMUM = [
@@ -792,6 +858,7 @@ const KUNCI_PUSTAKA = 'atiga-prompter-pustaka';
 const KUNCI_DRAF = 'atiga-prompter-draf';
 const KUNCI_PILIHAN = 'atiga-prompter-pilihan';
 const KUNCI_VERSI_DATA = 'atiga-prompter-versi-data';
+const VERSI_ENGINE = '2';
 const STORAGE = globalThis.ATIGA_STORAGE;
 const { VERSI_DATA, BATAS_UKURAN_IMPOR, bacaJSON, tulisJSON, normalisasiDraf } = STORAGE;
 
@@ -1005,9 +1072,11 @@ function buatInput(f, nilaiAwal, wadahNilai){
   const idEl = 'f-' + f.i;
   const labelAman = escapeHtml(f.l);
   const placeholderAman = escapeHtml(f.ph || '');
-  let html = '<label for="' + idEl + '">' + labelAman +
+  const pembukaLabel = f.j === 'centang' ? '<div class="label-kolom">' : '<label for="' + idEl + '">';
+  const penutupLabel = f.j === 'centang' ? '</div>' : '</label>';
+  let html = pembukaLabel + labelAman +
     (f.w ? ' <span class="wajib" title="Wajib diisi">*</span>' : '') +
-    (f.m === 'D' ? '<span class="mode-lencana">Detail</span>' : '') + '</label>';
+    (f.m === 'D' ? '<span class="mode-lencana">Detail</span>' : '') + penutupLabel;
 
   if (f.j === 'teks' || f.j === 'angka'){
     html += '<input id="' + idEl + '" type="' + (f.j === 'angka' ? 'number' : 'text') + '" placeholder="' + placeholderAman + '">';
@@ -1155,11 +1224,12 @@ function perbaruiProgres(formLengkap){
 
 /* ---------- Preview ---------- */
 function perbaruiPreview(){
-  if (state.pratinjauManual) { perbaruiHitungan(); perbaruiStruktur(); return; }
+  if (state.pratinjauManual) { perbaruiHitungan(); perbaruiStruktur(); perbaruiKualitas(); return; }
   const teks = buatPrompt(templateAktif(), state.nilai, state.umum, state.target, state.mode);
   $('areaPreview').value = teks;
   perbaruiHitungan();
   perbaruiStruktur();
+  perbaruiKualitas();
   $('statusSalin').textContent = '';
 }
 function perbaruiHitungan(){
@@ -1186,6 +1256,8 @@ function perbaruiStruktur(){
   const blok = globalThis.ATIGA_ENGINE.susunBlok(templateAktif(), state.nilai, state.umum, state.mode);
   const daftar = [
     ['Peran', blok.peran], ['Konteks', blok.konteks], ['Tugas', blok.tugas],
+    ['Sumber data', blok.sumber.join('\n')], ['Kebutuhan wajib', blok.kebutuhan.join('\n')],
+    ['Preferensi', blok.preferensi.join('\n')],
     ['Spesifikasi', blok.spesifikasi.join('\n')], ['Aturan wajib', blok.aturan.join('\n')],
     ['Format hasil', blok.format.join('\n')]
   ];
@@ -1199,6 +1271,27 @@ function perbaruiStruktur(){
     bagian.append(h3, p);
     wadah.appendChild(bagian);
   });
+}
+function hasilLintPrompt(){
+  return globalThis.ATIGA_LINT.lintPrompt({
+    template: templateAktif(),
+    values: state.nilai,
+    common: Object.assign({}, state.umum, { __fields: KOLOM_UMUM }),
+    mode: state.mode,
+    targetId: state.target,
+    text: $('areaPreview').value,
+    targets: TARGET_AI
+  });
+}
+function perbaruiKualitas(){
+  const hasil = hasilLintPrompt();
+  const el = $('statusKualitas');
+  const pesan = [...hasil.errors.map(item => '❌ ' + item), ...hasil.warnings.map(item => '⚠️ ' + item)];
+  el.hidden = pesan.length === 0;
+  el.textContent = pesan.join(' ');
+  el.classList.toggle('ada-error', hasil.errors.length > 0);
+  el.classList.toggle('ada-peringatan', hasil.errors.length === 0 && hasil.warnings.length > 0);
+  return hasil;
 }
 function pilihTabPreview(tab){
   const promptAktif = tab === 'prompt';
@@ -1221,6 +1314,7 @@ $('areaPreview').addEventListener('input', () => {
   state.sudahTersimpan = false;
   perbaruiHitungan();
   perbaruiStruktur();
+  perbaruiKualitas();
   perbaruiStatusForm();
 });
 
@@ -1266,6 +1360,11 @@ function validasi(){
     }
     return false;
   }
+  const kualitas = perbaruiKualitas();
+  if (kualitas.errors.length){
+    toast(kualitas.errors[0]);
+    return false;
+  }
   return true;
 }
 
@@ -1307,16 +1406,12 @@ async function kirimKeAI(a){
   if (!validasi()) return;
   const teks = $('areaPreview').value;
   const tersalin = await salinTeks(teks);
-  let alamat = a.url;
-  if (a.id === 'chatgpt' && teks.length <= 3000){
-    alamat = 'https://chatgpt.com/?q=' + encodeURIComponent(teks);
-    toast('Prompt terisi otomatis di ChatGPT (tab baru).');
-  } else if (tersalin) {
+  if (tersalin) {
     toast('Prompt tersalin — tempel (Ctrl+V) di tab ' + a.nama + ' yang terbuka.');
   } else {
     toast('Situs ' + a.nama + ' akan dibuka. Clipboard gagal; salin prompt dari pratinjau secara manual.');
   }
-  const tab = window.open(alamat, '_blank', 'noopener,noreferrer');
+  const tab = window.open(a.url, '_blank', 'noopener,noreferrer');
   if (!tab) toast('Popup diblokir peramban. Izinkan popup untuk membuka ' + a.nama + '.');
 }
 $('pilihKirimAI').addEventListener('change', e => {
@@ -1384,6 +1479,11 @@ $('tombolSimpan').addEventListener('click', () => {
     templateId: t.id, templateNama: t.nama,
     target: state.target,
     teks: $('areaPreview').value,
+    nilai: Object.assign({}, state.nilai),
+    umum: Object.assign({}, state.umum),
+    mode: state.mode,
+    templateVersi: t.versi || 1,
+    engineVersi: VERSI_ENGINE,
     favorit: false,
     waktu: Date.now()
   });
@@ -1434,13 +1534,28 @@ function escapeHtml(s){
 }
 async function aksiPustaka(p, aksi){
   if (aksi === 'pakai'){
-    state.pratinjauManual = true;
-    $('areaPreview').value = p.teks;
     const tAda = TARGET_AI.some(a => a.id === p.target);
-    if (tAda){ state.target = p.target; renderTarget(); }
-    state.pratinjauManual = true;
-    perbaruiHitungan();
-    perbaruiStruktur();
+    const templateAda = TEMPLATE_TERSEDIA.find(t => t.id === p.templateId);
+    const punyaSnapshot = templateAda && p.nilai && Object.keys(p.nilai).length;
+    if (punyaSnapshot){
+      state.templateId = templateAda.id;
+      state.kategori = templateAda.kategori;
+      state.mode = p.mode === 'detail' ? 'detail' : 'cepat';
+      state.target = tAda ? p.target : 'universal';
+      state.nilai = Object.assign({}, p.nilai);
+      state.umum = Object.assign({ __detail:'Standar', __sikap:'Langsung kerjakan dengan asumsi terbaik' }, p.umum || {});
+      state.pratinjauManual = false;
+      state.sudahTersimpan = false;
+      renderKategori(); renderDaftarTemplate(); renderMode(); renderTarget(); renderForm();
+      simpanPilihan();
+    } else {
+      state.pratinjauManual = true;
+      $('areaPreview').value = p.teks;
+      if (tAda){ state.target = p.target; renderTarget(); }
+      perbaruiHitungan();
+      perbaruiStruktur();
+      perbaruiKualitas();
+    }
     $('statusSalin').textContent = '📚 Memakai prompt dari Pustaka: "' + p.nama + '".';
     window.scrollTo({ top: $('areaPreview').getBoundingClientRect().top + window.scrollY - 120, behavior: 'smooth' });
   }
@@ -1487,7 +1602,7 @@ $('berkasImpor').addEventListener('change', e => {
     try {
       const paket = JSON.parse(pembaca.result);
       const data = Array.isArray(paket) ? paket
-        : paket && paket.aplikasi === 'atiga-prompter' && paket.versi === VERSI_DATA && Array.isArray(paket.pustaka)
+        : paket && paket.aplikasi === 'atiga-prompter' && [1, VERSI_DATA].includes(paket.versi) && Array.isArray(paket.pustaka)
           ? paket.pustaka : null;
       if (!data) throw new Error('format tidak dikenal');
       const impor = normalisasiPustaka(data).map((item, idx) => Object.assign({}, item, {

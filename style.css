@@ -202,7 +202,7 @@ input,select,textarea{font-family:inherit;font-size:1rem;color:var(--teks)}
 .detail-lanjutan[open] summary{border-bottom:1px solid var(--garis)}
 .detail-lanjutan-isi{padding:0 .9rem .9rem}
 .kolom{margin-bottom:.85rem}
-.kolom label{display:block;font-weight:600;font-size:.93rem;margin-bottom:.3rem}
+.kolom label,.kolom .label-kolom{display:block;font-weight:600;font-size:.93rem;margin-bottom:.3rem}
 .kolom .wajib{color:var(--bahaya)}
 .kolom .mode-lencana{
   font-size:.7rem;font-weight:700;background:var(--amber-lembut);color:#92400E;
@@ -263,6 +263,13 @@ label.tombol.berkas{cursor:pointer}
 .struktur-blok h3{margin:0 0 .35rem;font-size:.86rem;color:var(--indigo);text-transform:uppercase;letter-spacing:.04em}
 .struktur-blok p{margin:0;white-space:pre-wrap;font-family:var(--font-mono);font-size:.82rem;line-height:1.5}
 .status{min-height:1.3em;font-size:.9rem;color:var(--sukses);font-weight:600}
+.status-kualitas{
+  margin-top:.55rem;padding:.6rem .75rem;border-radius:10px;
+  font-size:.84rem;line-height:1.45;background:var(--amber-lembut);color:#92400E;
+}
+.status-kualitas.ada-error{background:#FEF2F2;color:var(--bahaya)}
+[data-theme="gelap"] .status-kualitas{background:#451A03;color:#FCD34D}
+[data-theme="gelap"] .status-kualitas.ada-error{background:#450A0A;color:#FCA5A5}
 .menu-kirim{position:relative}
 .pilih-kirim{
   appearance:none;min-width:185px;padding-right:2.2rem!important;
