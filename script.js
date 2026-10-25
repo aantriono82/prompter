@@ -1022,7 +1022,8 @@ migrasiDataLokal();
 function terapkanTema(gelap){
   if (gelap) document.documentElement.setAttribute('data-theme', 'gelap');
   else document.documentElement.removeAttribute('data-theme');
-  $('tombolTema').textContent = gelap ? '☀️ Terang' : '🌙 Gelap';
+  $('ikonTema').textContent = gelap ? '☀️' : '🌙';
+  $('labelTema').textContent = gelap ? 'Terang' : 'Gelap';
   try {
     localStorage.setItem(KUNCI_TEMA, gelap ? 'gelap' : 'terang');
   } catch (e) {
