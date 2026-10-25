@@ -30,7 +30,13 @@ Prompt bisa disimpan ke **Pustaka Saya**, diunduh sebagai `.txt` / `.md`, dan pu
 
 Catatan khusus:
 
-- **Template Modul Ajar / RPP Ringkas** mempertahankan empat bagian *Perencanaan Pembelajaran Mendalam*: Identifikasi → Desain Pembelajaran → Pengalaman Belajar (Memahami → Mengaplikasi → Merefleksi) → Asesmen Pembelajaran (awal, proses, akhir). Formulirnya hanya meminta masukan inti; rincian opsional berada di Mode Detail. Acuan CP wajib ditempel dari [Panduan Mata Pelajaran Matematika Fase A–F dan Fase F Tingkat Lanjut (BSKAP, 2025)](https://repositori.kemendikdasmen.go.id/33608/) atau [Lampiran Keputusan Kepala BSKAP No. 046/H/KR/2025](https://kurikulum.kemendikdasmen.go.id/file/1753929861_manage_file.pdf).
+- **Template Modul Ajar / RPP Ringkas** mempertahankan empat bagian *Perencanaan Pembelajaran Mendalam*: Identifikasi → Desain Pembelajaran → Pengalaman Belajar (Memahami → Mengaplikasi → Merefleksi) → Asesmen Pembelajaran (awal, proses, akhir). Formulirnya hanya meminta masukan inti; rincian opsional berada di Mode Detail. CP wajib ditempel dari Panduan Mata Pelajaran atau Lampiran Keputusan Kepala BSKAP No. 046/H/KR/2025.
+- **Acuan resmi untuk semua mata pelajaran.** Template Perencanaan & Materi (Modul Ajar, LKPD, Slide Presentasi) dan Asesmen & Penilaian (Bank Soal, Kuis Interaktif, Rubrik, Rekap Nilai) meminta AI berpegang pada:
+  1. [Panduan Mata Pelajaran Kemendikdasmen](https://kurikulum.kemendikdasmen.go.id/panduan-mapel)
+  2. [Panduan Pembelajaran dan Asesmen Edisi Revisi 2025](https://kurikulum.kemendikdasmen.go.id/rujukan/panduan-panduan-kurikulum)
+  3. [Keputusan Kepala BSKAP No. 046/H/KR/2025 beserta lampiran CP](https://kurikulum.kemendikdasmen.go.id/file/1753929861_manage_file.pdf)
+
+  Isi soal dan materi tetap diambil dari sumber yang ditempel guru. Bila AI tidak dapat membuka dokumen acuan, AI diminta menandai bagian terkait dengan `[PERLU DIPERIKSA GURU]`, bukan mengarang isinya.
 - **Template Gambar AI** menghasilkan satu gambar langsung. Kolom *Bahasa teks dalam gambar* menentukan bahasa teks yang terlihat di dalam gambar bila ada.
 - **Template Slide Presentasi** meminta AI membuat satu file presentasi yang dapat diunduh. Format defaultnya PowerPoint `.pptx`, dengan pilihan PDF atau HTML slide sebagai alternatif. Jika AI yang dipakai tidak mendukung pembuatan atau lampiran berkas, prompt meminta fallback berupa satu file HTML slide mandiri.
 

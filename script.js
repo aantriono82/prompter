@@ -58,7 +58,13 @@ const FITUR_MPI = ['Satu file HTML mandiri, berjalan offline tanpa internet/CDN'
   'Umpan balik langsung pada setiap jawaban','Skor akhir','Bisa dicetak / disertai LKPD'];
 
 const mapelModul = v => String(v.mapel || '').trim() || 'yang dipilih pengguna';
-const modulMatematika = v => /matematika/i.test(String(v.mapel || ''));
+
+/* Acuan resmi yang sama untuk semua mata pelajaran pada template Perencanaan & Materi serta Asesmen. */
+const acuanResmi = v => '1) Panduan Mata Pelajaran ' + mapelModul(v) + ' resmi Kemendikdasmen (https://kurikulum.kemendikdasmen.go.id/panduan-mapel); ' +
+  '2) Panduan Pembelajaran dan Asesmen Edisi Revisi 2025 (BSKAP Kemendikdasmen; https://kurikulum.kemendikdasmen.go.id/rujukan/panduan-panduan-kurikulum); ' +
+  '3) Keputusan Kepala BSKAP No. 046/H/KR/2025 beserta lampiran CP (https://kurikulum.kemendikdasmen.go.id/file/1753929861_manage_file.pdf).';
+const aturanAcuan = fokus => v => 'Sumber acuan resmi untuk semua mata pelajaran: ' + acuanResmi(v) + ' ' + (typeof fokus === 'function' ? fokus(v) : fokus) +
+  ' Jika isi dokumen tersebut tidak tersedia bagi Anda, jangan mengutip atau mengarang rumusannya; tandai bagian yang bergantung padanya dengan [PERLU DIPERIKSA GURU].';
 
 const TEMPLATE = [
 
@@ -241,16 +247,19 @@ const TEMPLATE = [
   peran:'Anda adalah pengembang kuis interaktif dan penyusun soal berpengalaman yang membuat kuis satu file HTML.',
   tugas:'Buatlah satu kuis interaktif yang lengkap dan siap dipakai berdasarkan spesifikasi berikut. Hasil akhir harus berupa kuis yang dapat langsung dimainkan dan seluruh soalnya harus disusun hanya dari materi sumber yang diberikan.',
   fields:[
+    { i:'jenjangKelas', l:'Jenjang & kelas', j:'teks', m:'C', w:true, ph:'mis. SMP Kelas VII', c:'SMP Kelas VII' },
+    { i:'mapel', l:'Mata pelajaran', j:'teks', m:'C', w:true, ph:'mis. Matematika', c:'Matematika' },
     { i:'topik', l:'Topik kuis', j:'teks', m:'C', w:true, ph:'mis. Bilangan Bulat', c:'Bilangan Bulat' },
-    { i:'jumlahSoal', l:'Jumlah soal', j:'angka', m:'C', w:true, ph:'mis. 10', c:'10' },
-    { i:'jenisSoal', l:'Jenis soal', j:'centang', m:'C', w:true, o:['Pilihan ganda','Benar–salah','Isian singkat','Menjodohkan'], c:['Pilihan ganda'] },
-    { i:'kesulitan', l:'Tingkat kesulitan', j:'pilih', m:'C', w:true, o:['Mudah','Sedang','Sulit','Campuran bertingkat'], c:'Campuran bertingkat' },
     { i:'materiSumber', l:'Materi sumber soal', j:'area', m:'C', w:true, ph:'Tempel materi di sini agar soal tidak mengarang…', c:'Bilangan bulat terdiri dari bilangan positif, nol, dan negatif. Operasi hitung campuran dikerjakan dengan urutan: kurung, kali/bagi, lalu tambah/kurang.' },
+    { i:'jenisSoal', l:'Jenis soal', j:'centang', m:'C', w:true, o:['Pilihan ganda','Benar–salah','Isian singkat','Menjodohkan'], c:['Pilihan ganda'] },
+    { i:'jumlahSoal', l:'Jumlah soal', j:'angka', m:'C', w:true, ph:'mis. 10', c:'10' },
+    { i:'kesulitan', l:'Tingkat kesulitan', j:'pilih', m:'C', w:true, o:['Mudah','Sedang','Sulit','Campuran bertingkat'], c:'Campuran bertingkat' },
     { i:'timer', l:'Timer per soal', j:'pilih', m:'D', o:['Tanpa timer','15 detik','30 detik','60 detik'], c:'30 detik' },
     { i:'pembahasan', l:'Pembahasan tiap soal', j:'pilih', m:'D', o:['Tampilkan pembahasan','Tanpa pembahasan'], c:'Tampilkan pembahasan' },
     { i:'hasil', l:'Hasil akhir', j:'centang', m:'D', o:['Skor akhir','Predikat / nilai huruf','Tombol ulangi kuis','Daftar jawaban salah'], c:['Skor akhir','Tombol ulangi kuis','Daftar jawaban salah'] }
   ],
   aturan:[
+    aturanAcuan('Terapkan prinsip asesmen dari Panduan Pembelajaran dan Asesmen dan selaraskan dengan CP serta fase yang relevan; isi soal tetap hanya berasal dari materi sumber yang diberikan.'),
     'Buat tepat sejumlah soal sesuai kolom Jumlah soal dan gunakan hanya jenis soal yang dipilih.',
     'Dilarang membuat soal, istilah, fakta, atau jawaban di luar materi sumber yang diberikan.',
     'Tampilkan satu soal pada satu waktu atau dalam urutan yang jelas; jangan tampilkan kunci sebelum pengguna mengirim jawaban.',
@@ -346,15 +355,17 @@ const TEMPLATE = [
   konteks:['Aplikasi ini digunakan oleh {penggunaNilai} untuk mengelola hasil belajar {kelasNilai}.'],
   fields:[
     { i:'penggunaNilai', l:'Pengguna aplikasi', j:'teks', m:'C', w:true, ph:'mis. guru SMP', c:'guru SMP' },
-    { i:'kelasNilai', l:'Jenjang, kelas, dan mata pelajaran', j:'teks', m:'C', w:true, ph:'mis. SMP kelas VII, Matematika', c:'SMP kelas VII, Matematika' },
+    { i:'kelasNilai', l:'Jenjang dan kelas', j:'teks', m:'C', w:true, ph:'mis. SMP kelas VII', c:'SMP kelas VII' },
+    { i:'mapel', l:'Mata pelajaran', j:'teks', m:'C', w:true, ph:'mis. Matematika', c:'Matematika' },
     { i:'komponenNilai', l:'Komponen penilaian', j:'area', m:'C', w:true, ph:'Satu baris satu komponen…', c:'Tugas harian\nKuis\nProyek\nPenilaian akhir' },
     { i:'bobotNilai', l:'Bobot setiap komponen', j:'area', m:'C', w:true, ph:'Satu baris satu bobot…', c:'Tugas harian 20%\nKuis 20%\nProyek 30%\nPenilaian akhir 30%' },
-    { i:'dataSiswaNilai', l:'Data siswa / nilai awal', j:'area', m:'C', w:true, ph:'Tempel nama siswa dan nilai, atau jelaskan kolom datanya…', c:'Nama,Nama Tugas harian,Kuis,Proyek,Penilaian akhir\nAlya,80,75,88,90\nBima,65,70,72,68' },
     { i:'sumberNilai', l:'Cara memasukkan data', j:'pilih', m:'C', w:true, o:['Diketik langsung di aplikasi','Ditempel sebagai tabel','Diimpor dari CSV'], c:'Ditempel sebagai tabel' },
+    { i:'dataSiswaNilai', l:'Data siswa / nilai awal', j:'area', m:'C', w:true, ph:'Tempel nama siswa dan nilai, atau jelaskan kolom datanya…', c:'Nama,Nama Tugas harian,Kuis,Proyek,Penilaian akhir\nAlya,80,75,88,90\nBima,65,70,72,68' },
     { i:'hasilNilai', l:'Keluaran yang diperlukan', j:'area', m:'C', w:true, ph:'Satu baris satu keluaran…', c:'Nilai akhir tiap siswa\nRata-rata kelas\nNilai tertinggi dan terendah\nRingkasan per komponen' },
     { i:'fiturNilai', l:'Fitur tambahan', j:'centang', m:'D', aturan:true, o:['Edit dan hapus data','Saring per siswa atau rentang nilai','Urutkan nilai','Ekspor CSV','Cetak rekap','Simpan di perangkat (localStorage)'], c:['Edit dan hapus data','Saring per siswa atau rentang nilai','Urutkan nilai','Cetak rekap','Simpan di perangkat (localStorage)'] }
   ],
   aturan:[
+    aturanAcuan('Terapkan prinsip asesmen dan pengolahan hasil asesmen dari Panduan Pembelajaran dan Asesmen pada istilah, alur, dan laporan aplikasi; semua nilai dan hasil tetap berasal dari data yang dimasukkan guru.'),
     'Gunakan bobot persis seperti yang diberikan dan tampilkan rincian perhitungan agar guru dapat memeriksa hasilnya.',
     'Jangan mengubah nama siswa, nilai, bobot, atau satuan. Jika data belum lengkap, sediakan data contoh yang diberi label dan mudah diganti.',
     'Validasi nilai kosong, bukan angka, dan nilai di luar rentang yang ditentukan; tampilkan pesan yang ramah tanpa membuat halaman error.',
@@ -395,8 +406,9 @@ const TEMPLATE = [
   tugas:'Buatlah satu aplikasi web rubrik dan penilaian yang lengkap dan siap dipakai. Guru harus dapat menentukan kriteria, memilih level pencapaian, menilai beberapa siswa, lalu memperoleh skor dan umpan balik yang dapat diperiksa.',
   konteks:['Rubrik ini digunakan untuk {tugasRubrik} pada {kelasRubrik}.'],
   fields:[
+    { i:'kelasRubrik', l:'Jenjang dan kelas', j:'teks', m:'C', w:true, ph:'mis. SMP kelas VIII', c:'SMP kelas VIII' },
+    { i:'mapel', l:'Mata pelajaran', j:'teks', m:'C', w:true, ph:'mis. Matematika', c:'IPA' },
     { i:'tugasRubrik', l:'Tugas / karya yang dinilai', j:'teks', m:'C', w:true, ph:'mis. presentasi proyek pencemaran lingkungan', c:'presentasi proyek pencemaran lingkungan' },
-    { i:'kelasRubrik', l:'Jenjang, kelas, dan mata pelajaran', j:'teks', m:'C', w:true, ph:'mis. SMP kelas VIII, IPA', c:'SMP kelas VIII, IPA' },
     { i:'tujuanRubrik', l:'Tujuan atau kompetensi yang dinilai', j:'area', m:'C', w:true, ph:'Satu baris satu tujuan…', c:'Menjelaskan hubungan sebab-akibat\nMenggunakan bukti yang relevan\nMenyampaikan gagasan dengan jelas' },
     { i:'kriteriaRubrik', l:'Kriteria penilaian', j:'area', m:'C', w:true, ph:'Satu baris satu kriteria…', c:'Ketepatan isi\nPenggunaan bukti\nKejelasan komunikasi' },
     { i:'levelRubrik', l:'Level pencapaian', j:'teks', m:'C', w:true, ph:'mis. 4 level: Sangat baik, Baik, Cukup, Perlu bimbingan', c:'4 level: Sangat baik, Baik, Cukup, Perlu bimbingan' },
@@ -405,6 +417,7 @@ const TEMPLATE = [
     { i:'fiturRubrik', l:'Fitur tambahan', j:'centang', m:'D', aturan:true, o:['Skor otomatis','Umpan balik per kriteria','Penilaian beberapa siswa','Edit rubrik','Cetak rubrik kosong','Ekspor hasil','Simpan di perangkat (localStorage)'], c:['Skor otomatis','Umpan balik per kriteria','Penilaian beberapa siswa','Cetak rubrik kosong','Simpan di perangkat (localStorage)'] }
   ],
   aturan:[
+    aturanAcuan('Terapkan prinsip asesmen dan pengolahan hasil asesmen dari Panduan Pembelajaran dan Asesmen pada istilah, alur, dan laporan aplikasi; semua nilai dan hasil tetap berasal dari data yang dimasukkan guru.'),
     'Buat deskriptor yang dapat diamati untuk setiap kriteria dan level. Hindari kata yang terlalu umum tanpa indikator perilaku atau bukti.',
     'Jika bobot diberikan, pastikan jumlah bobot terlihat dan perhitungan skor mengikuti bobot tersebut. Jika tidak diberikan, gunakan bobot sama rata dan tampilkan asumsi itu di aplikasi.',
     'Sediakan tampilan rubrik kosong untuk dipakai guru dan tampilan penilaian untuk satu atau beberapa siswa sesuai fitur yang dipilih.',
@@ -445,9 +458,7 @@ const TEMPLATE = [
 {
   id:'modul-ajar', kategori:'materi', ikon:'📘', nama:'Modul Ajar / RPP Ringkas',
   deskripsi:'Modul ajar / RPP ringkas berbasis Perencanaan Pembelajaran Mendalam dan CP resmi 2025.',
-  peran: v => 'Anda adalah penyusun dokumen perencanaan pembelajaran yang berpengalaman. ' + (modulMatematika(v)
-    ? 'Gunakan Panduan Mata Pelajaran Matematika Fase A–F dan Fase F Tingkat Lanjut (BSKAP, 2025) serta Keputusan Kepala BSKAP No. 046/H/KR/2025 sebagai acuan.'
-    : 'Gunakan Keputusan Kepala BSKAP No. 046/H/KR/2025 serta panduan mata pelajaran ' + mapelModul(v) + ' yang berlaku sebagai acuan.'),
+  peran: v => 'Anda adalah penyusun dokumen perencanaan pembelajaran yang berpengalaman. Gunakan Panduan Mata Pelajaran ' + mapelModul(v) + ', Panduan Pembelajaran dan Asesmen Edisi Revisi 2025, serta Keputusan Kepala BSKAP No. 046/H/KR/2025 sebagai acuan.',
   tugas:'Susunlah satu dokumen perencanaan pembelajaran yang ringkas, jelas, fleksibel, dan siap digunakan. Pertahankan empat bagian resmi: Identifikasi → Desain Pembelajaran → Pengalaman Belajar → Asesmen Pembelajaran. Isi bagian yang tidak ditentukan pengguna dengan rancangan yang wajar dan tandai asumsi yang perlu diperiksa guru.',
   fields:[
     { i:'penyusun', l:'Penyusun / satuan pendidikan (opsional)', j:'teks', m:'D', g:'Identitas', ph:'mis. Aan Triono, S.Pd. — SMP Nusantara', c:'Aan Triono, S.Pd. — SMP Nusantara' },
@@ -459,7 +470,7 @@ const TEMPLATE = [
     { i:'alokasi', l:'Alokasi waktu (opsional)', j:'teks', m:'D', g:'Identitas', ph:'mis. 2 pertemuan × 2 JP', c:'2 pertemuan × 2 JP' },
     { i:'konteks', l:'Kondisi murid dan konteks materi (opsional)', j:'area', m:'D', g:'A. Identifikasi', ph:'Pengetahuan awal, kebutuhan belajar, relevansi materi, atau konteks lokal…', c:'Murid telah mengenal pecahan; beberapa murid membutuhkan contoh konkret dan waktu latihan tambahan.' },
     { i:'dimensi', l:'Dimensi Profil Lulusan', j:'centang', m:'C', w:true, g:'A. Identifikasi', o:DIMENSI_PROFIL, c:['Penalaran kritis','Komunikasi'] },
-    { i:'cp', l:'CP resmi (wajib ditempel)', j:'area', m:'C', w:true, g:'B. Desain Pembelajaran', ph:'Tempel bagian CP yang relevan dari Panduan Mata Pelajaran atau Lampiran Kep. BSKAP No. 046/H/KR/2025…', c:'Murid dapat menggunakan rasio (skala, proporsi, dan laju perubahan) dalam penyelesaian masalah.' },
+    { i:'cp', l:'CP resmi (wajib ditempel)', j:'area', m:'C', w:true, g:'B. Desain Pembelajaran', ph:'Tempel bagian CP yang relevan dari Panduan Mata Pelajaran (kurikulum.kemendikdasmen.go.id/panduan-mapel) atau Lampiran Kep. BSKAP No. 046/H/KR/2025…', c:'Murid dapat menggunakan rasio (skala, proporsi, dan laju perubahan) dalam penyelesaian masalah.' },
     { i:'elemen', l:'Elemen / lingkup CP (opsional)', j:'teks', m:'D', g:'B. Desain Pembelajaran', ph:'mis. Bilangan; Aljabar; atau Pemecahan Masalah Matematis', c:'Bilangan' },
     { i:'tp', l:'TP atau arahan penurunannya', j:'area', m:'C', w:true, g:'B. Desain Pembelajaran', ph:'Satu baris satu TP, atau tulis: Turunkan dari CP dan topik…', c:'Turunkan dari CP dan topik menjadi tujuan yang terukur.' },
     { i:'kerangka', l:'Kerangka pembelajaran (opsional)', j:'area', m:'D', g:'B. Desain Pembelajaran', ph:'Model / metode, kemitraan, lingkungan belajar, dan pemanfaatan digital bila ada…', c:'PBL; kerja berpasangan; kelas dengan benda konkret; tanpa teknologi digital.' },
@@ -471,14 +482,10 @@ const TEMPLATE = [
   aturan:[
     'Gunakan istilah resmi "Dimensi Profil Lulusan" dan susun dokumen dengan empat bagian: A. Identifikasi, B. Desain Pembelajaran, C. Pengalaman Belajar, D. Asesmen Pembelajaran.',
     'Jangan menyebut format ini sebagai satu-satunya format resmi. Perencanaan pembelajaran bersifat fleksibel, jelas, dan sederhana.',
-    v => modulMatematika(v)
-      ? 'Sumber acuan resmi: Panduan Mata Pelajaran Matematika Fase A–F dan Fase F Tingkat Lanjut (https://repositori.kemendikdasmen.go.id/33608/) dan Keputusan Kepala BSKAP No. 046/H/KR/2025 beserta lampirannya (https://kurikulum.kemendikdasmen.go.id/file/1753929861_manage_file.pdf).'
-      : 'Sumber acuan resmi: Keputusan Kepala BSKAP No. 046/H/KR/2025 beserta lampirannya (https://kurikulum.kemendikdasmen.go.id/file/1753929861_manage_file.pdf) dan panduan mata pelajaran ' + mapelModul(v) + ' yang berlaku. Jangan memakai panduan atau istilah khas Matematika untuk mata pelajaran ini.',
+    aturanAcuan(v => 'Gunakan Panduan Mata Pelajaran ' + mapelModul(v) + ' untuk elemen dan karakteristik mata pelajaran, Panduan Pembelajaran dan Asesmen untuk prinsip perencanaan, pengalaman belajar, dan asesmen, serta Kep. BSKAP No. 046/H/KR/2025 untuk CP. Jangan memakai panduan mata pelajaran lain.'),
     'CP harus diperlakukan sebagai teks sumber. Jangan mengubah, meringkas, atau mengarang rumusan CP. Jika CP tidak lengkap, tandai [CP PERLU DIPERIKSA GURU].',
     'Selaraskan TP dengan CP, fase, elemen, dan topik. Jika TP diturunkan oleh AI, tandai sebagai "Rancangan TP" dan gunakan tujuan yang dapat diamati.',
-    v => modulMatematika(v)
-      ? 'Hubungkan kegiatan dan asesmen dengan elemen materi yang dipilih serta proses matematis yang relevan seperti penalaran, pemecahan masalah, komunikasi, representasi, atau koneksi.'
-      : 'Hubungkan kegiatan dan asesmen dengan elemen CP yang dipilih serta keterampilan khas mata pelajaran ' + mapelModul(v) + '.',
+    v => 'Hubungkan kegiatan dan asesmen dengan elemen CP yang dipilih serta keterampilan khas mata pelajaran ' + mapelModul(v) + ' sesuai Panduan Mata Pelajarannya.',
     'Pada Pengalaman Belajar, tampilkan prinsip berkesadaran, bermakna, dan menggembirakan melalui tindakan nyata. Susun pengalaman inti dengan urutan Memahami → Mengaplikasi → Merefleksi.',
     'Asesmen wajib memuat bukti yang selaras dengan tujuan pada awal, proses, dan akhir pembelajaran. Gunakan istilah diagnostik, formatif, dan sumatif hanya sebagai keterangan bila membantu.',
     'Jangan menambahkan komponen, lampiran, atau rubrik yang tidak diminta. Bila informasi opsional kosong, buat rancangan secukupnya dan tandai asumsi yang perlu diperiksa guru.'
@@ -491,8 +498,9 @@ const TEMPLATE = [
   peran:'Anda adalah penyusun LKPD berpengalaman yang menulis lembar kerja yang jelas, bertahap, dan menyenangkan dikerjakan peserta didik.',
   tugas:'Susunlah satu LKPD yang lengkap, siap dicetak, dan siap dikerjakan peserta didik berdasarkan spesifikasi berikut. Keluarkan lembar kerja final secara langsung, bukan penjelasan tentang cara membuat LKPD.',
   fields:[
-    { i:'materiLkpd', l:'Materi', j:'teks', m:'C', w:true, ph:'mis. Sistem Pencernaan Manusia', c:'Sistem Pencernaan Manusia' },
     { i:'kelasLkpd', l:'Kelas', j:'teks', m:'C', w:true, ph:'mis. VIII SMP', c:'VIII SMP' },
+    { i:'mapel', l:'Mata pelajaran', j:'teks', m:'C', w:true, ph:'mis. Matematika', c:'IPA' },
+    { i:'materiLkpd', l:'Materi', j:'teks', m:'C', w:true, ph:'mis. Sistem Pencernaan Manusia', c:'Sistem Pencernaan Manusia' },
     { i:'tujuanKegiatan', l:'Tujuan kegiatan', j:'area', m:'C', w:true, ph:'Satu baris satu tujuan…', c:'Mengamati dan mencatat urutan organ pencernaan\nMenjelaskan fungsi tiap organ' },
     { i:'jenisKegiatan', l:'Jenis kegiatan', j:'pilih', m:'C', w:true, o:['Pengamatan','Percobaan','Diskusi','Latihan soal','Proyek mini'], c:'Pengamatan' },
     { i:'jumlahTugas', l:'Jumlah & jenis soal / tugas', j:'teks', m:'C', ph:'mis. 5 tugas pengamatan + 3 soal refleksi', c:'5 tugas pengamatan + 3 soal refleksi' },
@@ -500,6 +508,7 @@ const TEMPLATE = [
     { i:'formatCetak', l:'Format cetak', j:'pilih', m:'D', o:['Dokumen biasa siap salin ke Word','Kode LaTeX A4 siap cetak'], c:'Dokumen biasa siap salin ke Word' }
   ],
   aturan:[
+    aturanAcuan('Selaraskan tujuan, tingkat kesulitan, dan istilah dengan CP serta fase yang relevan; isi materi tetap berasal dari data yang diberikan pengguna.'),
     'Tulis instruksi langsung kepada peserta didik dengan kata kerja yang jelas, singkat, dan sesuai usia.',
     'Jumlah tugas harus mengikuti kolom Jumlah & jenis soal / tugas; jangan mengurangi atau menambah tanpa alasan.',
     'Sediakan ruang jawaban yang proporsional setelah setiap pertanyaan atau tugas.',
@@ -516,14 +525,16 @@ const TEMPLATE = [
   peran:'Anda adalah penyusun soal berpengalaman yang menulis soal yang valid, jelas, dan sesuai jenjang kognitif yang diminta.',
   tugas:'Susunlah satu paket soal yang lengkap dan siap digunakan berdasarkan spesifikasi berikut. Soal hanya boleh dibuat dari materi atau ruang lingkup yang diberikan, lalu tampilkan kunci dan pembahasan sesuai pilihan pengguna.',
   fields:[
-    { i:'ruangLingkup', l:'Materi & ruang lingkup (materi sumber)', j:'area', m:'C', w:true, ph:'Tempel materi sumber atau jabarkan ruang lingkupnya…', c:'Bilangan bulat: pengertian, garis bilangan, membandingkan, dan operasi hitung campuran.' },
     { i:'jenjangKelas', l:'Jenjang & kelas', j:'teks', m:'C', w:true, ph:'mis. SMP Kelas VII', c:'SMP Kelas VII' },
+    { i:'mapel', l:'Mata pelajaran', j:'teks', m:'C', w:true, ph:'mis. Matematika', c:'Matematika' },
+    { i:'ruangLingkup', l:'Materi & ruang lingkup (materi sumber)', j:'area', m:'C', w:true, ph:'Tempel materi sumber atau jabarkan ruang lingkupnya…', c:'Bilangan bulat: pengertian, garis bilangan, membandingkan, dan operasi hitung campuran.' },
     { i:'jumlahBentuk', l:'Jumlah & bentuk soal', j:'teks', m:'C', w:true, ph:'mis. 10 pilihan ganda, 3 esai', c:'10 pilihan ganda, 2 esai' },
     { i:'kognitif', l:'Tingkat kesulitan & jenjang kognitif', j:'pilih', m:'C', o:['Campuran C1–C3','Sampai C4 (menganalisis)','Fokus HOTS'], c:'Campuran C1–C3' },
     { i:'kunciBahasan', l:'Kunci & pembahasan', j:'pilih', m:'C', w:true, o:['Kunci saja','Kunci + pembahasan','Kunci + pembahasan + rubrik esai'], c:'Kunci + pembahasan' },
     { i:'kisi', l:'Tabel spesifikasi / kisi-kisi', j:'pilih', m:'D', o:['Sertakan sebelum soal','Tidak perlu'], c:'Sertakan sebelum soal' }
   ],
   aturan:[
+    aturanAcuan('Terapkan prinsip asesmen dari Panduan Pembelajaran dan Asesmen dan selaraskan dengan CP serta fase yang relevan; isi soal tetap hanya berasal dari materi sumber yang diberikan.'),
     'Buat tepat jumlah dan bentuk soal yang tertulis pada kolom Jumlah & bentuk soal.',
     'Gunakan hanya materi atau ruang lingkup sumber; jangan menambahkan konsep yang tidak ada di dalamnya.',
     'Jika kisi-kisi dipilih, tampilkan tabel kisi-kisi sebelum soal dengan nomor, indikator, materi, bentuk soal, dan jenjang kognitif.',
@@ -540,17 +551,19 @@ const TEMPLATE = [
   peran:'Anda adalah desainer presentasi profesional, instructional designer, dan pembuat file PowerPoint. Anda mengubah materi menjadi presentasi yang ringkas, runtut, mudah dipahami, dan memiliki sistem desain visual yang konsisten.',
   tugas:'Buat presentasi final berdasarkan materi dan tujuan berikut dalam Format keluaran yang dipilih. Hasil utama wajib berupa satu file presentasi yang dapat langsung diunduh dan dibuka. Jangan berhenti pada outline, rancangan, atau daftar isi slide.',
   fields:[
-    { i:'topikSlide', l:'Topik presentasi', j:'teks', m:'C', w:true, ph:'mis. Pengenalan Bilangan Bulat', c:'Pengenalan Bilangan Bulat' },
     { i:'audiens', l:'Hadirin / audiens', j:'teks', m:'C', w:true, ph:'mis. siswa SMP kelas VII', c:'siswa SMP kelas VII' },
-    { i:'jumlahSlide', l:'Jumlah slide', j:'angka', m:'C', w:true, ph:'mis. 10', c:'10' },
+    { i:'mapel', l:'Mata pelajaran', j:'teks', m:'C', w:true, ph:'mis. Matematika', c:'Matematika' },
+    { i:'topikSlide', l:'Topik presentasi', j:'teks', m:'C', w:true, ph:'mis. Pengenalan Bilangan Bulat', c:'Pengenalan Bilangan Bulat' },
     { i:'tujuanPresentasi', l:'Tujuan presentasi', j:'teks', m:'C', w:true, ph:'mis. siswa memahami bilangan negatif lewat contoh suhu dan utang', c:'siswa memahami bilangan negatif lewat contoh sehari-hari' },
-    { i:'formatKeluaran', l:'Format keluaran', j:'pilih', m:'C', w:true, o:['PowerPoint (.pptx) — buat dan lampirkan file','PDF (.pdf) — buat dan lampirkan file','HTML slide mandiri (.html) — buat dan lampirkan file'], c:'PowerPoint (.pptx) — buat dan lampirkan file' },
     { i:'gayaSampai', l:'Gaya penyampaian', j:'pilih', m:'D', o:['Mengajar','Seminar','Promosi','Laporan'], c:'Mengajar' },
+    { i:'jumlahSlide', l:'Jumlah slide', j:'angka', m:'C', w:true, ph:'mis. 10', c:'10' },
+    { i:'formatKeluaran', l:'Format keluaran', j:'pilih', m:'C', w:true, o:['PowerPoint (.pptx) — buat dan lampirkan file','PDF (.pdf) — buat dan lampirkan file','HTML slide mandiri (.html) — buat dan lampirkan file'], c:'PowerPoint (.pptx) — buat dan lampirkan file' },
     { i:'visual', l:'Kebutuhan visual per slide', j:'pilih', m:'C', o:['Gunakan gambar / diagram yang relevan','Teks saja'], c:'Gunakan gambar / diagram yang relevan' },
     { i:'gayaVisual', l:'Gaya visual presentasi', j:'pilih', m:'C', o:['Modern edukatif — biru tua, hijau, dan kuning lembut','Minimal profesional — monokrom dengan satu warna aksen','Cerah ramah — warna hangat dengan kontras tinggi'], c:'Modern edukatif — biru tua, hijau, dan kuning lembut' },
     { i:'arahVisual', l:'Arahan visual khusus (opsional)', j:'area', m:'D', ph:'Jelaskan visual, contoh, atau identitas yang ingin ditampilkan…', c:'Gunakan diagram alur, ikon sederhana, dan mockup antarmuka. Hindari gambar dekoratif yang tidak membantu pemahaman.' }
   ],
   aturan:[
+    aturanAcuan('Selaraskan tujuan, tingkat kesulitan, dan istilah dengan CP serta fase yang relevan; isi materi tetap berasal dari data yang diberikan pengguna.'),
     'Keluarkan tepat sejumlah slide yang diminta pada kolom Jumlah slide.',
     'Hasil utama harus berupa satu file sesuai Format keluaran dan file tersebut harus dilampirkan agar dapat diunduh.',
     'Jika Format keluaran adalah PowerPoint, buat file .pptx dengan teks yang dapat diedit, rasio 16:9, dan satu slide untuk setiap halaman.',
@@ -803,12 +816,12 @@ for (const template of TEMPLATE){
 /* Isian yang diulang di DAFTAR PERIKSA akhir prompt. true = "Label: nilai"; string = kalimat dengan {nilai}. */
 const DAFTAR_PERIKSA = {
   'modul-ajar': { jenjang:true, fase:true, kelas:true, mapel:true, topik:true, alokasi:true, dimensi:'Dimensi Profil Lulusan yang diwujudkan: {nilai}.', lampiran:'Lampiran hanya: {nilai}.' },
-  'lkpd': { kelasLkpd:true, jenisKegiatan:true, jumlahTugas:'Jumlah & jenis tugas tepat: {nilai}.', kunci:true, formatCetak:true },
-  'slide-presentasi': { jumlahSlide:'Tepat {nilai} slide.', formatKeluaran:true, audiens:true, visual:true },
-  'bank-soal': { jenjangKelas:true, jumlahBentuk:'Jumlah & bentuk soal tepat: {nilai}.', kognitif:true, kunciBahasan:true, kisi:true },
-  'kuis-interaktif': { jumlahSoal:'Tepat {nilai} soal.', jenisSoal:'Jenis soal hanya: {nilai}.', kesulitan:true, timer:true, pembahasan:true, hasil:true },
-  'rubrik-penilaian': { kriteriaRubrik:true, levelRubrik:true, bobotRubrik:true, fiturRubrik:true },
-  'rekap-nilai': { komponenNilai:true, bobotNilai:true, sumberNilai:true, hasilNilai:true, fiturNilai:true },
+  'lkpd': { mapel:true, kelasLkpd:true, jenisKegiatan:true, jumlahTugas:'Jumlah & jenis tugas tepat: {nilai}.', kunci:true, formatCetak:true },
+  'slide-presentasi': { mapel:true, jumlahSlide:'Tepat {nilai} slide.', formatKeluaran:true, audiens:true, visual:true },
+  'bank-soal': { mapel:true, jenjangKelas:true, jumlahBentuk:'Jumlah & bentuk soal tepat: {nilai}.', kognitif:true, kunciBahasan:true, kisi:true },
+  'kuis-interaktif': { jenjangKelas:true, mapel:true, jumlahSoal:'Tepat {nilai} soal.', jenisSoal:'Jenis soal hanya: {nilai}.', kesulitan:true, timer:true, pembahasan:true, hasil:true },
+  'rubrik-penilaian': { mapel:true, kriteriaRubrik:true, levelRubrik:true, bobotRubrik:true, fiturRubrik:true },
+  'rekap-nilai': { mapel:true, komponenNilai:true, bobotNilai:true, sumberNilai:true, hasilNilai:true, fiturNilai:true },
   'absensi-jurnal': { statusAbsensi:'Status kehadiran hanya: {nilai}.', isiJurnal:true, fiturAbsensi:true },
   'umpan-balik-siswa': { fokusUmpanBalik:true, gayaUmpanBalik:true, formatUmpanBalik:true, fiturUmpanBalik:true },
   'mpi-lengkap': { kelas:true, mapel:true, materi:true, jenis:true, jumlahBagian:'Tepat {nilai} bagian / level.', fiturWajib:true },

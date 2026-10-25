@@ -98,18 +98,33 @@ test('mode cepat tidak memasukkan kolom detail ke daftar periksa', () => {
 
 test('mata pelajaran bahasa asing tidak dipaksa berbahasa Indonesia', () => {
   const template = templateDenganId('bank-soal');
-  const hasil = engine.buatPrompt(template, isiContoh(template, { jenjangKelas: 'SMP Kelas VII Bahasa Inggris' }), {}, 'universal');
+  const hasil = engine.buatPrompt(template, isiContoh(template, { mapel: 'Bahasa Inggris' }), {}, 'universal');
   assert.doesNotMatch(hasil, /Seluruh jawaban dalam Bahasa Indonesia/);
   assert.match(hasil, /peserta didik ditulis dalam Bahasa Inggris/);
 });
 
-test('modul ajar non-Matematika tidak memakai acuan Matematika', () => {
+test('modul ajar memakai acuan resmi yang sama untuk semua mata pelajaran', () => {
   const template = templateDenganId('modul-ajar');
   const hasil = engine.buatPrompt(template, isiContoh(template, { mapel: 'IPA' }), {}, 'universal');
   assert.doesNotMatch(hasil, /Panduan Mata Pelajaran Matematika|proses matematis/);
-  assert.match(hasil, /panduan mata pelajaran IPA/);
-  const mtk = engine.buatPrompt(template, isiContoh(template), {}, 'universal');
-  assert.match(mtk, /Panduan Mata Pelajaran Matematika/);
+  assert.match(hasil, /Panduan Mata Pelajaran IPA/);
+  assert.match(hasil, /kurikulum\.kemendikdasmen\.go\.id\/panduan-mapel/);
+  assert.match(hasil, /Panduan Pembelajaran dan Asesmen Edisi Revisi 2025/);
+  assert.match(hasil, /046\/H\/KR\/2025/);
+});
+
+test('template materi dan asesmen menyertakan ketiga acuan resmi', () => {
+  ['modul-ajar', 'lkpd', 'slide-presentasi', 'bank-soal', 'kuis-interaktif', 'rubrik-penilaian', 'rekap-nilai'].forEach(id => {
+    const template = templateDenganId(id);
+    const hasil = engine.buatPrompt(template, isiContoh(template), {}, 'universal');
+    assert.match(hasil, /panduan-mapel/, id);
+    assert.match(hasil, /Panduan Pembelajaran dan Asesmen Edisi Revisi 2025/, id);
+    assert.match(hasil, /Keputusan Kepala BSKAP No\. 046\/H\/KR\/2025/, id);
+    assert.ok(template.fields.some(field => field.i === 'mapel'), id + ' wajib punya kolom Mata pelajaran');
+    if (id !== 'slide-presentasi') assert.ok(template.fields.some(field => /^(jenjang|kelas)/i.test(field.i)), id + ' wajib punya kolom jenjang/kelas');
+    const mapel = engine.buatPrompt(template, isiContoh(template, { mapel: 'Seni Budaya' }), {}, 'universal');
+    assert.match(mapel, /Panduan Mata Pelajaran Seni Budaya/, id);
+  });
 });
 
 test('aturan pemeriksaan tidak melarang pembahasan yang diminta', () => {
