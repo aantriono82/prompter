@@ -349,6 +349,10 @@ label.tombol.berkas{cursor:pointer}
 }
 .kaki p{margin:.3rem 0}
 .kaki-kecil{font-size:.82rem}
+.kaki-kredit{font-size:.9rem;display:flex;align-items:center;justify-content:center;gap:.35rem}
+.hati{width:1.1em;height:1.1em;fill:#800000;animation:detak 1.2s ease-in-out infinite;transform-origin:center}
+[data-theme="gelap"] .hati{fill:#B0203A}
+@keyframes detak{0%,40%,100%{transform:scale(1)}15%{transform:scale(1.25)}28%{transform:scale(1.1)}}
 
 /* ---------- Layar sangat lebar (IFP/TV) ---------- */
 @media (min-width:1800px){
