@@ -106,7 +106,11 @@
 
     warnings.push(...cekKonsistensiKelas(visibleFields, values));
 
-    if (/\{\w+\}/.test(text)) errors.push('Prompt masih memiliki placeholder yang belum terisi.');
+    // Hanya {idKolom} milik template yang dianggap placeholder; kurung kurawal lain (LaTeX, kode, notasi himpunan) sah.
+    const idKolom = new Set((template?.fields || []).map(field => field.i));
+    if ([...text.matchAll(/\{(\w+)\}/g)].some(cocok => idKolom.has(cocok[1]))){
+      errors.push('Prompt masih memiliki placeholder yang belum terisi.');
+    }
     if (text.length > 250000) errors.push('Prompt melebihi batas aman 250.000 karakter.');
     if (text.length > 50000) warnings.push('Prompt sangat panjang; hasil AI dapat terpotong atau kehilangan konteks.');
 

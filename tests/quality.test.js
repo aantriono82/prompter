@@ -189,3 +189,10 @@ test('lint tidak menandai isian umum yang kebetulan sama dengan contoh', () => {
   for (const label of ['Kelas', 'Mata pelajaran', 'Topik', 'TP atau arahan']) assert.ok(!pesan.includes(label), label);
   assert.ok(pesan.includes('CP resmi') && pesan.includes('Kondisi murid'));
 });
+
+test('lint tidak menganggap LaTeX atau kode sebagai placeholder', () => {
+  const template = templateDenganId('bank-soal');
+  const cek = text => lint.lintPrompt({ template, values: {}, common: { __fields: [] }, text, targets: katalog.TARGET_AI }).errors;
+  assert.ok(!cek('Hitung \\frac{1}{2} + {x} dan function(){ return {a}; }').some(item => item.includes('placeholder')));
+  assert.ok(cek('Mata pelajaran: {mapel}').some(item => item.includes('placeholder')));
+});

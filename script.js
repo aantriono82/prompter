@@ -1006,6 +1006,10 @@ function simpanDraf(segera = false){
   timerSimpanDraf = setTimeout(tulisDrafSekarang, 400);
 }
 window.addEventListener('pagehide', () => simpanDraf(true));
+// Di HP, tab sering dibuang tanpa pagehide; simpan juga saat aplikasi dipindah ke latar belakang.
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'hidden') simpanDraf(true);
+});
 
 /* ---------- Pemberitahuan ---------- */
 let timerToast = null;
@@ -1323,6 +1327,8 @@ function perbaruiHitungan(){
 }
 function perbaruiStruktur(){
   const wadah = $('panelStruktur');
+  // Panel tersembunyi tidak perlu disusun ulang pada setiap ketikan; disusun saat tab Struktur dibuka.
+  if (wadah.hidden) return;
   wadah.innerHTML = '';
 
   if (state.pratinjauManual){
@@ -1385,6 +1391,7 @@ function pilihTabPreview(tab){
   $('tabStruktur').setAttribute('aria-selected', String(!promptAktif));
   $('panelPrompt').hidden = !promptAktif;
   $('panelStruktur').hidden = promptAktif;
+  if (!promptAktif) perbaruiStruktur();
 }
 $('tabPrompt').addEventListener('click', () => pilihTabPreview('prompt'));
 $('tabStruktur').addEventListener('click', () => pilihTabPreview('struktur'));
@@ -1501,17 +1508,29 @@ async function kirimKeAI(a){
   } else {
     toast('Situs ' + a.nama + ' akan dibuka. Clipboard gagal; salin prompt dari pratinjau secara manual.');
   }
-  const tab = window.open(a.url, '_blank', 'noopener,noreferrer');
-  if (!tab) toast('Popup diblokir peramban. Izinkan popup untuk membuka ' + a.nama + '.');
+  // Tanpa fitur 'noopener': dengan fitur itu window.open selalu mengembalikan null sehingga popup yang
+  // berhasil pun terbaca "diblokir". Opener diputus manual setelah tab terbuka.
+  const tab = window.open(a.url, '_blank');
+  if (tab) tab.opener = null;
+  else toast('Popup diblokir peramban. Izinkan popup untuk membuka ' + a.nama + '.');
 }
+/* Menu tarik-turun (Kirim ke AI & Ekspor): tutup saat klik di luar atau tekan Escape. */
+const menuTarik = document.querySelectorAll('details.menu-kirim, details.menu-ekspor');
 document.addEventListener('click', e => {
-  const menu = $('menuKirimAI');
-  if (menu.open && !menu.contains(e.target)) menu.open = false;
+  menuTarik.forEach(menu => { if (menu.open && !menu.contains(e.target)) menu.open = false; });
 });
-$('menuKirimAI').addEventListener('keydown', e => {
-  if (e.key !== 'Escape') return;
-  e.currentTarget.open = false;
-  e.currentTarget.querySelector('summary').focus();
+menuTarik.forEach(menu => {
+  menu.addEventListener('keydown', e => {
+    if (e.key !== 'Escape' || !menu.open) return;
+    menu.open = false;
+    menu.querySelector('summary').focus();
+  });
+  menu.addEventListener('toggle', () => {
+    if (menu.open) menuTarik.forEach(lain => { if (lain !== menu) lain.open = false; });
+  });
+});
+document.querySelectorAll('.menu-ekspor-isi button').forEach(b => {
+  b.addEventListener('click', () => { b.closest('details').open = false; });
 });
 
 /* ---------- Isi contoh & reset ---------- */
@@ -1643,6 +1662,15 @@ async function aksiPustaka(p, aksi){
       state.sudahTersimpan = false;
       renderKategori(); renderDaftarTemplate(); renderMode(); renderTarget(); renderForm();
       simpanPilihan();
+      simpanDraf(true);
+      // Prompt yang dulu diedit manual tidak sama dengan hasil susun ulang; pertahankan teks tersimpannya.
+      if ($('areaPreview').value !== p.teks){
+        state.pratinjauManual = true;
+        $('areaPreview').value = p.teks;
+        perbaruiHitungan();
+        perbaruiStruktur();
+        perbaruiKualitas();
+      }
     } else {
       state.pratinjauManual = true;
       $('areaPreview').value = p.teks;
@@ -1683,6 +1711,11 @@ $('tombolEksporJson').addEventListener('click', () => {
     pustaka: state.pustaka
   };
   unduh('atiga-prompter-pustaka.json', JSON.stringify(paket, null, 2), 'application/json');
+});
+$('labelImpor').addEventListener('keydown', e => {
+  if (e.key !== 'Enter' && e.key !== ' ') return;
+  e.preventDefault();
+  $('berkasImpor').click();
 });
 $('berkasImpor').addEventListener('change', e => {
   const berkas = e.target.files[0];
