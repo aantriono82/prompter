@@ -275,6 +275,15 @@
           polos(JUDUL_PERIKSA, isiPeriksa)
         ].filter(Boolean).join('\n\n');
       }
+      case 'muse':
+        return gabungMd([
+          'Kerjakan tugas ini langsung di percakapan. Jangan membuka situs, mengirim pesan, mengisi formulir, atau melakukan tindakan lain di luar percakapan kecuali diminta di bawah.',
+          md('PERAN', B.peran), md('KONTEKS', B.konteks), md('TUGAS', B.tugas),
+          md('SPESIFIKASI', isiSpesifikasi()),
+          md('ATURAN WAJIB', B.aturan.map((a, i) => (i + 1) + '. ' + a).join('\n')),
+          md('FORMAT HASIL', B.format.map(f => '- ' + f).join('\n')),
+          md(JUDUL_PERIKSA, isiPeriksa)
+        ]);
       case 'qwen':
       case 'universal':
       default:

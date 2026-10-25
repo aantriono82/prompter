@@ -42,7 +42,8 @@ const TARGET_AI = [
   { id:'qwen',      nama:'Qwen',      url:'https://chat.qwen.ai/',           batasToken:12000, petunjuk:'Markdown rapi; aman untuk konteks panjang.' },
   { id:'copilot',   nama:'Copilot',   url:'https://copilot.microsoft.com/',  batasToken:8000,  petunjuk:'Ringkas dan padat — paling cocok dipadukan dengan Mode Cepat.' },
   { id:'grok',      nama:'Grok',      url:'https://grok.com/',               batasToken:12000, petunjuk:'Gaya langsung dengan kontrak keluaran tetap berlaku.' },
-  { id:'meta',      nama:'Meta AI',   url:'https://www.meta.ai/',            batasToken:8000,  petunjuk:'Format percakapan terstruktur dengan daftar bernomor.' }
+  { id:'meta',      nama:'Meta AI',   url:'https://www.meta.ai/',            batasToken:8000,  petunjuk:'Format percakapan terstruktur dengan daftar bernomor.' },
+  { id:'muse',      nama:'Muse',      url:'https://muse.ai/',                batasToken:12000, petunjuk:'Agen AI Meta — Markdown dengan aturan bernomor dan larangan tindakan di luar percakapan.' }
 ];
 
 const MAPEL_SMP = ['Matematika','IPA','IPS','Bahasa Indonesia','Bahasa Inggris','Bahasa Daerah',

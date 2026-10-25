@@ -2,7 +2,7 @@
 
 > **Susun prompt yang bagus, untuk AI apa pun — tanpa perlu hafal rumus prompt.**
 
-Atiga Prompter adalah aplikasi web untuk **membantu guru menghasilkan prompt siap pakai** yang kemudian dijalankan di AI mana pun: ChatGPT, Claude, Gemini, DeepSeek, Qwen, Copilot, Grok, Meta AI, atau AI lain (format Universal).
+Atiga Prompter adalah aplikasi web untuk **membantu guru menghasilkan prompt siap pakai** yang kemudian dijalankan di AI mana pun: ChatGPT, Claude, Gemini, DeepSeek, Qwen, Copilot, Grok, Meta AI, Muse, atau AI lain (format Universal).
 
 🌐 **Alamat:** https://prompter.aantriono.com
 📦 **Repositori:** https://github.com/aantriono82/prompter
@@ -55,6 +55,7 @@ Isi prompt selalu dibangun dari 6 blok yang sama — **Peran → Konteks → Tug
 | Copilot | Ringkas-padat dalam paragraf berlabel |
 | Grok | Markdown rapi dengan aturan template tetap berlaku |
 | Meta AI | Format percakapan terstruktur, daftar bernomor |
+| Muse | Markdown + aturan bernomor, diawali larangan tindakan di luar percakapan (Muse adalah agen) |
 
 ## Privasi
 
