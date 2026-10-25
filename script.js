@@ -34,16 +34,16 @@ const KATEGORI = [
 ];
 
 const TARGET_AI = [
-  { id:'universal', nama:'Universal', url:null,                              batasToken:12000, petunjuk:'Format Markdown polos — aman ditempel ke AI apa pun.' },
-  { id:'chatgpt',   nama:'ChatGPT',   url:'https://chatgpt.com/',            batasToken:12000, petunjuk:'Markdown dengan aturan bernomor. Prompt disalin ke clipboard sebelum situs dibuka.' },
-  { id:'claude',    nama:'Claude',    url:'https://claude.ai/new',           batasToken:16000, petunjuk:'Dibungkus tag XML — paling rapi untuk konteks panjang dan Mode Detail.' },
-  { id:'gemini',    nama:'Gemini',    url:'https://gemini.google.com/app',   batasToken:16000, petunjuk:'Judul tebal; spesifikasi yang panjang ditampilkan sebagai tabel.' },
-  { id:'deepseek',  nama:'DeepSeek',  url:'https://chat.deepseek.com/',      batasToken:12000, petunjuk:'Instruksi langsung dan teknis, dengan pemeriksaan keluaran internal.' },
-  { id:'qwen',      nama:'Qwen',      url:'https://chat.qwen.ai/',           batasToken:12000, petunjuk:'Markdown rapi; aman untuk konteks panjang.' },
-  { id:'copilot',   nama:'Copilot',   url:'https://copilot.microsoft.com/',  batasToken:8000,  petunjuk:'Ringkas dan padat — paling cocok dipadukan dengan Mode Cepat.' },
-  { id:'grok',      nama:'Grok',      url:'https://grok.com/',               batasToken:12000, petunjuk:'Gaya langsung dengan kontrak keluaran tetap berlaku.' },
-  { id:'meta',      nama:'Meta AI',   url:'https://www.meta.ai/',            batasToken:8000,  petunjuk:'Format percakapan terstruktur dengan daftar bernomor.' },
-  { id:'muse',      nama:'Muse',      url:'https://muse.ai/',                batasToken:12000, petunjuk:'Agen AI Meta — Markdown dengan aturan bernomor dan larangan tindakan di luar percakapan.' }
+  { id:'universal', nama:'Universal', ikon:'icons/ai/universal.svg',   url:null,                              batasToken:12000, petunjuk:'Format Markdown polos — aman ditempel ke AI apa pun.' },
+  { id:'chatgpt',   nama:'ChatGPT',   ikon:'icons/ai/chatgpt.svg',     url:'https://chatgpt.com/',            batasToken:12000, petunjuk:'Markdown dengan aturan bernomor. Prompt disalin ke clipboard sebelum situs dibuka.' },
+  { id:'claude',    nama:'Claude',    ikon:'icons/ai/claude.svg',      url:'https://claude.ai/new',           batasToken:16000, petunjuk:'Dibungkus tag XML — paling rapi untuk konteks panjang dan Mode Detail.' },
+  { id:'gemini',    nama:'Gemini',    ikon:'icons/ai/gemini.svg',      url:'https://gemini.google.com/app',   batasToken:16000, petunjuk:'Judul tebal; spesifikasi yang panjang ditampilkan sebagai tabel.' },
+  { id:'deepseek',  nama:'DeepSeek',  ikon:'icons/ai/deepseek.svg',    url:'https://chat.deepseek.com/',      batasToken:12000, petunjuk:'Instruksi langsung dan teknis, dengan pemeriksaan keluaran internal.' },
+  { id:'qwen',      nama:'Qwen',      ikon:'icons/ai/qwen.svg',        url:'https://chat.qwen.ai/',           batasToken:12000, petunjuk:'Markdown rapi; aman untuk konteks panjang.' },
+  { id:'copilot',   nama:'Copilot',   ikon:'icons/ai/copilot.svg',     url:'https://copilot.microsoft.com/',  batasToken:8000,  petunjuk:'Ringkas dan padat — paling cocok dipadukan dengan Mode Cepat.' },
+  { id:'grok',      nama:'Grok',      ikon:'icons/ai/grok.svg',        url:'https://grok.com/',               batasToken:12000, petunjuk:'Gaya langsung dengan kontrak keluaran tetap berlaku.' },
+  { id:'meta',      nama:'Meta AI',   ikon:'icons/ai/meta.svg',        url:'https://www.meta.ai/',            batasToken:8000,  petunjuk:'Format percakapan terstruktur dengan daftar bernomor.' },
+  { id:'muse',      nama:'Muse',      ikon:'icons/ai/muse.svg',        url:'https://muse.ai/',                batasToken:12000, petunjuk:'Agen AI Meta — Markdown dengan aturan bernomor dan larangan tindakan di luar percakapan.' }
 ];
 
 const MAPEL_SMP = ['Matematika','IPA','IPS','Bahasa Indonesia','Bahasa Inggris','Bahasa Daerah',
@@ -1113,6 +1113,14 @@ function renderMode(){
 $('modeCepat').addEventListener('click', () => { state.mode = 'cepat'; renderMode(); renderForm(); simpanPilihan(); });
 $('modeDetail').addEventListener('click', () => { state.mode = 'detail'; renderMode(); renderForm(); simpanPilihan(); });
 
+function ikonAI(a){
+  const img = document.createElement('img');
+  img.className = 'ikon-ai';
+  img.src = a.ikon;
+  img.alt = '';
+  img.width = 18; img.height = 18;
+  return img;
+}
 function renderTarget(){
   const wadah = $('chipTarget');
   wadah.innerHTML = '';
@@ -1121,7 +1129,7 @@ function renderTarget(){
     b.type = 'button';
     b.className = 'chip' + (a.id === state.target ? ' aktif' : '');
     b.setAttribute('aria-pressed', String(a.id === state.target));
-    b.textContent = a.nama;
+    b.append(ikonAI(a), a.nama);
     b.addEventListener('click', () => {
       state.target = a.id;
       state.pratinjauManual = false;
@@ -1467,14 +1475,20 @@ $('tombolPreviewMobile').addEventListener('click', () => {
 });
 
 function renderPilihKirimAI(){
-  const pilih = $('pilihKirimAI');
-  pilih.innerHTML = '<option value="">🚀 Kirim ke AI ▾</option>';
+  const isi = $('isiKirimAI');
+  isi.innerHTML = '';
   for (const a of TARGET_AI){
     if (!a.url) continue;
-    const option = document.createElement('option');
-    option.value = a.id;
-    option.textContent = '🚀 ' + a.nama;
-    pilih.appendChild(option);
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'menu-kirim-item';
+    b.setAttribute('role', 'menuitem');
+    b.append(ikonAI(a), a.nama);
+    b.addEventListener('click', () => {
+      $('menuKirimAI').open = false;
+      kirimKeAI(a);
+    });
+    isi.appendChild(b);
   }
 }
 async function kirimKeAI(a){
@@ -1489,11 +1503,14 @@ async function kirimKeAI(a){
   const tab = window.open(a.url, '_blank', 'noopener,noreferrer');
   if (!tab) toast('Popup diblokir peramban. Izinkan popup untuk membuka ' + a.nama + '.');
 }
-$('pilihKirimAI').addEventListener('change', e => {
-  const a = TARGET_AI.find(target => target.id === e.target.value);
-  if (!a) return;
-  kirimKeAI(a);
-  e.target.value = '';
+document.addEventListener('click', e => {
+  const menu = $('menuKirimAI');
+  if (menu.open && !menu.contains(e.target)) menu.open = false;
+});
+$('menuKirimAI').addEventListener('keydown', e => {
+  if (e.key !== 'Escape') return;
+  e.currentTarget.open = false;
+  e.currentTarget.querySelector('summary').focus();
 });
 
 /* ---------- Isi contoh & reset ---------- */

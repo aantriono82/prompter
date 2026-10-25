@@ -116,12 +116,10 @@
       <div id="panelStruktur" class="struktur-preview" role="tabpanel" hidden></div>
       <div class="baris-tombol preview-aksi-utama">
         <button id="tombolSalin" class="tombol tombol-utama" type="button">📋 Salin Prompt</button>
-        <div class="menu-kirim">
-          <label class="sr-only" for="pilihKirimAI">Pilih model AI tujuan</label>
-          <select id="pilihKirimAI" class="tombol pilih-kirim" aria-label="Kirim prompt ke AI">
-            <option value="">🚀 Kirim ke AI ▾</option>
-          </select>
-        </div>
+        <details id="menuKirimAI" class="menu-kirim">
+          <summary class="tombol pilih-kirim" aria-label="Kirim prompt ke AI">🚀 Kirim ke AI ▾</summary>
+          <div id="isiKirimAI" class="menu-kirim-isi" role="menu" aria-label="Pilih model AI tujuan"></div>
+        </details>
       </div>
       <div class="baris-tombol preview-aksi-sekunder">
         <button id="tombolSimpan" class="tombol tombol-sekunder" type="button">💾 Simpan ke Pustaka</button>
