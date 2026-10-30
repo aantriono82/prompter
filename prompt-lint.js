@@ -54,6 +54,22 @@
       }
     }
 
+    // Kolom isian bebas yang menyebut kelas lain membuat AI ragu memakai kelas yang dipilih.
+    const kelasDipilih = angkaKelas(values.kelas);
+    if (kelasDipilih){
+      for (const field of fields.filter(item => item.i !== 'kelas' && (item.j === 'teks' || item.j === 'area'))){
+        // Rentang seperti "kelas VII–IX" bukan penyebutan satu kelas.
+        const sebutan = [...String(values[field.i] || '').matchAll(/\bkelas\s+([IVX]+|\d{1,2})\b(?!\s*[–-])/gi)];
+        const lain = sebutan.map(cocok => cocok[1]).find(teks => {
+          const angka = angkaKelas(teks);
+          return angka && angka !== kelasDipilih;
+        });
+        if (lain){
+          warnings.push(labelBersih(field.l) + ' menyebut kelas ' + lain + ', padahal kelas yang dipilih ' + String(values.kelas).trim() + '.');
+        }
+      }
+    }
+
     const ids = new Set(fields.map(field => field.i));
     if (!ids.has('fase')) return warnings;
     const jenjang = String(values.jenjang || '').toUpperCase();

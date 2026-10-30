@@ -177,6 +177,13 @@ test('lint memperingatkan jenjang, fase, dan kelas yang tidak konsisten', () => 
   assert.ok(!lintTemplate('bank-soal', { jenjangKelas: 'SMP kelas 8' }).warnings.some(item => item.includes('tidak konsisten')));
 });
 
+test('lint memperingatkan kolom lain yang menyebut kelas berbeda dari pilihan', () => {
+  assert.ok(!lintTemplate('mpi-lengkap', { kelas: 'IX' }).warnings.some(item => item.includes('padahal kelas')));
+  const hasil = lintTemplate('mpi-lengkap', { kelas: 'IX', karakteristik: 'Peserta didik kelas VII yang suka tantangan.' });
+  assert.ok(hasil.warnings.includes('Karakteristik peserta didik menyebut kelas VII, padahal kelas yang dipilih IX.'));
+  assert.ok(!lintTemplate('mpi-lengkap', { kelas: 'VIII', karakteristik: 'Materi untuk kelas VII–IX.' }).warnings.some(item => item.includes('padahal kelas')));
+});
+
 test('angka kelas dibaca dari romawi dan angka', () => {
   assert.equal(lint.angkaKelas('VII'), 7);
   assert.equal(lint.angkaKelas('Kelas 10'), 10);

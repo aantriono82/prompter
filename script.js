@@ -171,7 +171,7 @@ const TEMPLATE = [
     { i:'maskot', l:'Maskot / pemandu', j:'teks', m:'D', ph:'mis. Si Enzim yang ceria', c:'Si Enzim yang ceria' },
     { i:'gayaVisual', l:'Gaya visual', j:'pilih', m:'D', o:['Datar modern','Kartun ceria','Semi-realistis','Minimalis'], c:'Kartun ceria' },
     { i:'konteksLokal', l:'Konteks lokal', j:'teks', m:'D', ph:'mis. makanan khas daerah, contoh dari lingkungan sekitar', c:'contoh makanan khas daerah setempat' },
-    { i:'karakteristik', l:'Karakteristik peserta didik', j:'area', m:'D', ph:'Kemampuan awal, minat, kebutuhan khusus…', c:'Peserta didik kelas VII, kemampuan membaca beragam, menyukai tantangan berlevel.' },
+    { i:'karakteristik', l:'Karakteristik peserta didik', j:'area', m:'D', ph:'Kemampuan awal, minat, kebutuhan khusus…', c:'Kemampuan membaca beragam, menyukai tantangan berlevel.' },
     { i:'waktu', l:'Alokasi waktu', j:'teks', m:'D', ph:'mis. 2 × 40 menit', c:'2 × 40 menit' }
   ],
   aturan:[
