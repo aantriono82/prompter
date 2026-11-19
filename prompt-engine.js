@@ -135,7 +135,7 @@
     }
     const detail = preferensi.__detail || 'Standar';
     blok.format.push('Tingkat detail hasil: ' + detail + '.');
-    const keluaranGambar = ['prompt-gambar', 'logo', 'infografis'].includes(t.id);
+    const keluaranGambar = ['prompt-gambar', 'infografis'].includes(t.id);
     const bahasaSasaran = keluaranGambar ? '' : bahasaMapel(t, nilai);
     if (bahasaSasaran){
       blok.format.push('Bahasa keluaran: materi, soal, teks bacaan, contoh, dan kunci untuk peserta didik ditulis dalam ' + bahasaSasaran + ' sesuai mata pelajaran; petunjuk, label antarmuka, dan catatan untuk guru dalam Bahasa Indonesia.');

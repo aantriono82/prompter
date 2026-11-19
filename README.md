@@ -64,7 +64,7 @@ Atiga Prompter berjalan **100% di peramban pengguna**. Tidak ada server, akun, a
 ## Teknologi
 
 - HTML + CSS + JavaScript murni (vanilla) — tanpa framework, tanpa proses build, tanpa CDN.
-- Berkas utama: `index.html`, `style.css`, `script.js`, `prompt-engine.js`, `prompt-lint.js`, `storage.js`, dan `README.md`.
+- Berkas utama: `index.html`, `style.css`, `script.js` (UI), `katalog.js` (data kategori, target AI, dan template), `prompt-engine.js`, `prompt-lint.js`, `storage.js`, dan `README.md`.
 - Responsif: HP (±360px), tablet, laptop, dan IFP / TV layar besar. Mode gelap & terang.
 - Setelah halaman termuat, aplikasi bisa dipakai tanpa internet (kecuali tombol Kirim ke AI).
 - Validasi impor pustaka, batas ukuran berkas 2 MB, maksimal 500 item, dan sanitasi data sebelum ditampilkan.

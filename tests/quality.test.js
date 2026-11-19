@@ -61,6 +61,7 @@ test('penyimpanan JSON membaca dan menulis nilai lokal', () => {
   assert.deepEqual(storage.bacaJSON('uji', {}), { aktif: true });
 });
 
+require('../katalog.js');
 require('../script.js');
 const katalog = global.ATIGA;
 
