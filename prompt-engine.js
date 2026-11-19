@@ -101,7 +101,7 @@
       if (f.j === 'centang'){
         const dipilih = Array.isArray(v) ? v.filter(Boolean) : [];
         if (!dipilih.length) continue;
-        if (f.aturan || f.promptRole === 'constraint') dipilih.forEach(item => blok.aturan.push(item));
+        if (f.aturan || f.promptRole === 'constraint') blok.aturan.push(labelBersih(f.l) + ' (wajib dipenuhi): ' + dipilih.join('; ') + '.');
         else if (f.promptRole === 'source') masukkan('sumber', f.l + ': ' + dipilih.join(', '));
         else if (f.promptRole === 'requirement') masukkan('kebutuhan', f.l + ': ' + dipilih.join(', '));
         else if (f.promptRole === 'preference') masukkan('preferensi', f.l + ': ' + dipilih.join(', '));
@@ -109,7 +109,10 @@
       } else {
         const baris = barisSpesifikasi(f, v);
         if (!baris) continue;
-        if (f.aturan || f.promptRole === 'constraint') blok.aturan.push(baris.replace(/^[^:]+:\s*/, ''));
+        if (f.aturan || f.promptRole === 'constraint'){
+          if (f.j === 'area') String(v).split('\n').map(x => x.trim().replace(/^(\d+[.)]|[-*•])\s+/, '')).filter(Boolean).forEach(x => blok.aturan.push(x));
+          else blok.aturan.push(labelBersih(f.l) + ': ' + teksKolom(f, v) + '.');
+        }
         else if (f.promptRole === 'source') masukkan('sumber', baris);
         else if (f.promptRole === 'requirement') masukkan('kebutuhan', baris);
         else if (f.promptRole === 'preference') masukkan('preferensi', baris);
@@ -188,7 +191,9 @@
       B.sumber?.length ? 'SUMBER DATA — pertahankan isi dan jangan mengarang fakta:\n' + daftar(B.sumber) : '',
       B.kebutuhan?.length ? 'KEBUTUHAN WAJIB:\n' + daftar(B.kebutuhan) : '',
       B.preferensi?.length ? 'PREFERENSI:\n' + daftar(B.preferensi) : '',
-      B.spesifikasi.length ? 'SPESIFIKASI:\n' + daftar(B.spesifikasi) : ''
+      B.spesifikasi.length
+        ? ((B.sumber?.length || B.kebutuhan?.length || B.preferensi?.length) ? 'RINCIAN:\n' : '') + daftar(B.spesifikasi)
+        : ''
     ].filter(Boolean).join('\n\n');
     const periksa = B.periksa || [];
     const JUDUL_PERIKSA = 'DAFTAR PERIKSA SEBELUM MENGIRIM';
@@ -250,7 +255,7 @@
         ].filter(Boolean).join('\n\n');
       }
       case 'copilot': {
-        const ringkas = (label, isi) => isi ? '**' + label + ':** ' + isi : '';
+        const ringkas = (label, isi) => isi ? '**' + label + ':**' + (isi.includes('\n') ? '\n' : ' ') + isi : '';
         return [
           ringkas('Peran', B.peran), ringkas('Konteks', B.konteks), ringkas('Tugas', B.tugas),
           ringkas('Spesifikasi', isiSpesifikasi()),

@@ -215,3 +215,32 @@ test('modul ajar mengunci kelas sasaran dan menuntut isi konkret', () => {
   assert.match(hasil, /Hitung ulang setiap contoh berangka/);
   assert.doesNotMatch(hasil, /tidak ada fakta, angka, atau kutipan baru/);
 });
+
+test('kolom aturan tampil berlabel dan aturan bebas dipecah per baris', () => {
+  const rubrik = engine.buatPrompt(templateDenganId('rubrik-penilaian'), isiContoh(templateDenganId('rubrik-penilaian')), {}, 'universal');
+  assert.match(rubrik, /- Fitur tambahan \(wajib dipenuhi\): Skor otomatis; /);
+  assert.doesNotMatch(rubrik, /^- Skor otomatis$/m);
+  const bebas = engine.buatPrompt(templateDenganId('prompt-bebas'), isiContoh(templateDenganId('prompt-bebas')), {}, 'universal');
+  assert.match(bebas, /^- Gunakan bilangan antara -20 sampai 20$/m);
+  assert.match(bebas, /^- Sertakan kunci jawaban terpisah$/m);
+});
+
+test('spesifikasi tidak mengulang judul SPESIFIKASI', () => {
+  for (const template of katalog.TEMPLATE){
+    for (const target of katalog.TARGET_AI){
+      const hasil = engine.buatPrompt(template, isiContoh(template), {}, target.id);
+      assert.doesNotMatch(hasil, /SPESIFIKASI(\*\*|:\*\*|:)?\s*\n?SPESIFIKASI:/, template.id + '/' + target.id);
+    }
+  }
+});
+
+test('template gambar tidak meminta prompt dan soal hitungan boleh memakai angka', () => {
+  for (const id of ['prompt-gambar', 'infografis']){
+    const hasil = engine.buatPrompt(templateDenganId(id), isiContoh(templateDenganId(id)), {}, 'universal');
+    assert.doesNotMatch(hasil, /Memuat bagian: prompt/);
+  }
+  for (const id of ['bank-soal', 'kuis-interaktif', 'lkpd']){
+    const hasil = engine.buatPrompt(templateDenganId(id), isiContoh(templateDenganId(id)), {}, 'universal');
+    assert.doesNotMatch(hasil, /tidak ada fakta, angka, atau kutipan baru/, id);
+  }
+});
