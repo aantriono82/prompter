@@ -204,3 +204,14 @@ test('lint tidak menganggap LaTeX atau kode sebagai placeholder', () => {
   assert.ok(!cek('Hitung \\frac{1}{2} + {x} dan function(){ return {a}; }').some(item => item.includes('placeholder')));
   assert.ok(cek('Mata pelajaran: {mapel}').some(item => item.includes('placeholder')));
 });
+
+test('modul ajar mengunci kelas sasaran dan menuntut isi konkret', () => {
+  const template = templateDenganId('modul-ajar');
+  const hasil = engine.buatPrompt(template, isiContoh(template, { kelas: 'VIII' }), {}, 'claude', 'cepat');
+  assert.match(hasil, /<konteks>\nDokumen ini untuk murid kelas VIII SMP/);
+  assert.match(hasil, /Sasaran dokumen adalah murid kelas VIII SMP\. CP berlaku untuk seluruh fase/);
+  assert.match(hasil, /sesuai kelas VIII, bukan kelas lain dalam fase yang sama/);
+  assert.match(hasil, /durasi dalam menit/);
+  assert.match(hasil, /Hitung ulang setiap contoh berangka/);
+  assert.doesNotMatch(hasil, /tidak ada fakta, angka, atau kutipan baru/);
+});

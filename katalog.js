@@ -58,6 +58,11 @@
   const acuanResmi = v => '1) Panduan Mata Pelajaran ' + mapelModul(v) + ' resmi Kemendikdasmen (https://kurikulum.kemendikdasmen.go.id/panduan-mapel); ' +
     '2) Panduan Pembelajaran dan Asesmen Edisi Revisi 2025 (BSKAP Kemendikdasmen; https://kurikulum.kemendikdasmen.go.id/rujukan/panduan-panduan-kurikulum); ' +
     '3) Keputusan Kepala BSKAP No. 046/H/KR/2025 beserta lampiran CP (https://kurikulum.kemendikdasmen.go.id/file/1753929861_manage_file.pdf).';
+  const kelasModul = v => {
+    const kelas = String(v.kelas || '').trim();
+    const jenjang = String(v.jenjang || '').trim();
+    return kelas ? 'kelas ' + kelas + (jenjang ? ' ' + jenjang : '') : 'kelas yang dipilih pengguna';
+  };
   const aturanAcuan = fokus => v => 'Sumber acuan resmi untuk semua mata pelajaran: ' + acuanResmi(v) + ' ' + (typeof fokus === 'function' ? fokus(v) : fokus) +
     ' Jika isi dokumen tersebut tidak tersedia bagi Anda, jangan mengutip atau mengarang rumusannya; tandai bagian yang bergantung padanya dengan [PERLU DIPERIKSA GURU].';
 
@@ -67,8 +72,15 @@
   {
     id:'modul-ajar', kategori:'materi', ikon:'📘', nama:'Modul Ajar / RPP Ringkas',
     deskripsi:'Modul ajar / RPP ringkas berbasis Perencanaan Pembelajaran Mendalam dan CP resmi 2025.',
-    peran: v => 'Anda adalah penyusun dokumen perencanaan pembelajaran yang berpengalaman. Gunakan Panduan Mata Pelajaran ' + mapelModul(v) + ', Panduan Pembelajaran dan Asesmen Edisi Revisi 2025, serta Keputusan Kepala BSKAP No. 046/H/KR/2025 sebagai acuan.',
-    tugas:'Susunlah satu dokumen perencanaan pembelajaran yang ringkas, jelas, fleksibel, dan siap digunakan. Pertahankan empat bagian resmi: Identifikasi → Desain Pembelajaran → Pengalaman Belajar → Asesmen Pembelajaran. Isi bagian yang tidak ditentukan pengguna dengan rancangan yang wajar dan tandai asumsi yang perlu diperiksa guru.',
+    peran: v => 'Anda adalah guru ' + mapelModul(v) + ' berpengalaman sekaligus penyusun perencanaan pembelajaran yang menguasai materi ' + kelasModul(v) + '. Gunakan Panduan Mata Pelajaran ' + mapelModul(v) + ', Panduan Pembelajaran dan Asesmen Edisi Revisi 2025, serta Keputusan Kepala BSKAP No. 046/H/KR/2025 sebagai acuan.',
+    tugas: v => 'Susunlah satu modul ajar yang lengkap, konkret, dan langsung dapat dipakai guru di kelas untuk murid ' + kelasModul(v) + '. Pertahankan empat bagian resmi: Identifikasi → Desain Pembelajaran → Pengalaman Belajar → Asesmen Pembelajaran. Tulis isi yang sebenarnya (penjelasan, langkah, pertanyaan, contoh, dan soal), bukan deskripsi umum tentang apa yang sebaiknya dilakukan. Isi bagian yang tidak ditentukan pengguna dengan rancangan yang wajar dan tandai asumsi yang perlu diperiksa guru.',
+    konteks:['Dokumen ini untuk murid kelas {kelas} {jenjang} pada mata pelajaran {mapel} dengan topik {topik}.'],
+    periksaSumber:'Rumusan CP disalin persis dari SUMBER DATA; tidak ada kutipan dokumen, nomor halaman, nama, atau data murid yang dikarang.',
+    periksaTambahan:[
+      'Setiap kegiatan memiliki durasi dalam menit serta langkah guru dan murid yang konkret; total durasi sesuai alokasi waktu.',
+      'Pertanyaan pemantik, contoh masalah beserta penyelesaiannya, pertanyaan refleksi, dan butir asesmen ditulis lengkap, bukan hanya disebut namanya.',
+      'Penjelasan konsep, contoh, dan kunci jawaban benar; setiap hitungan sudah diperiksa ulang.'
+    ],
     fields:[
       { i:'penyusun', l:'Penyusun / satuan pendidikan (opsional)', j:'teks', m:'D', g:'Identitas', ph:'mis. Aan Triono, S.Pd. — SMP Nusantara', c:'Aan Triono, S.Pd. — SMP Nusantara' },
       { i:'jenjang', l:'Jenjang', j:'pilih', m:'C', w:true, g:'Identitas', o:['PAUD','SD','SMP','SMA','SMK'], c:'SMP' },
@@ -76,7 +88,7 @@
       { i:'kelas', l:'Kelas', j:'teks', m:'C', w:true, g:'Identitas', ph:'mis. VII', c:'VII' },
       { i:'mapel', l:'Mata pelajaran', j:'teks', m:'C', w:true, g:'Identitas', ph:'mis. Matematika', c:'Matematika' },
       { i:'topik', l:'Topik / materi esensial', j:'teks', m:'C', w:true, g:'Identitas', ph:'mis. Perbandingan senilai', c:'Perbandingan senilai' },
-      { i:'alokasi', l:'Alokasi waktu (opsional)', j:'teks', m:'D', g:'Identitas', ph:'mis. 2 pertemuan × 2 JP', c:'2 pertemuan × 2 JP' },
+      { i:'alokasi', l:'Alokasi waktu (opsional)', j:'teks', m:'C', g:'Identitas', ph:'mis. 2 pertemuan × 2 JP', c:'2 pertemuan × 2 JP' },
       { i:'konteks', l:'Kondisi murid dan konteks materi (opsional)', j:'area', m:'D', g:'A. Identifikasi', ph:'Pengetahuan awal, kebutuhan belajar, relevansi materi, atau konteks lokal…', c:'Murid telah mengenal pecahan; beberapa murid membutuhkan contoh konkret dan waktu latihan tambahan.' },
       { i:'dimensi', l:'Dimensi Profil Lulusan', j:'centang', m:'C', w:true, g:'A. Identifikasi', o:DIMENSI_PROFIL, c:['Penalaran kritis','Komunikasi'] },
       { i:'cp', l:'CP resmi (wajib ditempel)', j:'area', m:'C', w:true, g:'B. Desain Pembelajaran', ph:'Tempel bagian CP yang relevan dari Panduan Mata Pelajaran (kurikulum.kemendikdasmen.go.id/panduan-mapel) atau Lampiran Kep. BSKAP No. 046/H/KR/2025…', c:'Murid dapat menggunakan rasio (skala, proporsi, dan laju perubahan) dalam penyelesaian masalah.' },
@@ -90,14 +102,19 @@
     ],
     aturan:[
       'Gunakan istilah resmi "Dimensi Profil Lulusan" dan susun dokumen dengan empat bagian: A. Identifikasi, B. Desain Pembelajaran, C. Pengalaman Belajar, D. Asesmen Pembelajaran.',
-      'Jangan menyebut format ini sebagai satu-satunya format resmi. Perencanaan pembelajaran bersifat fleksibel, jelas, dan sederhana.',
+      'Jangan menyebut format ini sebagai satu-satunya format resmi.',
       aturanAcuan(v => 'Gunakan Panduan Mata Pelajaran ' + mapelModul(v) + ' untuk elemen dan karakteristik mata pelajaran, Panduan Pembelajaran dan Asesmen untuk prinsip perencanaan, pengalaman belajar, dan asesmen, serta Kep. BSKAP No. 046/H/KR/2025 untuk CP. Jangan memakai panduan mata pelajaran lain.'),
       'CP harus diperlakukan sebagai teks sumber. Jangan mengubah, meringkas, atau mengarang rumusan CP. Jika CP tidak lengkap, tandai [CP PERLU DIPERIKSA GURU].',
+      v => 'Sasaran dokumen adalah murid ' + kelasModul(v) + '. CP berlaku untuk seluruh fase yang mencakup beberapa kelas; gunakan hanya cakupan CP yang sesuai untuk kelas tersebut dan topik yang dipilih. TP, prasyarat, contoh, soal, tingkat kesulitan, dan bahasa harus sesuai kemampuan murid kelas tersebut. Jangan memasukkan materi yang lazim diajarkan di kelas sesudahnya; bila topik tampak tidak lazim untuk kelas tersebut, beri catatan [PERLU DIPERIKSA GURU].',
+      'Penjelasan konsep, contoh, dan soal yang Anda buat harus benar secara keilmuan. Hitung ulang setiap contoh berangka dan periksa kunci jawaban sebelum menulisnya. Jangan menyebut nomor halaman, mengutip, atau mengklaim isi dokumen acuan yang tidak Anda baca langsung.',
       'Selaraskan TP dengan CP, fase, elemen, dan topik. Jika TP diturunkan oleh AI, tandai sebagai "Rancangan TP" dan gunakan tujuan yang dapat diamati.',
       v => 'Hubungkan kegiatan dan asesmen dengan elemen CP yang dipilih serta keterampilan khas mata pelajaran ' + mapelModul(v) + ' sesuai Panduan Mata Pelajarannya.',
       'Pada Pengalaman Belajar, tampilkan prinsip berkesadaran, bermakna, dan menggembirakan melalui tindakan nyata. Susun pengalaman inti dengan urutan Memahami → Mengaplikasi → Merefleksi.',
       'Asesmen wajib memuat bukti yang selaras dengan tujuan pada awal, proses, dan akhir pembelajaran. Gunakan istilah diagnostik, formatif, dan sumatif hanya sebagai keterangan bila membantu.',
-      'Jangan menambahkan komponen, lampiran, atau rubrik yang tidak diminta. Bila informasi opsional kosong, buat rancangan secukupnya dan tandai asumsi yang perlu diperiksa guru.'
+      'Isi setiap bagian secara konkret. A. Identifikasi: kesiapan murid (pengetahuan prasyarat dan miskonsepsi yang umum pada topik ini), karakteristik materi, serta Dimensi Profil Lulusan beserta cara mewujudkannya dalam kegiatan. B. Desain Pembelajaran: CP, lintas disiplin ilmu, TP, topik, praktik pedagogis, kemitraan pembelajaran, lingkungan pembelajaran, dan pemanfaatan digital. C. Pengalaman Belajar: kegiatan awal, inti (Memahami → Mengaplikasi → Merefleksi), dan penutup untuk setiap pertemuan, masing-masing dengan durasi menit serta langkah guru dan murid. D. Asesmen Pembelajaran: asesmen awal, proses, dan akhir lengkap dengan butir pertanyaan, tugas, atau indikator yang sebenarnya.',
+      'Tulis lengkap: pertanyaan pemantik, minimal dua contoh masalah kontekstual yang dekat dengan kehidupan murid beserta penyelesaiannya, pertanyaan refleksi, bantuan untuk murid yang kesulitan, dan tantangan untuk murid yang sudah mahir.',
+      'Bila alokasi waktu tidak diberikan, gunakan asumsi 1 pertemuan × 2 JP (SD 35 menit, SMP 40 menit, SMA/SMK 45 menit per JP), sebutkan sebagai asumsi, dan bagi durasi tiap kegiatan agar totalnya pas.',
+      'Lampiran terpisah hanya dibuat bila dipilih; instrumen yang disebut pada Bukti asesmen tetap ditulis di bagian D. Jangan menambahkan komponen di luar empat bagian dan identitas.'
     ],
     format:['Dokumen Markdown siap salin ke Word. Gunakan urutan: Identitas singkat → A. Identifikasi → B. Desain Pembelajaran → C. Pengalaman Belajar → D. Asesmen Pembelajaran → Lampiran hanya bila dipilih. Gunakan tabel hanya jika membantu keterbacaan. Jangan mengawali dengan analisis atau outline.']
   },
@@ -611,7 +628,7 @@
 
   /* Isian yang diulang di DAFTAR PERIKSA akhir prompt. true = "Label: nilai"; string = kalimat dengan {nilai}. */
   const DAFTAR_PERIKSA = {
-    'modul-ajar': { jenjang:true, fase:true, kelas:true, mapel:true, topik:true, alokasi:true, dimensi:'Dimensi Profil Lulusan yang diwujudkan: {nilai}.', lampiran:'Lampiran hanya: {nilai}.' },
+    'modul-ajar': { jenjang:true, fase:true, kelas:'Seluruh isi (TP, contoh, soal, tingkat kesulitan) sesuai kelas {nilai}, bukan kelas lain dalam fase yang sama.', mapel:true, topik:true, alokasi:true, dimensi:'Dimensi Profil Lulusan yang diwujudkan: {nilai}.', lampiran:'Lampiran hanya: {nilai}.' },
     'lkpd': { mapel:true, kelasLkpd:true, jenisKegiatan:true, jumlahTugas:'Jumlah & jenis tugas tepat: {nilai}.', kunci:true, formatCetak:true },
     'slide-presentasi': { mapel:true, jumlahSlide:'Tepat {nilai} slide.', formatKeluaran:true, audiens:true, visual:true },
     'bank-soal': { mapel:true, jenjangKelas:true, jumlahBentuk:'Jumlah & bentuk soal tepat: {nilai}.', kognitif:true, kunciBahasan:true, kisi:true },

@@ -151,7 +151,7 @@
     } else {
       blok.aturan.push(sikap === 'Tanya dulu sebelum mengerjakan'
         ? 'Bila ada hal yang kurang jelas atau ambigu, tanyakan dulu kepadaku sebelum mengerjakan.'
-        : 'Bila ada hal yang kurang jelas, kerjakan dengan asumsi terbaik hanya untuk hal teknis, format, dan rancangan, lalu sebutkan asumsimu secara singkat. Jangan berasumsi untuk fakta, rumusan CP, angka, nama, atau data siswa; tulis [PERLU DIISI GURU] bila belum tersedia.');
+        : 'Bila ada hal yang kurang jelas, kerjakan dengan asumsi terbaik hanya untuk hal teknis, format, dan rancangan, lalu sebutkan asumsimu secara singkat. Jangan berasumsi untuk data yang harus berasal dari guru, seperti rumusan CP, nama, nilai, atau data siswa; tulis [PERLU DIISI GURU] bila belum tersedia.');
     }
 
     blok.aturan.push('Prioritas instruksi: pertahankan fakta dari SUMBER DATA, penuhi KEBUTUHAN WAJIB dan BATASAN, ikuti PREFERENSI bila tidak bertentangan, lalu tandai informasi yang tidak tersedia. Jangan mengubah sumber menjadi fakta baru.');
@@ -167,7 +167,8 @@
       blok.format.push('Kontrak keluaran: keluarkan tepat satu blok kode lengkap' + bahasaKode + '.');
       blok.periksa.push('Tepat satu blok kode' + bahasaKode + ' yang lengkap dan dapat dijalankan, tanpa penjelasan di luar blok.');
     }
-    if (blok.sumber.length) blok.periksa.push('Fakta, CP, materi, dan data hanya berasal dari SUMBER DATA; tidak ada fakta, angka, atau kutipan baru.');
+    (t.periksaTambahan || []).forEach(item => masukkan('periksa', item));
+    if (blok.sumber.length) blok.periksa.push(t.periksaSumber || 'Fakta, CP, materi, dan data hanya berasal dari SUMBER DATA; tidak ada fakta, angka, atau kutipan baru.');
     if (bahasaSasaran) blok.periksa.push('Konten untuk peserta didik dalam ' + bahasaSasaran + '.');
 
     blok.aturan.push((blok.periksa.length
